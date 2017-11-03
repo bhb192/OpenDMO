@@ -30,10 +30,16 @@
 
     if(function_exists("register_field_group")) {
 
-        include('acf-define-info.php');
-        include('acf-define-cpt.php');
-        include('acf-define-event.php');
-        include('acf-define-stay.php');
+        function opendmo_acf_load() {
+
+            include('acf-define-info.php');
+            include('acf-define-cpt.php');
+            include('acf-define-event.php');
+            include('acf-define-stay.php');
+
+        }
+
+        add_action('admin_init', 'opendmo_acf_load');
 
     }
 

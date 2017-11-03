@@ -29,27 +29,27 @@ function cpm_getGoogleReviews($infos) {
 	
 		if(count($the_reviews_dates) > 0) {
 		
-			echo "<div class='tareviews noprint'><div class='container'><div class='page-container'>";
-			echo "<h3>Traveler Reviews</h3>";
-		echo "<img class='talogo' src='img/powered_by_google_on_white.png' />";
-			echo "<div class='tathereviews'>";
+			$acfoutput = $acfoutput."<div class='tareviews noprint'><div class='container'><div class='page-container'>";
+			$acfoutput = $acfoutput."<h3>Traveler Reviews</h3>";
+		$acfoutput = $acfoutput."<img class='talogo' src='img/powered_by_google_on_white.png' />";
+			$acfoutput = $acfoutput."<div class='tathereviews'>";
 		
 		}
 					
 		foreach($the_reviews_dates as $k=>$date){												
 					
-			echo "<div class='tareview'>";
-			echo "<span class='starrating'>&#9733;&#9733;&#9733;&#9733;&#9733;</span>";
-			echo "<span class='reviewtext'>".$the_reviews_text[$k]."</span>";
-			echo "<span class='reviewdate'>".date("F j, Y", $date)."</span>";
-			echo "</div>";
+			$acfoutput = $acfoutput."<div class='tareview'>";
+			$acfoutput = $acfoutput."<span class='starrating'>&#9733;&#9733;&#9733;&#9733;&#9733;</span>";
+			$acfoutput = $acfoutput."<span class='reviewtext'>".$the_reviews_text[$k]."</span>";
+			$acfoutput = $acfoutput."<span class='reviewdate'>".date("F j, Y", $date)."</span>";
+			$acfoutput = $acfoutput."</div>";
 					
 		}			
 	
 		if(count($the_reviews_dates) > 0) {
 				
-			echo "</div>";
-			echo "</div></div></div>";
+			$acfoutput = $acfoutput."</div>";
+			$acfoutput = $acfoutput."</div></div></div>";
 		
 		}
 				
@@ -57,9 +57,13 @@ function cpm_getGoogleReviews($infos) {
 
 }
 
-function cpm_getContactInfo($infos) {
+function cpm_getContactInfo() {
 
-	global $addressexists;
+    global $infos;
+
+    print_r($infos);
+
+    global $addressexists;
 	global $mapaddress;
 	global $parklatlong;
 	global $actlatlong;
@@ -107,7 +111,7 @@ function cpm_getContactInfo($infos) {
 			$addressexists = 1;		
 			$mapaddress = $infos["address"].", ".$thecity.", ".$thestate.", ".$thezip;
 		
-			echo("<p><strong>Address</strong><br /><span>".$infos["address"]."</span><br /><span>".$thecity.", ".$thestate." ".$thezip."</span>");
+			$acfoutput = $acfoutput."<p><strong>Address</strong><br /><span>".$infos["address"]."</span><br /><span>".$thecity.", ".$thestate." ".$thezip."</span>";
 		
 		}
 	
@@ -148,7 +152,7 @@ function cpm_getContactInfo($infos) {
 			
 			}
 		
-			echo("<p><strong>Mailing Address</strong><br /><span>".$infos["mail_address"]."</span><br /><span>".$mailthecity.", ".$mailthestate." ".$mailthezip."</span>");
+			$acfoutput = $acfoutput.("<p><strong>Mailing Address</strong><br /><span>".$infos["mail_address"]."</span><br /><span>".$mailthecity.", ".$mailthestate." ".$mailthezip."</span>");
 		
 		}
 	
@@ -158,13 +162,13 @@ function cpm_getContactInfo($infos) {
 	
 		if( (strlen($infos["gps_parking_lat"]) && strlen($infos["gps_parking_long"])) || (strlen($infos["gps_actual_lat"]) && strlen($infos["gps_actual_long"]))  ) {
   
-			echo("<p><strong>GPS Coordinates</strong>");
+			$acfoutput = $acfoutput.("<p><strong>GPS Coordinates</strong>");
 		
 			if( (strlen($infos["gps_parking_lat"]) && strlen($infos["gps_parking_long"])) ){
 			
 				$addressexists = 1;
 				$parklatlong = $infos["gps_parking_lat"].", ".$infos["gps_parking_long"]; 
-				echo("<br />Parking Area: ".$infos["gps_parking_lat"].", ".$infos["gps_parking_long"]);
+				$acfoutput = $acfoutput.("<br />Parking Area: ".$infos["gps_parking_lat"].", ".$infos["gps_parking_long"]);
 			
 			}
 		
@@ -172,11 +176,11 @@ function cpm_getContactInfo($infos) {
 			
 				$addressexists = 1;
 				$actlatlong = $infos["gps_actual_lat"].", ".$infos["gps_actual_long"]; 
-				echo("<br />Actual Location: ".$infos["gps_actual_lat"].", ".$infos["gps_actual_long"]);
+				$acfoutput = $acfoutput.("<br />Actual Location: ".$infos["gps_actual_lat"].", ".$infos["gps_actual_long"]);
 			
 			}
 		
-			echo("</p>");
+			$acfoutput = $acfoutput.("</p>");
 		
 		}
 	  
@@ -186,7 +190,7 @@ function cpm_getContactInfo($infos) {
 	
 		if( strlen($infos["phone"]) ) {
   
-  			echo("<p><strong>Phone: </strong>".$infos["phone"]."</p>");
+  			$acfoutput = $acfoutput.("<p><strong>Phone: </strong>".$infos["phone"]."</p>");
 		
 		}
   
@@ -196,7 +200,7 @@ function cpm_getContactInfo($infos) {
 	
 		if( strlen($infos["bizhours"]) ) {
   
-  			echo("<p><strong>Hours: </strong>".$infos["bizhours"]."</p>");
+  			$acfoutput = $acfoutput.("<p><strong>Hours: </strong>".$infos["bizhours"]."</p>");
 		
 		}
   
@@ -213,19 +217,19 @@ function cpm_getLinks($infos) {
 
 	if( strlen($infos["website"]) || strlen($infos["facebook"]) || strlen($infos["twitter"]) || strlen($infos["instagram"]) || strlen($infos["youtube"]) || strlen($infos["tripadvisor"]) ){
   
-  		echo("<p class='noprint'>");
+  		$acfoutput = $acfoutput.("<p class='noprint'>");
   
   		if(strlen($infos["website"])){
 	
 			if( (strpos($infos["website"], "http://") === false) && (strpos($infos["website"], "https://") === false) ){
 	
-				echo("<a class='metalink' href='http://".$infos["website"]."' target='_blank'>Official Website ".$extlinkicon."</a><br />");
+				$acfoutput = $acfoutput.("<a class='metalink' href='http://".$infos["website"]."' target='_blank'>Official Website ".$extlinkicon."</a><br />");
 	  
 			}
 	  
 			else {
 		
-				echo("<a class='metalink' href='".$infos["website"]."' target='_blank'>Official Website ".$extlinkicon."</a><br />");
+				$acfoutput = $acfoutput.("<a class='metalink' href='".$infos["website"]."' target='_blank'>Official Website ".$extlinkicon."</a><br />");
 	  
 			}
   
@@ -233,37 +237,37 @@ function cpm_getLinks($infos) {
 
  		if(strlen($infos["facebook"])){
 	
-			echo("<a class='socicona metalink' target='_blank' href=https://facebook.com/".$infos["facebook"]."><span style='color:#3e5b98;' class='socicon socicon-facebook'></span> Facebook ".$extlinkicon."</a><br />");
+			$acfoutput = $acfoutput.("<a class='socicona metalink' target='_blank' href=https://facebook.com/".$infos["facebook"]."><span style='color:#3e5b98;' class='socicon socicon-facebook'></span> Facebook ".$extlinkicon."</a><br />");
   
   		}
 
   		if(strlen($infos["twitter"])){
 	
-			echo("<a class='socicona metalink' target='_blank' href=https://twitter.com/".$infos["twitter"]."><span style='color:#4da7de;' class='socicon socicon-twitter'></span> Twitter (@".$infos["twitter"].") ".$extlinkicon."</a><br />");
+			$acfoutput = $acfoutput.("<a class='socicona metalink' target='_blank' href=https://twitter.com/".$infos["twitter"]."><span style='color:#4da7de;' class='socicon socicon-twitter'></span> Twitter (@".$infos["twitter"].") ".$extlinkicon."</a><br />");
   
  		}
 	
 	  	if(strlen($infos["instagram"])){
 			
 	
-			echo("<a class='socicona metalink' target='_blank' href=https://instagram.com/".$infos["instagram"]."><span style='color:#000000;' class='socicon socicon-instagram'></span> Instagram (@".$infos["instagram"].") ".$extlinkicon."</a><br />");
+			$acfoutput = $acfoutput.("<a class='socicona metalink' target='_blank' href=https://instagram.com/".$infos["instagram"]."><span style='color:#000000;' class='socicon socicon-instagram'></span> Instagram (@".$infos["instagram"].") ".$extlinkicon."</a><br />");
   
  		}
 	
 	  	if(strlen($infos["youtube"])){
 	
-			echo("<a class='socicona metalink' target='_blank' href=https://youtube.com/".$infos["youtube"]."><span style='color:#e02a20;' class='socicon socicon-youtube'></span> YouTube ".$extlinkicon."</a><br />");
+			$acfoutput = $acfoutput.("<a class='socicona metalink' target='_blank' href=https://youtube.com/".$infos["youtube"]."><span style='color:#e02a20;' class='socicon socicon-youtube'></span> YouTube ".$extlinkicon."</a><br />");
   
  		}
 	
 		if(strlen($infos["tripadvisor"])){
 		
 			$tripadvisorexists = 1;	
-			echo("<a class='socicona metalink' target='_blank' href=https://tripadvisor.com/".$infos["tripadvisor"]."><span style='color:#4B7E37;' class='socicon socicon-tripadvisor'></span> TripAdvisor ".$extlinkicon."</a><br />");
+			$acfoutput = $acfoutput.("<a class='socicona metalink' target='_blank' href=https://tripadvisor.com/".$infos["tripadvisor"]."><span style='color:#4B7E37;' class='socicon socicon-tripadvisor'></span> TripAdvisor ".$extlinkicon."</a><br />");
   
  		}
 
-  		echo("</p>");
+  		$acfoutput = $acfoutput.("</p>");
 	}
 
 }
@@ -382,15 +386,15 @@ function cpm_getRelatedPosts($infos) {
 
 	if($noboxout != '') {
 	
-		echo("<div class='rpcont inline'><div class='container'><div class='page-container'>".$noboxout."</div></div></div>");  
+		$acfoutput = $acfoutput.("<div class='rpcont inline'><div class='container'><div class='page-container'>".$noboxout."</div></div></div>");  
 	
 	}
 
    	if($boxout != '') {
    
-        echo("<div class='rpcont blue'><div class='container'><div class='page-container'>");        
-        echo $boxout;
-		echo("</div></div></div>");
+        $acfoutput = $acfoutput.("<div class='rpcont blue'><div class='container'><div class='page-container'>");        
+        $acfoutput = $acfoutput.$boxout;
+		$acfoutput = $acfoutput.("</div></div></div>");
         
     }
 
@@ -433,7 +437,7 @@ function cpm_getUpcomingEvents() {
 	
 		if(isset($nstimes[0])) {
 	
-	   		echo("<div class='rpcont green'><div class='container'><div class='page-container'><h3>Upcoming Events</h3>");
+	   		$acfoutput = $acfoutput.("<div class='rpcont green'><div class='container'><div class='page-container'><h3>Upcoming Events</h3>");
 		
 		}
 	
@@ -486,7 +490,7 @@ function cpm_getUpcomingEvents() {
 				
         	$rpout = $rpout."<div style='clear:both;'></div></a></article>";
 		
-			echo $rpout;
+			$acfoutput = $acfoutput.$rpout;
 
 			wp_reset_postdata();
 		  	$post = $temp;   			
@@ -495,7 +499,7 @@ function cpm_getUpcomingEvents() {
 		   
 		if(isset($nstimes[0])) {
 	
-			echo("</div></div></div>");
+			$acfoutput = $acfoutput.("</div></div></div>");
 	
 		}
 	

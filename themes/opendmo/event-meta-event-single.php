@@ -1,1 +1,0 @@
-<h4><?php include('event-time.php'); echo $etime; ?></h4>

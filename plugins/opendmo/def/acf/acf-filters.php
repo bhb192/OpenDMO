@@ -32,6 +32,21 @@ function myAcfFilters() {
 
 }
 
+function acf_content_after($content) {
+
+    $acfoutput = '';
+    $infos = get_fields($post->ID);
+    include('acf-post-meta-location.php');
+    include('acf-post-meta-links.php');
+    include('acf-post-meta-social.php');
+
+    $fullcontent = $content . $acfoutput;
+    return $fullcontent;
+
+}
+
+add_filter('the_content', 'acf_content_after');
+
 
 add_action('plugins_loaded', 'myAcfFilters');
 

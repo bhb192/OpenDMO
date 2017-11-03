@@ -45,6 +45,8 @@ $move_these_cpt_boxes = array();
 $itcf = 0;
 $mtcb = 0;
 
+global $opendmo_cpt_names;
+
 foreach($opendmo_cpt_names as $o=>$odcpt) {
 
     $odcptnice = ucfirst($odcpt);

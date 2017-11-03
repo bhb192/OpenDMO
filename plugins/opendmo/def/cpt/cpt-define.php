@@ -15,6 +15,7 @@ function opendmo_custom_post_type()
                'name'          => __($od_cpt),
                'singular_name' => __($cptsingle),
                 'menu_name'=>   $cptsingle,
+		        'edit_item'          => "Edit $cptsingle",
 
            ],
 
