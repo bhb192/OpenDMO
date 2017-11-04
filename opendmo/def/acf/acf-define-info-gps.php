@@ -31,7 +31,7 @@ for($gxx = 0; $gxx<$maxgps; $gxx++) {
 
     );
 
-    if(isset($suggestgps[$xg])) { $the_suggestgps = $suggestgps[$xg]; }
+    if(isset($suggestgps[$gxx])) { $the_suggestgps = $suggestgps[$gxx]; }
     else { $the_suggestgps = 'Other Landmark'; }
 
     $gx[$xg+1] = array (

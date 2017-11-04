@@ -58,9 +58,9 @@ for($m=0; $m<$maxsocial; $m++) {
 
 	$is[$s+1] = array (
 
-		'key' => 'field_56b3f4a35c1ff$m',
-		'label' => "Profile URL (".($m+1).")",
-		'name' => 'post_social_url_$m',
+		'key' => "field_56b3f4a35c1ff$m",
+		'label' => ("Profile URL (".($m+1).")"),
+		'name' => "post_social_url_$m",
 		'type' => 'text',
 		'instructions' => '',
 		'default_value' => '',

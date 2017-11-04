@@ -15,6 +15,8 @@ $info_fields['phone'] = array( array(
 
 ));
 
+$suggestphone = array("Phone Number", "Daytime Phone", "Evening Phone");
+
 for($xxp = 0; $xxp<$max_phone; $xxp++) {
 
     $phx[$phxx] = array (
@@ -28,6 +30,9 @@ for($xxp = 0; $xxp<$max_phone; $xxp++) {
 
     );
 
+    if(isset($suggestphone[$xxp])) { $the_suggestphone = $suggestphone[$xxp]; }
+    else { $the_suggestphone = 'Alternate Phone'; }
+
 	$phx[$phxx+1] = array (
 
 		'key' => "field_5wej222ddb$xxp",
@@ -36,7 +41,7 @@ for($xxp = 0; $xxp<$max_phone; $xxp++) {
 		'type' => 'text',
 		'instructions' => '',
 		'default_value' => '',
-		'placeholder' => 'Phone Number',
+		'placeholder' => $the_suggestphone,
 		'prepend' => '',
 		'append' => '',
 		'formatting' => 'html',

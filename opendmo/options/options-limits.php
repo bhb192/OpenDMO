@@ -6,9 +6,9 @@ $opendmo_default_limit = array(
 
     "address" => 10,
     "phone" => 3,
-    "gps_pair" => 10,
+    "gps_pair" => 5,
     "event_date" => 15,
-    "ext_links" => 10,
+    "ext_links" => 3,
     "social_links" => 10,
     "zipcode" => 25,
 

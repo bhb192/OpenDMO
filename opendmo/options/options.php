@@ -1,6 +1,16 @@
 <?php
 
+
+//global variables
+
+$primaryediturl = '';
+$opendmo_options_meta = '';
+$opendmo_options_zip_meta = '';
+
+//opendmo options post type for settings fields
+
 register_post_type('opendmo-options', array(
+
 	'labels' => 	array(
 		'name'               => 'OpenDMO Options',
 		'singular_name'      => 'OpenDMO Options',
@@ -26,30 +36,59 @@ register_post_type('opendmo-options', array(
 	'show_in_menu'	=> false,
 ));
 
+//count how many posts are in opendmo options post type
+
 $odocount = wp_count_posts('opendmo-options');
 $odocount = $odocount->private;
 
-if($odocount<2) {
+if($odocount<2) { add_action('wp_loaded', 'createoptions'); }
 
-    add_action('wp_loaded', 'createoptions');
+add_action('admin_head', 'opendmo_admin_head');
+add_action('plugins_loaded', 'setopts');
+add_action('init','opendmonavmake');
+add_action('admin_init','opendmoadminhide');
 
-}
+function opendmo_admin_head() {
 
-else {
-
-    add_action('plugins_loaded', 'setopts');
-
-}
-
-add_action('admin_head', function() {
+    global $opendmo_cpt_names;
+    global $opendmo_options_meta;
 
     if(get_post_type() == "opendmo-options") {
 
-        echo "<style> #titlediv, #minor-publishing { display: none; }  </style>";
+        // hide post options on options pages
+        echo "<style type='text/css'> #titlediv, #minor-publishing { display: none; }  </style>";
 
     }
 
-});
+    echo "<style type='text/css'>";
+
+        foreach($opendmo_cpt_names as $odcpt) {
+
+            echo "#custom-post-type-onomies-$odcpt { display: none; }";
+
+        }
+
+    echo "</style>";          
+    echo "<script> (function($) { $(document).ready(function(){";
+
+        foreach($opendmo_cpt_names as $odcpt) {
+                
+            echo "$('.field_key-cpt_tax_content_$odcpt').append( $('#taxonomy-$odcpt') );";
+                
+        }
+            
+    echo "}); })(jQuery); </script>";
+
+}
+
+function opendmoadminhide() {
+
+    remove_submenu_page( 'opendmo-settings', 'opendmo-settings' );
+    remove_submenu_page( 'options-general.php', 'custom-post-type-onomies' );
+    remove_submenu_page( 'options-general.php', 'post-content-shortcodes' );
+    //remove_menu_page('edit.php?post_type=acf');
+
+}
 
 function createoptions() {
 
@@ -65,13 +104,28 @@ function createoptions() {
        'post_status' => 'private',
     ));
 
-    setopts();
-
 }
 
-$primaryediturl = '';
-$opendmo_options_meta = '';
-$opendmo_options_zip_meta = '';
+
+function opendmonavmake() {
+
+    global $primaryediturl;
+
+    add_menu_page(
+
+        'OpenDMO Settings', 'OpenDMO', 'manage_options', 
+        'opendmo-settings', '', 'dashicons-location', 5
+
+    );
+
+    add_submenu_page(
+
+        'opendmo-settings', 'OpenDMO Options', 'OpenDMO Options', 
+        'manage_options', $primaryediturl
+
+    ); 
+
+}
 
 function setopts() {
 
@@ -95,27 +149,6 @@ function setopts() {
         $opendmo_options_zip_meta = get_post_meta($zo);
         $zipedit = get_edit_post_link($zo);
         $primaryediturl = "post.php?post=$po&action=edit";
-
-        function opendmonavmake() {
-
-            global $primaryediturl;
-
-            add_menu_page('OpenDMO Settings', 'OpenDMO', 'manage_options', 'opendmo-settings', '', 'dashicons-location', 5);
-            add_submenu_page('opendmo-settings', 'OpenDMO Options', 'OpenDMO Options', 'manage_options', $primaryediturl); 
-
-        }
-
-        function opendmoadminhide() {
-
-            remove_submenu_page( 'opendmo-settings', 'opendmo-settings' );
-            remove_submenu_page( 'options-general.php', 'custom-post-type-onomies' );
-            remove_submenu_page( 'options-general.php', 'post-content-shortcodes' );
-            //remove_menu_page('edit.php?post_type=acf');
-
-        }
-
-        add_action('init','opendmonavmake');
-        add_action('admin_init','opendmoadminhide');
 
         include('options-primary.php');
         include('options-zip.php');

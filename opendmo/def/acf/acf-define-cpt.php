@@ -1,51 +1,8 @@
 <?php
 
-function my_acf_admin_head() {
-
-    global $opendmo_cpt_names;
-    global $move_these_cpt_boxes;
-
-    foreach($opendmo_cpt_names as $odod=>$odcpt) {
-
-        $fieldkey = $move_these_cpt_boxes[$odod];
-    
-        ?>
-
-        <style type="text/css">
-
-            #custom-post-type-onomies-<?php echo $odcpt; ?> {
-
-                display: none;
-
-            }
-
-        </style>
-        <script>
-        (function($) {
-            
-            $(document).ready(function(){
-                
-                $('.field_key-<?php echo $fieldkey; ?>').append( $('#taxonomy-<?php echo $odcpt; ?>') );
-                
-            });
-            
-        })(jQuery);    
-        </script>
-
-        <?php    
-
-    }
-    
-}
-
-add_action('acf/input/admin_head', 'my_acf_admin_head');
-
-$insert_these_cpt_fields = array();
-$move_these_cpt_boxes = array();
-$itcf = 0;
-$mtcb = 0;
-
 global $opendmo_cpt_names;
+$insert_these_cpt_fields = array();
+$itcf = 0;
 
 foreach($opendmo_cpt_names as $o=>$odcpt) {
 
@@ -70,8 +27,6 @@ foreach($opendmo_cpt_names as $o=>$odcpt) {
 	    "type" => "message",
 	    "message" => "",
     ); 
-    $move_these_cpt_boxes[$mtcb] = "cpt_tax_content_$odcpt";
-    $mtcb++;
     $itcf++; 
     $insert_these_cpt_fields[$itcf] = array (
 	    "key" => "field_59f68f7023d71_$odcpt",
