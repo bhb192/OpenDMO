@@ -19,17 +19,7 @@ register_field_group(array (
 				'step' => '',
 			),
 		),
-		'location' => array (
-			array (
-				array (
-					'param' => 'post_type',
-					'operator' => '==',
-					'value' => 'stay',
-					'order_no' => 0,
-					'group_no' => 0,
-				),
-			),
-		),
+		'location' => fields_location(0),
 		'options' => array (
 			'position' => 'normal',
 			'layout' => 'default',

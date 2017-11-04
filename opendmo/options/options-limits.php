@@ -1,8 +1,11 @@
 <?php
 
+global $opendmo_default_limit;
+
 $opendmo_default_limit = array(
 
     "address" => 10,
+    "phone" => 3,
     "gps_pair" => 10,
     "event_date" => 15,
     "ext_links" => 10,
@@ -23,8 +26,18 @@ $opendmo_opt["limits"] = array(
     ),
 
     array (
+        "key" => "field_dj3wkerwrr7h37",
+        "label" => "Phone",
+        "name" => "opendmo_phone_total",
+        "type" => "text",
+        "default_value" => $opendmo_default_limit['phone'],
+        "allow_null" => 0,
+        "multiple" => 0,
+    ),
+
+    array (
         "key" => "field_djkh27h37",
-        "label" => "Number of Addresses",
+        "label" => "Address",
         "name" => "opendmo_adr_total",
         "type" => "text",
         "default_value" => $opendmo_default_limit['address'],
@@ -34,7 +47,7 @@ $opendmo_opt["limits"] = array(
 
     array (
         "key" => "field_3jhd3hu3d",
-        "label" => "Number of GPS Coordinate Pairs",
+        "label" => "GPS Coordinate Pairs",
         "name" => "opendmo_gps_total",
         "type" => "text",
         "default_value" => $opendmo_default_limit['gps_pair'],
@@ -44,7 +57,7 @@ $opendmo_opt["limits"] = array(
 
     array (
         "key" => "field_3dhi43fhd4j3",
-        "label" => "Number of Event Dates",
+        "label" => "Event Dates",
         "name" => "opendmo_event_dates_total",
         "type" => "text",
         "default_value" => $opendmo_default_limit['event_date'],
@@ -54,7 +67,7 @@ $opendmo_opt["limits"] = array(
 
     array (
         "key" => "field_i4rhj4rh3ir2",
-        "label" => "Number of External Links",
+        "label" => "External Links",
         "name" => "opendmo_ext_links_total",
         "type" => "text",
         "default_value" => $opendmo_default_limit['ext_links'],
@@ -64,7 +77,7 @@ $opendmo_opt["limits"] = array(
 
     array (
         "key" => "field_h43rh3498f4",
-        "label" => "Number of Social Links",
+        "label" => "Social Links",
         "name" => "opendmo_social_links_total",
         "type" => "text",
         "default_value" => $opendmo_default_limit['social_links'],

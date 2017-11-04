@@ -45,7 +45,7 @@ function acf_content_after($content) {
 
 }
 
-add_filter('the_content', 'acf_content_after');
+//add_filter('the_content', 'acf_content_after');
 
 
 add_action('plugins_loaded', 'myAcfFilters');

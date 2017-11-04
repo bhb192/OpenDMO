@@ -4,7 +4,7 @@ global $opendmo_options_meta;
 global $opendmo_default_limit;
 
 $maxdates = $opendmo_options_meta['opendmo_event_dates_total'][0];
-if(!$maxdates > 0) { $maxdates = $opendmo_default_limit['zipcode']; } 
+if(!$maxdates > 0) { $maxdates = $opendmo_default_limit['event_date']; } 
 $iz = array();
 $z = 0;
 

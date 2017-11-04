@@ -27,6 +27,7 @@ function opendmo_custom_post_type()
        ]);
 
         add_post_type_support( $od_cpt, 'excerpt' );
+        add_post_type_support( $od_cpt, 'thumbnail' );
 
     }
 

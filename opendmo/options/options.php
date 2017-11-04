@@ -71,6 +71,7 @@ function createoptions() {
 
 $primaryediturl = '';
 $opendmo_options_meta = '';
+$opendmo_options_zip_meta = '';
 
 function setopts() {
 
@@ -88,8 +89,10 @@ function setopts() {
 
         global $primaryediturl;
         global $opendmo_options_meta;
+        global $opendmo_options_zip_meta;
 
         $opendmo_options_meta = get_post_meta($po);
+        $opendmo_options_zip_meta = get_post_meta($zo);
         $zipedit = get_edit_post_link($zo);
         $primaryediturl = "post.php?post=$po&action=edit";
 
