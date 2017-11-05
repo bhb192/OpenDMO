@@ -5,7 +5,7 @@ $primary_opt_fields = array();
 
 foreach($opt_primary_list as $odo) {
 
-    include("options-$odo.php");
+    include($opendmo_path."options/options-$odo.php");
     $primary_opt_fields = array_merge($primary_opt_fields,$opendmo_opt[$odo]);
 
 }    

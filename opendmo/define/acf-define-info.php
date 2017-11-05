@@ -3,13 +3,14 @@
     global $opendmo_options_meta;
     global $opendmo_options_zip_meta;
     global $opendmo_default_limit;
+    global $opendmo_path;
 
-    $the_info_fields = array('post-settings', 'hours', 'phone', 'address', 'gps', 'links', 'social', 'reviews');
+    $the_info_fields = array('post-settings', 'hours', 'phone', 'address', 'gps', 'links', 'social', 'hotels', 'reviews');
     $tif_register = array();
 
     foreach($the_info_fields as $tif) {
 
-        include("acf-define-info-$tif.php");
+        include($opendmo_path."/define/acf-define-info-$tif.php");
         $tif_register = array_merge($tif_register, $info_fields[$tif]);
 
     }

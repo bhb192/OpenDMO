@@ -73,7 +73,7 @@ function opendmo_admin_head() {
 
         foreach($opendmo_cpt_names as $odcpt) {
                 
-            echo "$('.field_key-cpt_tax_content_$odcpt').append( $('#taxonomy-$odcpt') );";
+            echo "$('#acf-cpt_tax_content_$odcpt').append( $('#taxonomy-$odcpt') );";
                 
         }
             
@@ -144,14 +144,15 @@ function setopts() {
         global $primaryediturl;
         global $opendmo_options_meta;
         global $opendmo_options_zip_meta;
+        global $opendmo_path;
 
         $opendmo_options_meta = get_post_meta($po);
         $opendmo_options_zip_meta = get_post_meta($zo);
         $zipedit = get_edit_post_link($zo);
         $primaryediturl = "post.php?post=$po&action=edit";
 
-        include('options-primary.php');
-        include('options-zip.php');
+        include($opendmo_path.'options/options-primary.php');
+        include($opendmo_path.'options/options-zip.php');
 
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+
+
 function cpm_getGoogleReviews($infos) {
 
 	if(strlen($infos["google_place_id"])) {

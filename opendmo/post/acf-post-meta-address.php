@@ -1,6 +1,5 @@
 <?php
 
-print_r($infos);
 
 $addressexists = 0;
 $mapaddress = '';
