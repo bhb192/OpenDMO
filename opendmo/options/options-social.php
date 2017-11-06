@@ -1,22 +1,12 @@
 <?php
 
-$opendmo_opt["social"][0] = 
-
-    array(
-
-        "key" => "field_erh38dj39d3",
-        "label" => "Social",
-        "name" => "opendmo-opt-limits-tab",
-        "type" => "tab"
-
-    );
+$opendmo_opt["social"] = array(field_build_tab('Social'));
 
 $default_social_media = array("Twitter", "Facebook", "YouTube", "Instagram", "Pinterest", "AirBnB", "TripAdvisor");
 
 $thepo = get_post_meta($po);
 $max_social = $thepo['opendmo_social_links_total'][0];
 if(!$max_social > 0) { $max_social = $opendmo_default_limit['social_links']; } 
-$sm = count($opendmo_opt["social"]);
 
 for($s = 0; $s<$max_social; $s++) {
 
@@ -30,58 +20,21 @@ for($s = 0; $s<$max_social; $s++) {
 
     } 
 
-    $opendmo_opt["social"][$sm] = array (
+    $smdri = "(".($s+1).")";    
+    $smdefine[0] = field_build_row(2);
+    $smdefine[1] = field_build_text("", "Network Name $smdri", 'Twitter', $default_nn);
+    $smdefine[1]['name'] = "opt_opendmo_social_name_$s";
+    $smdefine[2] = field_build_text("", "URL Prefix $smdri", 'https://www.twitter.com/', $default_nu);
+    $smdefine[2]['name'] = "opt_opendmo_social_url_$s";
 
-	    'key' => "field_socialrowo$s",
-	    'label' => "f$so",
-	    'name' => "f$so",
-	    'type' => 'row',
-	    'row_type' => 'row_open',
-	    'col_num' => 2,
+    $opendmo_opt["social"] = array_merge($opendmo_opt["social"], array(
 
-    );
+        $smdefine[0]['open'],
+        $smdefine[1],
+        $smdefine[2],
+        $smdefine[0]['close'],
 
-    $opendmo_opt["social"][$sm+1] = array (
-
-        "key" => "field_sociallabel$s",
-        "label" => "Network ".($s+1),
-        "name" => "opendmo_social_name_$s",
-		'type' => 'text',
-		'default_value' => $default_nn,
-		'placeholder' => 'Twitter',
-		'prepend' => '',
-		'append' => '',
-		'formatting' => 'html',
-		'maxlength' => '99',
-    );
-
-    $opendmo_opt["social"][$sm+2] = array (
-
-        "key" => "field_socialurl$s",
-        "label" => "URL Prefix",
-        "name" => "opendmo_social_url_$s",
-		'type' => 'text',
-		'default_value' => $default_nu,
-		'placeholder' => 'https://www.twitter.com/',
-		'prepend' => '',
-		'append' => '',
-		'formatting' => 'html',
-		'maxlength' => '99',
-    );
-
-    $opendmo_opt["social"][$sm+3] = array (
-
-	    'key' => "field_socialrowc$s",
-	    'label' => "f$sc",
-	    'name' => "f$sc",
-	    'type' => 'row',
-	    'row_type' => 'row_close',
-	    'col_num' => 2,
-
-    );
-
-    $sm = count($opendmo_opt["social"]);
-
+    ));
 }
 
 ?>

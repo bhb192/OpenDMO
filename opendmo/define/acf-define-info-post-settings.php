@@ -18,7 +18,7 @@ $opendmo_psph_e['conditional_logic'] = array(
 
 //echo("<pre>");print_r($opendmo_psph);print_r($opendmo_psph_e);die;
 
-$psrow = array(field_build_row(2),field_build_row(2),field_build_row(2));
+$psrow = field_build_row(array(2,2,2));
 
 $info_fields['post-settings'] = array( 
 

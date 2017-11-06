@@ -1,141 +1,32 @@
 <?php
 
+if(isset($opendmo_postmeta["text_gps_lat_0"]) && isset($opendmo_postmeta["text_gps_long_0"])) {
 
-$addressexists = 0;
-$mapaddress = '';
-$parklatlong = '';
-$actlatlong = '';
+    $g = 0;
 
-if( isset($infos["address"]) && isset($infos["city"]) ){
+    opendmo_add_meta("<h5>GPS Coordinates</h5>");
+    opendmo_add_meta("<ul>");
 
-	if( strlen($infos["address"]) && strlen($infos["city"]) ) {
-  
-		if(strpos($infos["city"],"/") !== false){
+    while( isset($opendmo_postmeta["text_gps_lat_$g"]) && isset($opendmo_postmeta["text_gps_long_$g"]) ) {
 
-	
-  			$adrpts = explode("/",$infos["city"]);
-			$thecity = $adrpts[0];
-			$thestate = $adrpts[1]; 
-	
-			if(isset($adrpts[2])) {
-		
-				$thezip = $adrpts[2];
-		
-			}
-	
-			else {
-		
-				if( isset($infos["zip"])) {
-			
-					$thezip = $infos["zip"];
-			
-				}
-		
-				else {
-		
-					$thezip = '';
-			
-				}
-			   
-			}
-		
-		}
-	
-		$addressexists = 1;		
-		$mapaddress = $infos["address"].", ".$thecity.", ".$thestate.", ".$thezip;
-	
-		$acfoutput = $acfoutput."<p><strong>Address</strong><br /><span>".$infos["address"]."</span><br /><span>".$thecity.", ".$thestate." ".$thezip."</span>";
-	
-	}
+        opendmo_add_meta("<li>");
 
-}
+        if(isset($opendmo_postmeta["text_gps_label_$g"])) {
 
-if( isset($infos["mail_address"]) && isset($infos["mail_city"]) ){
+            opendmo_add_meta("<span>".$opendmo_postmeta["text_gps_label_$g"].": </span>");
 
-	if( strlen($infos["mail_address"]) && strlen($infos["mail_city"]) ) {
-  
-		if(strpos($infos["mail_city"],"/") !== false){
+        }
 
-	
-  			$mailadrpts = explode("/",$infos["mail_city"]);
-			$mailthecity = $mailadrpts[0];
-			$mailthestate = $mailadrpts[1]; 
-	
-			if(isset($mailadrpts[2])) {
-		
-				$mailthezip = $mailadrpts[2];
-		
-			}
-	
-			else {
-		
-				if( isset($infos["mail_zip"])) {
-			
-					$mailthezip = $infos["mail_zip"];
-			
-				}
-		
-				else {
-		
-					$mailthezip = '';
-			
-				}
-			   
-			}
-		
-		}
-	
-		$acfoutput = $acfoutput.("<p><strong>Mailing Address</strong><br /><span>".$infos["mail_address"]."</span><br /><span>".$mailthecity.", ".$mailthestate." ".$mailthezip."</span>");
-	
-	}
+        $latlong = $opendmo_postmeta["text_gps_lat_$g"];
+        $latlong = $latlong.", ".$opendmo_postmeta["text_gps_long_$g"];
+        opendmo_add_meta($latlong);
+        opendmo_add_meta("</li>");
 
-}
+        $g++;
 
-if( (isset($infos["gps_parking_lat"]) && isset($infos["gps_parking_long"])) || (isset($infos["gps_actual_lat"]) && isset($infos["gps_actual_long"])) ) {
+    }
 
-	if( (strlen($infos["gps_parking_lat"]) && strlen($infos["gps_parking_long"])) || (strlen($infos["gps_actual_lat"]) && strlen($infos["gps_actual_long"]))  ) {
-
-		$acfoutput = $acfoutput.("<p><strong>GPS Coordinates</strong>");
-	
-		if( (strlen($infos["gps_parking_lat"]) && strlen($infos["gps_parking_long"])) ){
-		
-			$addressexists = 1;
-			$parklatlong = $infos["gps_parking_lat"].", ".$infos["gps_parking_long"]; 
-			$acfoutput = $acfoutput.("<br />Parking Area: ".$infos["gps_parking_lat"].", ".$infos["gps_parking_long"]);
-		
-		}
-	
-		if( (strlen($infos["gps_actual_lat"]) && strlen($infos["gps_actual_long"])) ){
-		
-			$addressexists = 1;
-			$actlatlong = $infos["gps_actual_lat"].", ".$infos["gps_actual_long"]; 
-			$acfoutput = $acfoutput.("<br />Actual Location: ".$infos["gps_actual_lat"].", ".$infos["gps_actual_long"]);
-		
-		}
-	
-		$acfoutput = $acfoutput.("</p>");
-	
-	}
-  
-}
-
-if( isset($infos["phone"]) ) {
-
-	if( strlen($infos["phone"]) ) {
-
-		$acfoutput = $acfoutput.("<p><strong>Phone: </strong>".$infos["phone"]."</p>");
-	
-	}
-
-}
-
-if( isset($infos["bizhours"]) ) {
-
-	if( strlen($infos["bizhours"]) ) {
-
-		$acfoutput = $acfoutput.("<p><strong>Hours: </strong>".$infos["bizhours"]."</p>");
-	
-	}
+    opendmo_add_meta("</ul>");
 
 }
 

@@ -20,7 +20,7 @@ for($gxx = 0; $gxx<$maxgps; $gxx++) {
         $gpsrow[0],
         field_build_text("gps_label_$gxx", "GPS Label (".($gxx+1).")", $the_suggestgps),
         field_build_text("gps_lat_$gxx", "GPS Latitude (".($gxx+1).")", "42.839292"),
-        field_build_text("gps_lat_$gxx", "GPS Longitude (".($gxx+1).")", "-24.292938"),
+        field_build_text("gps_long_$gxx", "GPS Longitude (".($gxx+1).")", "-24.292938"),
         $gpsrow[1],
 
     );

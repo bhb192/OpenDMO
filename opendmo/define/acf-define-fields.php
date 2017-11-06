@@ -54,38 +54,48 @@ function field_build_message($m,$n='') {
 
 function field_build_row($c) {
 
-    $tr = fbtc();
+    $rows = array();
 
-    $rows = array (
+    if(is_array($c)) { $cc = $c; }
+    else { $cc = array($c); }
 
-        'open' => array(
+    foreach($cc as $i=>$col) {
 
-	        "key" => "field_opendmo_row_open_".$tr,
-	        "label" => "",
-	        "name" => "opendmo_row_open_".$tr,
-	        "type" => "row",
-	        "row_type" => "row_open",
-	        "col_num" => $c,
+        $tr = fbtc();
 
-        ),
+        $rows[$i] = array (
 
-        'close' => array(
+            'open' => array(
 
-	        "key" => "field_opendmo_row_close_".$tr,
-	        "label" => "",
-	        "name" => "opendmo_row_close_".$tr,
-	        "type" => "row",
-	        "row_type" => "row_close",
-	        "col_num" => $c,
+	            "key" => "field_opendmo_row_open_".$tr,
+	            "label" => "",
+	            "name" => "opendmo_row_open_".$tr,
+	            "type" => "row",
+	            "row_type" => "row_open",
+	            "col_num" => $col,
 
-        ),
+            ),
 
-    );
+            'close' => array(
 
-    $rows[0] = $rows['open'];
-    $rows[1] = $rows['close'];
+	            "key" => "field_opendmo_row_close_".$tr,
+	            "label" => "",
+	            "name" => "opendmo_row_close_".$tr,
+	            "type" => "row",
+	            "row_type" => "row_close",
+	            "col_num" => $col,
 
-    return $rows;
+            ),
+
+        );
+
+        $rows[$i][0] = $rows[$i]['open'];
+        $rows[$i][1] = $rows[$i]['close'];
+
+    }
+
+    if(count($rows)===1) { return $rows[0]; }
+    else { return $rows; }
 
 }
 
@@ -169,7 +179,7 @@ function field_build_color($n,$l) {
 
 }
 
-function field_build_select($n,$l,$e,$c,$d='null',$k=0) {
+function field_build_select($n,$l,$e,$c,$d='',$k=0) {
 
     $fbs = array (
 

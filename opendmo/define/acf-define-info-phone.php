@@ -6,78 +6,29 @@ if(strlen($max_phone) < 1) { $max_phone = $opendmo_default_limit['phone']; }
 $phx = array();
 $phxx = 0;
 
-$info_fields['phone'] = array( array(
-
-    "key" => "field_opendmo_info_phone",
-    "label" => "Phone",
-    "name" => "",
-    "type" => "tab",
-
-));
+$info_fields['phone'] = array( field_build_tab('Phone') );
 
 $suggestphone = array("Phone Number", "Daytime Phone", "Evening Phone");
+$phone_row = field_build_row(2);
 
 for($xxp = 0; $xxp<$max_phone; $xxp++) {
-
-    $phx[$phxx] = array (
-
-	    'key' => "field_phonerowo$phxx",
-	    'label' => "f$phxxo",
-	    'name' => "f$phxxo",
-	    'type' => 'row',
-	    'row_type' => 'row_open',
-	    'col_num' => 2,
-
-    );
 
     if(isset($suggestphone[$xxp])) { $the_suggestphone = $suggestphone[$xxp]; }
     else { $the_suggestphone = 'Alternate Phone'; }
 
-	$phx[$phxx+1] = array (
+    $pri = '('.($xxp+1).')';
 
-		'key' => "field_5wej222ddb$xxp",
-		'label' => ('Phone Number Label ('.($xxp+1).')'),
-		'name' => 'opendmo_phone_label'.$xxp,
-		'type' => 'text',
-		'instructions' => '',
-		'default_value' => '',
-		'placeholder' => $the_suggestphone,
-		'prepend' => '',
-		'append' => '',
-		'formatting' => 'html',
-		'maxlength' => '99',
-	);
+    $phx = array (
 
-	$phx[$phxx+2] = array (
-
-		'key' => "field_56dweea84ddb$xxp",
-		'label' => ('Phone Number ('.($xxp+1).')'),
-		'name' => 'phone'.$xxp,
-		'type' => 'text',
-		'instructions' => '',
-		'default_value' => '',
-		'placeholder' => '(555) 123-4567',
-		'prepend' => '',
-		'append' => '',
-		'formatting' => 'html',
-		'maxlength' => '99',
-	);
-
-    $phx[$phxx+3] = array (
-
-	    'key' => "field_phonerowc$phxx",
-	    'label' => "f$phxxo",
-	    'name' => "f$phxxo",
-	    'type' => 'row',
-	    'row_type' => 'row_close',
-	    'col_num' => 2,
+	    $phone_row[0],
+        field_build_text("phone_label_$xxp", "Phone Number Label $pri", $the_suggestphone),
+        field_build_text("phone_number_$xxp", "Phone Number $pri", '(555) 123-4567'),
+        $phone_row[1],
 
     );
 
-    $phxx = count($phx);
+    $info_fields['phone'] = array_merge($info_fields['phone'], $phx);
 
 }
-
-$info_fields['phone'] = array_merge($info_fields['phone'], $phx);
 
 ?>

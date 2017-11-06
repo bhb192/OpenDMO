@@ -20,7 +20,7 @@ while(strlen($opendmo_options_zip_meta["opendmo_zip_code_$m"][0]) > 0) {
 } 
 
 $ia_city_unique = array_unique($ia_city); 
-$ia_cs = field_build_select('city_', "Select City ", 1, array(), 'null', 1);
+$ia_cs = field_build_select('address_city_', "Select City ", 1, array(), '', 1);
 $ia_city_select_key = $ia_cs[0];
 $ia_city_select = $ia_cs[1];
 
@@ -33,8 +33,8 @@ foreach($ia_city_unique as $ia=>$c) {
 
     $zip_match = array_keys($ia_city, $c);
     $zip_choices = array();
-    foreach ($zip_match as $z=>$zm) { $zip_choices[$z] = $ia_zip[$zm]; }
-    $zip_select = field_build_select("zip_", "Select Zip ", 1, $zip_choices, 0);
+    foreach ($zip_match as $z=>$zm) { $zip_choices = array_merge($zip_choices,array($ia_zip[$zm]=>$ia_zip[$zm])); }
+    $zip_select = field_build_select("address_zip_", "Select Zip ", 0, $zip_choices, 0);
 
     $zip_select['conditional_logic'] = array (
 
@@ -71,7 +71,7 @@ for($a=0; $a<$maxadr; $a++) {
     $af_city = $ia_city_select;
     $af_city['key'] = $af_city['key']."_$a";
 	$af_city['label'] = $af_city['label']."(".($a+1).")";
-	$af_city['name'] = $af_city['name']."address_city_$a";
+	$af_city['name'] = $af_city['name']."$a";
 
     $af = array_merge($af, array(
 
@@ -89,7 +89,7 @@ for($a=0; $a<$maxadr; $a++) {
 
         $af_zip['key'] = $af_zip['key']."_".$a."_".$iazsk;
 	    $af_zip['label'] = $af_zip['label']."(".($a+1).")";
-	    $af_zip['name'] = $af_zip['name'].$a."_".$iazsk;
+	    $af_zip['name'] = $af_zip['name'].$a;
         $af_zip['conditional_logic']['rules'][0]['field'] = $af_cond.$a;
 
         $af = array_merge($af, array($af_zip));

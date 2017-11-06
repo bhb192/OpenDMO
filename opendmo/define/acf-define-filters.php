@@ -1,37 +1,40 @@
 <?php
 
-
+$acfoutput = ''; 
 $venuequeryi = 0;
-add_filter('the_content', 'acf_content_after');
-add_action('plugins_loaded', 'myAcfFilters');
-add_action('admin_init', 'opendmo_acf_load');
+$opendmo_postmeta = array();
 
-function myAcfFilters() {
+add_action('init', 'acf_filters');
+add_action('init', 'opendmo_acf_load');
+add_action('wp', 'prepare_meta');
 
-    function venue_query( $args, $field, $post_id ) {
-
-        global $opendmo_cpt_names;
-        global $venuequeryi;
-        $thecptname = $opendmo_cpt_names[$venuequeryi];
-	
-         $args = array(
-        'post_type'		=> $thecptname,
-        'meta_query'		=> array(
-	        array(
-		        'key' => 'is_venue',
-		        'value' => '1',
-		        'compare' => '=='
-		        )
-	        )
-        );
-
-        $venuequeryi++;
-        return $args;
-
-
-    }
+function acf_filters() {
 
     add_filter('acf/fields/post_object/query/name=opendmo_evs', 'venue_query', 10, 3);
+    add_filter('the_content', 'acf_content_after', 20);
+
+}
+
+function venue_query( $args, $field, $post_id ) {
+
+    global $opendmo_cpt_names;
+    global $venuequeryi;
+    $thecptname = $opendmo_cpt_names[$venuequeryi];
+
+     $args = array(
+    'post_type'		=> $thecptname,
+    'meta_query'		=> array(
+        array(
+	        'key' => 'is_venue',
+	        'value' => '1',
+	        'compare' => '=='
+	        )
+        )
+    );
+
+    $venuequeryi++;
+    return $args;
+
 
 }
 
@@ -71,14 +74,57 @@ function opendmo_acf_load() {
 
 }
 
+function prepare_meta() {
+
+    global $opendmo_postmeta;
+
+    $infos = get_fields(get_post()->ID);
+    $info = array();
+    foreach($infos as $in=>$fo) {
+
+        if(strpos($in, 'postmeta_opendmo')===0 && isset($fo)) {
+
+            if(strlen($fo.'') > 0 && $fo !== 'null') {
+
+                $newin = str_replace("postmeta_opendmo_","",$in);
+                $info = array_merge($info, array($newin=>$fo));
+
+                if(strpos($in, 'postmeta_opendmo_select')===0) {
+
+                    $fin = get_field_object($in);
+                    $fin = $fin['choices'][$fo];
+
+                    $info = array_merge($info, array($newin."_display"=>$fin));
+
+                }
+
+
+            }
+
+        }
+
+
+
+    }
+
+    ksort($info);
+    $opendmo_postmeta = $info;
+
+}
+
+function opendmo_add_meta($m) {
+
+    global $acfoutput;
+    $acfoutput = $acfoutput.$m;
+
+}
+
 function acf_content_after($content) {
 
     global $opendmo_path;
+    global $opendmo_postmeta;
+    global $acfoutput;
 
-    $acfoutput = ''; 
-    $infos = get_post_meta(get_post()->ID); 
-
-    echo "<pre>";print_r($infos);die;
     include($opendmo_path.'post/acf-post-meta.php');
 
     $fullcontent = $content . $acfoutput;
