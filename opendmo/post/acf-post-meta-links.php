@@ -6,12 +6,12 @@ if(isset($opendmo_postmeta["text_ext_link_url_0"])) {
 
     $g = 0;
 
-    opendmo_add_meta("<h5>External Links</h5>");
-    opendmo_add_meta("<ul>");
+    opendmo_add_meta("<h5>External Links</h5>",'meta');
+    opendmo_add_meta("<ul>",'meta');
 
     while(isset($opendmo_postmeta["text_ext_link_url_$g"])) {
 
-        opendmo_add_meta("<li>");
+        opendmo_add_meta("<li>",'meta');
 
         $theurl = $opendmo_postmeta["text_ext_link_url_$g"];
 
@@ -28,14 +28,14 @@ if(isset($opendmo_postmeta["text_ext_link_url_0"])) {
 
         }
 
-        opendmo_add_meta("<a href='$theurl'>$theurltext $extlinkicon</a>");
-        opendmo_add_meta("</li>");
+        opendmo_add_meta("<a href='$theurl'>$theurltext $extlinkicon</a>",'meta');
+        opendmo_add_meta("</li>",'meta');
 
         $g++;
 
     }
 
-    opendmo_add_meta("</ul>");
+    opendmo_add_meta("</ul>",'meta');
 
 }
 

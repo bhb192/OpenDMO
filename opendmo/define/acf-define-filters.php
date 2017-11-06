@@ -1,6 +1,8 @@
 <?php
 
-$acfoutput = ''; 
+$acfoutput = array('post-before','post-after','meta-before','meta','meta-after','cpt-before','cpt','cpt-after');
+$acfoutput = array_fill_keys($acfoutput,'');
+
 $venuequeryi = 0;
 $opendmo_postmeta = array();
 
@@ -22,8 +24,8 @@ function venue_query( $args, $field, $post_id ) {
     $thecptname = $opendmo_cpt_names[$venuequeryi];
 
      $args = array(
-    'post_type'		=> $thecptname,
-    'meta_query'		=> array(
+    'post_type'	=> $thecptname,
+    'meta_query' => array(
         array(
 	        'key' => 'is_venue',
 	        'value' => '1',
@@ -35,6 +37,12 @@ function venue_query( $args, $field, $post_id ) {
     $venuequeryi++;
     return $args;
 
+
+}
+
+function safeoutput($s) {
+
+    echo "<pre>";print_r($s);echo "</pre>";
 
 }
 
@@ -112,10 +120,10 @@ function prepare_meta() {
 
 }
 
-function opendmo_add_meta($m) {
+function opendmo_add_meta($m,$h='post-after') {
 
     global $acfoutput;
-    $acfoutput = $acfoutput.$m;
+    $acfoutput[$h] = $acfoutput[$h].$m;
 
 }
 
@@ -123,11 +131,16 @@ function acf_content_after($content) {
 
     global $opendmo_path;
     global $opendmo_postmeta;
+    global $opendmo_cpt_names;
     global $acfoutput;
 
     include($opendmo_path.'post/acf-post-meta.php');
 
-    $fullcontent = $content . $acfoutput;
+    $fullpost = $acfoutput['post-before'].$content.$acfoutput['post-after'];
+    $fullmeta = $acfoutput['meta-before'].$acfoutput['meta'].$acfoutput['meta-after'];
+    $fullcpt = $acfoutput['cpt-before'].$acfoutput['cpt'].$acfoutput['cpt-after'];
+    $fullcontent = $fullpost.$fullmeta.$fullcpt;
+
     return $fullcontent;
 
 }
