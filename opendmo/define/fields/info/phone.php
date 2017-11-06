@@ -1,17 +1,14 @@
 <?php
 
-$max_phone = $opendmo_options_meta['opendmo_phone_total'][0];
-if(strlen($max_phone) < 1) { $max_phone = $opendmo_default_limit['phone']; } 
-
 $phx = array();
 $phxx = 0;
 
-$info_fields['phone'] = array( field_build_tab('Phone') );
+$info_fields = array( field_build_tab('Phone') );
 
 $suggestphone = array("Phone Number", "Daytime Phone", "Evening Phone");
 $phone_row = field_build_row(2);
 
-for($xxp = 0; $xxp<$max_phone; $xxp++) {
+for($xxp = 0; $xxp<$opendmo_set_limit['phone']; $xxp++) {
 
     if(isset($suggestphone[$xxp])) { $the_suggestphone = $suggestphone[$xxp]; }
     else { $the_suggestphone = 'Alternate Phone'; }
@@ -27,7 +24,7 @@ for($xxp = 0; $xxp<$max_phone; $xxp++) {
 
     );
 
-    $info_fields['phone'] = array_merge($info_fields['phone'], $phx);
+    $info_fields = array_merge($info_fields, $phx);
 
 }
 

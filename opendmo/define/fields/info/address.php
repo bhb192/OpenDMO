@@ -6,14 +6,11 @@ $ia_zip = array();
 $ia_zip_select = array();
 $m = 0;    
 
-$maxadr = $opendmo_options_meta['opendmo_adr_total'][0];
-if(!$maxadr > 0) { $maxadr = $opendmo_default_limit['address']; } 
+while(strlen($opendmo_options_zip_meta["opt_opendmo_zip_$m"][0]) > 0) {
 
-while(strlen($opendmo_options_zip_meta["opendmo_zip_code_$m"][0]) > 0) {
-
-    $ia_city[$m] = $opendmo_options_zip_meta["opendmo_zip_city_$m"][0];
-    $ia_state[$m] = $opendmo_options_zip_meta["opendmo_zip_state_$m"][0];
-    $ia_zip[$m] = $opendmo_options_zip_meta["opendmo_zip_code_$m"][0];
+    $ia_city[$m] = $opendmo_options_zip_meta["opt_opendmo_city_$m"][0];
+    $ia_state[$m] = $opendmo_options_zip_meta["opt_opendmo_state_$m"][0];
+    $ia_zip[$m] = $opendmo_options_zip_meta["opt_opendmo_zip_$m"][0];
 
     $m++;
 
@@ -61,7 +58,7 @@ foreach($ia_city_unique as $ia=>$c) {
 $af = array(field_build_tab("Address"));
 $aflabels = array("Primary Address", "Mailing Address", "Address for GPS");
 
-for($a=0; $a<$maxadr; $a++) {
+for($a=0; $a<$opendmo_set_limit['address']; $a++) {
 
     $af_row = field_build_row(4);
 
@@ -101,6 +98,6 @@ for($a=0; $a<$maxadr; $a++) {
 }
 //echo("<pre>");print_r($af);die;
 
-$info_fields['address'] = $af;
+$info_fields = $af;
 
 ?>

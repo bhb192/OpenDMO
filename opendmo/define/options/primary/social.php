@@ -1,14 +1,8 @@
 <?php
 
-$opendmo_opt["social"] = array(field_build_tab('Social'));
+$optfield = array(field_build_tab('Social'));
 
-$default_social_media = array("Twitter", "Facebook", "YouTube", "Instagram", "Pinterest", "AirBnB", "TripAdvisor");
-
-$thepo = get_post_meta($po);
-$max_social = $thepo['opendmo_social_links_total'][0];
-if(!$max_social > 0) { $max_social = $opendmo_default_limit['social_links']; } 
-
-for($s = 0; $s<$max_social; $s++) {
+for($s = 0; $s<$opendmo_set_limit['social_links']; $s++) {
 
     $default_nn = '';
     $default_nu = '';
@@ -27,7 +21,7 @@ for($s = 0; $s<$max_social; $s++) {
     $smdefine[2] = field_build_text("", "URL Prefix $smdri", 'https://www.twitter.com/', $default_nu);
     $smdefine[2]['name'] = "opt_opendmo_social_url_$s";
 
-    $opendmo_opt["social"] = array_merge($opendmo_opt["social"], array(
+    $optfield = array_merge($optfield, array(
 
         $smdefine[0]['open'],
         $smdefine[1],
@@ -35,6 +29,7 @@ for($s = 0; $s<$max_social; $s++) {
         $smdefine[0]['close'],
 
     ));
+
 }
 
 ?>

@@ -1,16 +1,13 @@
 <?php
 
-$maxlinks = $opendmo_options_meta['opendmo_ext_links_total'][0];
-if(!$maxlinks > 0) { $maxlinks = $opendmo_default_limit['ext_links']; } 
-
-$info_fields['links'] = array(field_build_tab('Links'));
+$info_fields = array(field_build_tab('Links'));
 
 $ux = array();
 
 $suggest_link_labels = array('Official Website', 'Wikipedia Page');
 $the_suggestll = '';
 
-for($xxu = 0; $xxu<$maxlinks; $xxu++) {
+for($xxu = 0; $xxu<$opendmo_set_limit['ext_links']; $xxu++) {
 
     if(isset($suggest_link_labels[$xxu])) { $the_suggestll = $suggest_link_labels[$xxu]; }
     else { $the_suggestll = 'Other External Website'; }
@@ -27,7 +24,7 @@ for($xxu = 0; $xxu<$maxlinks; $xxu++) {
 
     );
 
-    $info_fields['links'] = array_merge($info_fields['links'], $ux);
+    $info_fields = array_merge($info_fields, $ux);
 
 }
 

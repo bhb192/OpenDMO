@@ -1,8 +1,5 @@
 <?php
 
-$maxsocial = $opendmo_options_meta['opendmo_social_links_total'][0];
-if(!$maxsocial > 0) { $maxsocial = $opendmo_default_limit['social_links']; } 
-
 $social_dropdown = array();
 $m = 0;
 
@@ -23,9 +20,9 @@ while(strlen($opendmo_options_meta["opt_opendmo_social_name_$m"][0]) > 0) {
 $is = array();
 $s = 0;
 
-$info_fields['social'] = array(field_build_tab('Social'));
+$info_fields = array(field_build_tab('Social'));
 
-for($m=0; $m<$maxsocial; $m++) {
+for($m=0; $m<$opendmo_set_limit['social']; $m++) {
 
     $slrow = field_build_row(2);
     $slrowi = "(".($m+1).")";
@@ -39,7 +36,7 @@ for($m=0; $m<$maxsocial; $m++) {
 
     );
 
-    $info_fields['social'] = array_merge( $info_fields['social'], $is);
+    $info_fields = array_merge( $info_fields, $is);
 
 }
 

@@ -1,14 +1,11 @@
 <?php
 
-$maxgps = $opendmo_options_meta['opendmo_gps_total'][0];
-if(!$maxgps > 0) { $maxgps = $opendmo_default_limit['gps_pair']; } 
-
-$info_fields['gps'] = array(field_build_tab('GPS'));
+$info_fields = array(field_build_tab('GPS'));
 
 $suggestgps = array("Parking Lot", "Scenic Viewpoint", "Picnic Area");
 $the_suggestgps = '';
 
-for($gxx = 0; $gxx<$maxgps; $gxx++) {
+for($gxx = 0; $gxx<$opendmo_set_limit['gps_pair']; $gxx++) {
 
     if(isset($suggestgps[$gxx])) { $the_suggestgps = $suggestgps[$gxx]; }
     else { $the_suggestgps = 'Other Landmark'; }
@@ -25,7 +22,7 @@ for($gxx = 0; $gxx<$maxgps; $gxx++) {
 
     );
 
-    $info_fields['gps'] = array_merge($info_fields['gps'], $gx);
+    $info_fields = array_merge($info_fields, $gx);
 
 }
 

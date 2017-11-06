@@ -1,7 +1,5 @@
 <?php
 
-$fbtc = 0;
-
 function fbtc() {
 
     global $fbtc;
@@ -99,7 +97,7 @@ function field_build_row($c) {
 
 }
 
-function field_build_text($n,$l='',$p='',$d='',$i='') {
+function field_build_text($n,$l='',$p='',$d='',$i='',$x=99) {
 
     return array (
 
@@ -113,7 +111,7 @@ function field_build_text($n,$l='',$p='',$d='',$i='') {
 	    "prepend" => "",
 	    "append" => "",
 	    "formatting" => "html",
-	    "maxlength" => 99,
+	    "maxlength" => $x,
 
     );
 

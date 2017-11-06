@@ -20,7 +20,7 @@ $opendmo_psph_e['conditional_logic'] = array(
 
 $psrow = field_build_row(array(2,2,2));
 
-$info_fields['post-settings'] = array( 
+$info_fields = array( 
 
     field_build_tab('Post Settings'),
     $psrow[0][0],
