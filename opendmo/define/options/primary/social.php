@@ -12,7 +12,7 @@ for($s = 0; $s<$opendmo_set_limit['social_links']; $s++) {
         $default_nn = $default_social_media[$s];
         $default_nu = "https://".strtolower($default_nn).".com/";
 
-    } 
+    }
 
     $smdri = "(".($s+1).")";    
     $smdefine[0] = field_build_row(2);

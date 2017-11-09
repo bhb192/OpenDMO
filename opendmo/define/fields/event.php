@@ -40,11 +40,16 @@ for($i=0; $i<$maxdates; $i++) {
 
     }
 
-    $itefrow = field_build_row(2);
+    $itefrow = field_build_row(3);
+
+    $suggestdt = array("Main Festival Date", "Afternoon Show", "Rain Date");
+    $the_suggestdt = "Date Description";
+    if(isset($suggestdt[$i])) { $the_suggestdt = $suggestdt[$i]; }
 
     $itef = array_merge($itef, array(
 
         $itefrow['open'],
+        field_build_text("ext_link_label_$xxu", "Date Label (".($i+1).")", $the_suggestdt),
         field_build_datetime("begin_date_$i","Begin Date/Time (".($i+1).")"),
         field_build_datetime("end_date_$i","End Date/Time ".($i+1).")"),
         $itefrow['close'],

@@ -2,7 +2,7 @@
 
 function fbtc() {
 
-    global $fbtc;
+    static $fbtc;
     $the_fbtc = $fbtc;
     $fbtc++;
     return $the_fbtc;

@@ -1,6 +1,6 @@
 <?php
 
-$optfields = array();
+$optfields = array();    
 
 foreach (glob($opendmo_path."define/options/primary/*.php") as $filename) {
 

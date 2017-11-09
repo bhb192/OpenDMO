@@ -17,12 +17,9 @@ while(strlen($opendmo_options_meta["opt_opendmo_social_name_$m"][0]) > 0) {
 
 }
 
-$is = array();
-$s = 0;
-
 $info_fields = array(field_build_tab('Social'));
 
-for($m=0; $m<$opendmo_set_limit['social']; $m++) {
+for($m=0; $m<$opendmo_set_limit['social_links']; $m++) {
 
     $slrow = field_build_row(2);
     $slrowi = "(".($m+1).")";
