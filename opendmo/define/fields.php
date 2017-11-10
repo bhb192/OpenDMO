@@ -86,9 +86,17 @@ function fbtc() {
 
 }
 
-function fbkey($s) {
+function fbkey($n,$s) {
 
-    $k = "field_opendmo_".$s."_".fbtc();
+    static $fbkeys;
+    if( !( isset($fbkeys) ) ) { $fbkeys = array(); }
+
+    $k = "field_opendmo_".$s."_".$n;
+    if(in_array($k, $fbkeys)) { $k = $k.fbtc(); }
+
+    $y = count($fbkeys);
+    $fbkeys[$y] = $k;
+
     return $k;
 
 }
@@ -118,7 +126,7 @@ function field_build_tab($l) {
 
     return array (
 
-        "key" => fbkey('tab'),
+        "key" => fbkey($n,'tab'),
         "label" => $l,
         "name" => "",
         "type" => "tab",
@@ -131,7 +139,7 @@ function field_build_message($m,$n='') {
 
     return array (
 
-	    "key" => fbkey("message"),
+	    "key" => fbkey($n,"message"),
 	    "label" => "",
 	    "name" => $n,
 	    "type" => "message",
@@ -192,7 +200,7 @@ function field_build_text($n,$l='',$p='',$d='',$i='',$x=99) {
 
     return array (
 
-	    "key" => fbkey("text"),
+	    "key" => fbkey($n,"text"),
 	    "label" => $l,
 	    "name" => fbname("text_$n"),
 	    "type" => "text",
@@ -221,7 +229,7 @@ function field_build_number($n,$l,$m,$x,$s,$d,$p='',$i='') {
 
     return array (
 
-	    "key" => fbkey("number"),
+	    "key" => fbkey($n,"number"),
 	    "label" => $l,
 	    "name" => fbname("number_$n"),
 	    "type" => "number",
@@ -242,7 +250,7 @@ function field_build_boolean($n,$l,$m="") {
 
    return array (
 
-	    "key" => fbkey("boolean"),
+	    "key" => fbkey($n,"boolean"),
 	    "label" => $l,
 	    "name" => fbname("boolean_$n"),
 	    "type" => "true_false",
@@ -258,7 +266,7 @@ function field_build_color($n,$l) {
 
     return array (
 
-	    "key" => fbkey("color"),
+	    "key" => fbkey($n,"color"),
 	    "label" => $l,
 	    "name" => fbname("color_$n"),
 	    "type" => "color_picker",
@@ -272,7 +280,7 @@ function field_build_select($n,$l,$e,$c,$d='',$k=0) {
 
     $fbs = array (
 
-	    "key" => fbkey("select"),
+	    "key" => fbkey($n,"select"),
 	    "label" => $l,
 	    "name" => fbname("select_$n"),
 	    "type" => "select",
@@ -292,7 +300,7 @@ function field_build_postobj($n,$l,$p) {
 
     return array (
 
-	    'key' => fbkey("postobj"),
+	    'key' => fbkey($n,"postobj"),
 	    'label' => $l,
 	    'name' => fbname("postobj_$n"),
 	    'type' => 'post_object',
@@ -308,7 +316,7 @@ function field_build_datetime($n,$l) {
 
     return array (
 
-	    'key' => fbkey("datetime"),
+	    'key' => fbkey($n,"datetime"),
 	    'label' => $l,
 	    'name' => fbname("datetime_$n"),
 	    'type' => 'date_time_picker',

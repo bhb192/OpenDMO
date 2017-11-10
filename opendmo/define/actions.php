@@ -1,6 +1,7 @@
 <?php
 
 add_action('plugins_loaded', 'opendmo_get_options');
+add_action('plugins_loaded', 'opendmo_do_redirects');
 add_action('init', 'opendmo_register_options');
 add_action('init', 'opendmo_register_cpt');
 add_action('init', 'opendmo_acf_load');

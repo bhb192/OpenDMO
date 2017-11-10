@@ -119,6 +119,7 @@ function opendmo_register_cpt() {
            'show_in_menu'=>'opendmo-settings',
 
 
+
        ));
 
         add_post_type_support( $c, 'thumbnail' );
@@ -128,6 +129,79 @@ function opendmo_register_cpt() {
     add_action( 'add_meta_boxes', 'cpt_add_excerpt' );
 
     //safeout("register cpt done");
+
+}
+
+function opendmo_do_redirects() {
+
+    global $opendmo_global;
+    $rdposts = get_posts(array(
+
+        'post_type' => $opendmo_global['cpt_names'],
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'meta_query' => array(
+            'relation' => 'OR',
+            array(
+                'key' => 'postmeta_opendmo_text_redirect_0',
+                'value' => '^\/*',
+                'compare' => "REGEXP",
+            ),
+            array(
+                'key' => 'postmeta_opendmo_text_redirect_ga_url_0',
+                'value' => '^\/*',
+                'compare' => "REGEXP",
+            ),
+
+        ),
+
+    ));
+
+    $capture = array();
+    $target = array();
+
+    foreach($rdposts as $newcpt) {
+
+        $n=0;
+        $nc = get_post_meta($newcpt->ID,"postmeta_opendmo_text_redirect_$n");
+
+        while(strlen($nc[0])>0) {
+
+            $temptar = parse_url(get_permalink($newcpt->ID));
+            $target = array_merge($target,array("/".get_post_type($newcpt->ID).$temptar['path']));
+            $capture = array_merge($capture,$nc);
+            $n++;
+            $nc = get_post_meta($newcpt->ID,"postmeta_opendmo_text_redirect_$n");
+
+        }
+
+        $n=0;
+        $nc = get_post_meta($newcpt->ID,"postmeta_opendmo_text_redirect_ga_url_$n");
+
+        while(strlen($nc[0])>0) {
+
+            $ng = get_post_meta($newcpt->ID,"postmeta_opendmo_text_redirect_ga_campaign_$n");
+            $temptar = parse_url(get_permalink($newcpt->ID));
+            $target = array_merge($target,array("/".get_post_type($newcpt->ID).$temptar['path'].$ng[0]));
+            $capture = array_merge($capture,$nc);
+            $n++;
+            $nc = get_post_meta($newcpt->ID,"postmeta_opendmo_text_redirect_ga_url_$n");
+
+        }
+
+    }
+
+    $nowuri = "$_SERVER[REQUEST_URI]";
+    foreach($capture as $tc=>$the_capture) {
+
+        if($the_capture == $nowuri) {
+
+            wp_redirect( $target[$tc], 301 );
+            exit;
+
+        }
+
+    }
 
 }
 
@@ -207,6 +281,7 @@ function add_cpt_to_menu($cpt) {
 function opendmo_admin_menu() {
 
     global $opendmo_global;
+    $po = "post.php?post=".$opendmo_global['primaryedit']."&action=edit";
 
     add_menu_page(
 
@@ -218,7 +293,7 @@ function opendmo_admin_menu() {
     add_submenu_page(
 
         'options-general.php', 'OpenDMO Options', 'OpenDMO', 
-        'manage_options', $opendmo_global['primaryediturl']
+        'manage_options', $po
 
     ); 
 

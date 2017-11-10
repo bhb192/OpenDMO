@@ -50,6 +50,7 @@ $opendmo_global = array(
         "social_links" => 10,
         "zipcode" => 20,
         "post_type" => 10,
+        "redirect" => 5,
 
     ),
 
