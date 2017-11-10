@@ -4,25 +4,23 @@ opendmo_add_meta("<div id='opendmo_cpt'>",'cpt');
 
 $cpt_order = array();
 
-foreach($opendmo_cpt_names as $c=>$the_cpt) {
+foreach($opendmo_global['cpt_names'] as $c=>$the_cpt) {
 
-    $cpt_order[$c] = $opendmo_postmeta["number_cpt_priority_".$the_cpt];
+    $cpt_order[$c] = $meta["number_cpt_priority_".$the_cpt];
 
 }
 
 asort($cpt_order);
-//safeout($cpt_order);
 
 foreach($cpt_order as $c=>$cpto) {
 
-    $the_cpt = $opendmo_cpt_names[$c];
+    $the_cpt = $opendmo_global['cpt_names'][$c];
     $cpthook = 'cpt';
     $cpt_terms = get_the_terms( get_post()->ID, $the_cpt );
-    //safeout($the_cpt);
 
-    if(isset($opendmo_postmeta["boolean_cpt_showinline_".$the_cpt])) {
+    if(isset($meta["boolean_cpt_showinline_".$the_cpt])) {
 
-        if($opendmo_postmeta["boolean_cpt_showinline_".$the_cpt] == 1) {
+        if($meta["boolean_cpt_showinline_".$the_cpt] == 1) {
 
             $cpthook = 'post-after';
 
@@ -35,9 +33,9 @@ foreach($cpt_order as $c=>$cpto) {
         $bgcolor = "transparent";
         $padg = 0;
 
-        if(isset($opendmo_postmeta["color_cpt_bg_".$the_cpt])) {
+        if(isset($meta["color_cpt_bg_".$the_cpt])) {
 
-            $bgcolor = $opendmo_postmeta["color_cpt_bg_".$the_cpt];
+            $bgcolor = $meta["color_cpt_bg_".$the_cpt];
 
         }
 
@@ -49,9 +47,9 @@ foreach($cpt_order as $c=>$cpto) {
 
         opendmo_add_meta("<div style='background-color:$bgcolor;padding:$padg' id='opendmo_cpt_$the_cpt'>", $cpthook);
 
-        if(isset($opendmo_postmeta["text_cpt_label_".$the_cpt])) {
+        if(isset($meta["text_cpt_label_".$the_cpt])) {
 
-            opendmo_add_meta("<h5>".$opendmo_postmeta["text_cpt_label_".$the_cpt]."</h5>", $cpthook);
+            opendmo_add_meta("<h4>".$meta["text_cpt_label_".$the_cpt]."</h4>", $cpthook);
 
         }
 
@@ -71,7 +69,7 @@ foreach($cpt_order as $c=>$cpto) {
 
         }
 
-        if($opendmo_postmeta["select_cpt_sort_".$the_cpt] == "mr") {
+        if($meta["select_cpt_sort_".$the_cpt] == "mr") {
 
             arsort($cpt_sort['date']);
 
@@ -83,7 +81,7 @@ foreach($cpt_order as $c=>$cpto) {
 
             opendmo_add_meta("<li>",$cpthook);
             opendmo_add_meta("<a href='".$cpt_sort['link'][$c]."'>",$cpthook);
-            opendmo_add_meta("<h6>".$cpt_sort['name'][$c]."</h6>",$cpthook);
+            opendmo_add_meta("<h5>".$cpt_sort['name'][$c]."</h5>",$cpthook);
             opendmo_add_meta("</a>",$cpthook);
 
             if(isset($cpt_sort['excerpt'][$c])) {

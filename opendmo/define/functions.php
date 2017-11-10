@@ -1,47 +1,8 @@
 <?php
 
-//global variables
-
-$opendmo_cpt_names = array('attractions', 'culture', 'eat', 'event', 'meet', 'places', 'shop', 'sports', 'stay');
-$default_social_media = array("Twitter", "Facebook", "YouTube", "Instagram", "Pinterest", "AirBnB", "TripAdvisor");
-$acfoutput = array('post-before','post-after','meta-before','meta','meta-after','cpt-before','cpt','cpt-after');
-$acfoutput = array_fill_keys($acfoutput,'');
-
-$opendmo_default_limit = array(
-
-    "address" => 3,
-    "phone" => 3,
-    "gps_pair" => 5,
-    "event_date" => 15,
-    "ext_links" => 3,
-    "social_links" => 10,
-    "zipcode" => 20,
-
-);
-
-$po = 0;
-$zo = 0;
-$venuequeryi = 0;
-$primaryediturl = '';
-$zipediturl = '';
-$opendmo_options_meta = array();
-$opendmo_options_zip_meta = array();
-$opendmo_postmeta = array();
-$opendmo_set_limit = array();
-
-add_action('plugins_loaded', 'opendmo_get_options');
-add_action('init', 'opendmo_register_options');
-add_action('init', 'opendmo_register_cpt');
-add_action('init', 'opendmo_acf_load');
-add_action('wp_loaded', 'opendmo_cpt_load');
-add_action('wp', 'opendmo_post_load');
-add_action('admin_menu','opendmo_admin_menu');
-add_action('admin_head', 'opendmo_admin_head');
-
 function opendmo_get_options() {
 
-    global $po;
-    global $zo;
+    global $opendmo_global;
 
     $getopts = new WP_Query('post_type=opendmo-options');
     $getopts = $getopts->posts;
@@ -59,28 +20,30 @@ function opendmo_get_options() {
 
     if($po > 0 && $zo > 0) {
 
-        global $opendmo_path;
-        global $primaryediturl;
-        global $zipediturl;
-        global $opendmo_default_limit;
-        global $opendmo_set_limit;
-        global $opendmo_options_meta;
-        global $opendmo_options_zip_meta;
-        global $default_social_media;
+        $opendmo_global['options_meta'] = get_post_meta($po);
+        $opendmo_global['zip_meta'] = get_post_meta($zo);
+        $opendmo_global['zipedit'] = $zo;
+        $opendmo_global['primaryedit'] = $po;
 
-        $opendmo_options_meta = get_post_meta($po);
-        $opendmo_options_zip_meta = get_post_meta($zo);
-        $zipediturl = "post.php?post=$zo&action=edit";
-        $primaryediturl = "post.php?post=$po&action=edit";
-
-        foreach($opendmo_default_limit as $d=>$dl) {
+        foreach($opendmo_global['default_limit'] as $d=>$dl) {
 
             $maxopt = "opt_opendmo_".$d."_total";
-            $opendmo_set_limit[$d] = $dl;
+            $opendmo_global['set_limit'][$d] = $dl;
             
-            if(isset($opendmo_options_meta[$maxopt][0])) {
+            if(isset($opendmo_global['options_meta'][$maxopt][0])) {
 
-                $opendmo_set_limit[$d] = $opendmo_options_meta[$maxopt][0];
+                $opendmo_global['set_limit'][$d] = $opendmo_global['options_meta'][$maxopt][0];
+
+            }
+
+        }
+
+        for($c=0; $c<$opendmo_global['set_limit']['post_type']; $c++) {
+
+            if(isset($opendmo_global['options_meta']["opt_opendmo_cpt_name_$c"][0])) {
+
+                $the_c = $opendmo_global['options_meta']["opt_opendmo_cpt_name_$c"][0];
+                if(strlen($the_c)>0) { $opendmo_global['cpt_names'][$c] = $the_c; }
 
             }
 
@@ -103,7 +66,7 @@ function opendmo_register_options() {
 		    'name_admin_bar'     => 'OpenDMO Options',
 		    'edit_item'          => 'OpenDMO Options',
 	    ),
-	    'public' => true,
+	    'public' => false,
 	    'show_ui' => true,
 	    '_builtin' =>  false,
         'capabilities' => array(
@@ -134,20 +97,20 @@ function opendmo_register_options() {
 
 function opendmo_register_cpt() {
 
-    global $opendmo_cpt_names;
+    global $opendmo_global;
 
-    foreach($opendmo_cpt_names as $od_cpt) {
+    foreach($opendmo_global['cpt_names'] as $c) {
 
-        $cptsingle = ucfirst($od_cpt);
+        $t = ucfirst($c);
 
-        register_post_type($od_cpt, array(
+        register_post_type($c, array(
 
            'labels'  => array(
 
-               'name'           => __($od_cpt),
-               'singular_name'  => __($cptsingle),
-               'menu_name'      =>   $cptsingle,
-		       'edit_item'      => "Edit $cptsingle",
+               'name'           => __($c),
+               'singular_name'  => __($t),
+               'menu_name'      => $t,
+		       'edit_item'      => "Edit $t",
 
            ),
 
@@ -158,10 +121,11 @@ function opendmo_register_cpt() {
 
        ));
 
-        add_post_type_support( $od_cpt, 'excerpt' );
-        add_post_type_support( $od_cpt, 'thumbnail' );
+        add_post_type_support( $c, 'thumbnail' );
 
     }
+
+    add_action( 'add_meta_boxes', 'cpt_add_excerpt' );
 
     //safeout("register cpt done");
 
@@ -169,23 +133,18 @@ function opendmo_register_cpt() {
 
 function opendmo_acf_load() { 
 
-    global $po;
-    global $zo;
-    global $opendmo_options_meta;
-    global $opendmo_options_zip_meta;
-    global $opendmo_set_limit;
-    global $opendmo_path;
-    global $default_social_media;
-    global $zipediturl;
-    global $primaryediturl;
+    global $opendmo_global;
+    $limit = $opendmo_global['set_limit'];
+    $po = $opendmo_global['primaryedit'];
+    $zo = $opendmo_global['zipedit'];
 
-    foreach (glob($opendmo_path."define/options/*.php") as $filename) {
+    foreach (glob($opendmo_global['path']."define/options/*.php") as $filename) {
 
         include $filename;     
 
-    } 
+    }
 
-    foreach (glob($opendmo_path."define/fields/*.php") as $filename) {
+    foreach (glob($opendmo_global['path']."define/fields/*.php") as $filename) {
 
         include $filename;
 
@@ -200,17 +159,17 @@ function opendmo_acf_load() {
 
 function opendmo_cpt_load() {
 
-   global $cpt_onomies_manager;
-   if ( $cpt_onomies_manager ) {
-      
-        global $opendmo_cpt_names;
+    global $cpt_onomies_manager;
+    global $opendmo_global;
 
-        foreach($opendmo_cpt_names as $od_cpt) {
+    if ( $cpt_onomies_manager ) {
+      
+        foreach($opendmo_global['cpt_names'] as $od_cpt) {
 
             $cpt_onomies_manager->register_cpt_onomy( 
 
                 $od_cpt, 
-                $opendmo_cpt_names, 
+                $opendmo_global['cpt_names'], 
                 array('restrict_user_capabilities' => array( 
 
                     'administrator', 'editor', 'author' 
@@ -221,54 +180,16 @@ function opendmo_cpt_load() {
 
         }
 
-   }
+    }
 
-   //safeout("cpt load done");
+    //safeout("cpt load done");
 
 }
 
-function opendmo_post_load() { 
+function opendmo_load_meta() {
 
-    if(is_singular()) {
-
-        global $opendmo_postmeta;
-        global $opendmo_cpt_names;
-        global $opendmo_path;
-
-        $infos = get_fields(get_post()->ID);
-        $info = array();
-        foreach($infos as $in=>$fo) {
-
-            if(strpos($in, 'postmeta_opendmo')===0 && isset($fo)) {
-
-                if(strlen($fo.'') > 0 && $fo !== 'null') {
-
-                    $newin = str_replace("postmeta_opendmo_","",$in);
-                    $info = array_merge($info, array($newin=>$fo));
-
-                    if(strpos($in, 'postmeta_opendmo_select')===0) {
-
-                        $fin = get_field_object($in);
-                        $fin = $fin['choices'][$fo];
-
-                        $info = array_merge($info, array($newin."_display"=>$fin));
-
-                    }
-
-
-                }
-
-            }
-
-        }
-
-        ksort($info);
-        $opendmo_postmeta = $info;
-
-    }
-
-    //safeout("post load done");
-
+    global $opendmo_global;
+    $opendmo_global['postmeta'] = opendmo_clean_meta(get_post()->ID);
 
 }
 
@@ -285,7 +206,7 @@ function add_cpt_to_menu($cpt) {
 
 function opendmo_admin_menu() {
 
-    global $primaryediturl;
+    global $opendmo_global;
 
     add_menu_page(
 
@@ -297,7 +218,7 @@ function opendmo_admin_menu() {
     add_submenu_page(
 
         'options-general.php', 'OpenDMO Options', 'OpenDMO', 
-        'manage_options', $primaryediturl
+        'manage_options', $opendmo_global['primaryediturl']
 
     ); 
 
@@ -310,8 +231,7 @@ function opendmo_admin_menu() {
 
 function opendmo_admin_head() {
 
-    global $opendmo_cpt_names;
-    global $opendmo_options_meta;
+    global $opendmo_global;
 
     if(get_post_type() == "opendmo-options") {
 
@@ -320,60 +240,89 @@ function opendmo_admin_head() {
 
     }
 
+    //hide cpt metaboxes
+
     echo "<style type='text/css'>";
 
-        foreach($opendmo_cpt_names as $odcpt) {
+        foreach($opendmo_global['cpt_names'] as $odcpt) {
 
             echo "#custom-post-type-onomies-$odcpt { display: none; }";
 
         }
 
-    echo "</style>";          
-    echo "<script> (function($) { $(document).ready(function(){";
+        echo "#postbox-container-2 { display: none; }";
+        echo "#postdivrich { display: none; }";
 
-        foreach($opendmo_cpt_names as $odcpt) {
-                
-            echo "$('#acf-cpt_tax_content_$odcpt').append( $('#taxonomy-$odcpt') );";
-                
-        }
-            
-    echo "}); })(jQuery); </script>";
+        echo "#titlediv { 
+
+            padding-bottom: 5em;
+            background-image: url('/wp-includes/images/spinner-2x.gif') ;
+            background-repeat: no-repeat;
+            background-position: bottom left;
+
+        }";
+
+    echo "</style>";          
+
+    //move the inner select box from the hidden cpt metabox into the acf created tab
+
+    echo "<script> 
+
+        (function($) { 
+
+            $(document).ready(function(){";
+
+                foreach($opendmo_global['cpt_names'] as $odcpt) {
+                        
+                    echo "$('#acf-cpt_tax_content_$odcpt').append( $('#taxonomy-$odcpt') );";
+                        
+                }
+
+            echo "});
+
+            $(window).load(function(){
+   
+                $('#titlediv').css('background-image','url()');
+                $('#titlediv').css('padding-bottom','0');
+                $('#postdivrich').slideDown();
+                $('#postbox-container-2').slideDown();
+
+            });
+
+        })(jQuery); 
+
+    </script>";
 
 }
 
 
+function cpt_add_excerpt ( $post_type ) {
 
-//nonprimary action queue
+    global $opendmo_global;
 
-function fields_location($gn) {
+    if ( in_array( $post_type, $opendmo_global['cpt_names'] ) ) {
 
-    global $opendmo_cpt_names;
+        add_meta_box(
 
-    $fl = array();
-    foreach($opendmo_cpt_names as $o=>$odcpt) {
+            'oz_postexcerpt',
+            'Excerpt',
+            'post_excerpt_meta_box',
+            $post_type,
+            'side',
+            'low'
 
-        $fl[$o][0] = array (
-
-            "param" => "post_type",
-            "operator" => "==",
-            "value" => $odcpt,
-            "order_no" => ($gn),
-            "group_no" => ($gn),
         );
 
     }
-
-    return $fl;
 
 }
 
 function createoptions() {
 
-   global $opendmo_default_limit;
-
+   global $opendmo_global;
    $gpmty = array();
 
-   foreach($opendmo_default_limit as $odd=>$oddl) {
+   foreach($opendmo_global['default_limit'] as $odd=>$oddl) {
 
        $gpmty = array_merge($gpmty, array("opt_opendmo_".$odd."_total" => $oddl));
 
@@ -398,58 +347,120 @@ function createoptions() {
 
 function safeout($s,$d=0) {
 
-    echo "<pre>";print_r($s);echo "</pre>";
-    
+    echo "<pre>";print_r($s);echo "</pre>";    
     if($d===1) { die; }
 
 }
 
 function venue_query( $args, $field, $post_id ) {
 
-    global $opendmo_cpt_names;
-    global $venuequeryi;
-    $thecptname = $opendmo_cpt_names[$venuequeryi];
+    global $opendmo_global;
+    static $vq;
+    if( !( isset($vq) ) ) { $vq = 0; }
 
-     $args = array(
+    $thecptname = $opendmo_global['cpt_names'][$vq];
+
+    $args = array(
     'post_type'	=> $thecptname,
     'meta_query' => array(
         array(
-	        'key' => 'is_venue',
+	        'key' => 'postmeta_opendmo_boolean_is_venue',
 	        'value' => '1',
 	        'compare' => '=='
 	        )
         )
     );
 
-    $venuequeryi++;
+    $vq++;
     return $args;
 
 }
 
 function opendmo_add_meta($m,$h='post-after') {
 
-    global $acfoutput;
-    $acfoutput[$h] = $acfoutput[$h].$m;
+    global $opendmo_global;
+    $opendmo_global['acfoutput'][$h] = $opendmo_global['acfoutput'][$h].$m;
 
 }
 
 function acf_content_after($content) {
 
-    global $opendmo_path;
-    global $opendmo_postmeta;
-    global $opendmo_cpt_names;
-    global $acfoutput;
+    global $opendmo_global;
+    $meta = $opendmo_global['postmeta'];
 
-    foreach (glob($opendmo_path."post/*.php") as $filename) {
+    foreach (glob($opendmo_global['path']."post/*.php") as $filename) {
 
         include $filename;
 
     }       
 
-    $allafter = implode(array_slice($acfoutput, 1));
-    $fullpost = $acfoutput['post-before'].$content.$allafter;
+    $allafter = implode(array_slice($opendmo_global['acfoutput'], 1));
+    $fullpost = $opendmo_global['acfoutput']['post-before'].$content.$allafter;
 
     return $fullpost;
+
+}
+
+function opendmo_clean_meta($id) { 
+
+    global $opendmo_global;
+    $gpt = get_post_type($id);
+
+    //This function loads the OpenDMO post info so it can only happen on posts
+
+    if(in_array($gpt,$opendmo_global['cpt_names'])) { 
+
+        // get the custom fields set by ACF and remove any blank fields
+
+        $infos = array_filter(get_fields($id));
+
+        if(count($infos)>0) {
+
+            //only process fields if there are any set for the post
+
+            $info = array();
+            foreach($infos as $in=>$fo) {
+
+                //limit fields only to postmeta - this prefix is set in fields.php
+
+                if(strpos($in, 'postmeta_opendmo')===0 && isset($fo)) {
+
+                    //limit fields only to those that have a value set
+
+                    if(count($fo) > 0) {
+
+                        //remove the postmeta header in the new fields list
+
+                        $newin = str_replace("postmeta_opendmo_","",$in);
+                        $info = array_merge($info, array($newin=>$fo));
+
+                        //if field is select then add a new meta entry 
+                        //for the display name of the selected item
+
+                        if(strpos($in, 'postmeta_opendmo_select')===0) {
+
+                            $fin = get_field_object($in);
+                            $fin = $fin['choices'][$fo];
+
+                            $info = array_merge($info, array($newin."_display"=>$fin));
+
+                        }
+
+
+                    }
+
+                }
+
+            }
+
+            //sort fields by type
+
+            ksort($info);    
+            return $info;
+
+        }
+
+    }
 
 }
 

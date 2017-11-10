@@ -2,7 +2,7 @@
 
 $optfield = array(field_build_tab('Social'));
 
-for($s = 0; $s<$opendmo_set_limit['social_links']; $s++) {
+for($s = 0; $s<$opendmo_global['set_limit']['social_links']; $s++) {
 
     $default_nn = '';
     $default_nu = '';
@@ -15,18 +15,14 @@ for($s = 0; $s<$opendmo_set_limit['social_links']; $s++) {
     }
 
     $smdri = "(".($s+1).")";    
-    $smdefine[0] = field_build_row(2);
-    $smdefine[1] = field_build_text("", "Network Name $smdri", 'Twitter', $default_nn);
-    $smdefine[1]['name'] = "opt_opendmo_social_name_$s";
-    $smdefine[2] = field_build_text("", "URL Prefix $smdri", 'https://www.twitter.com/', $default_nu);
-    $smdefine[2]['name'] = "opt_opendmo_social_url_$s";
+    $smrow = field_build_row(2);
 
     $optfield = array_merge($optfield, array(
 
-        $smdefine[0]['open'],
-        $smdefine[1],
-        $smdefine[2],
-        $smdefine[0]['close'],
+        $smrow['open'],
+        field_build_text("opt_opendmo_social_name_$s", "Network Name $smdri", 'Twitter', $default_nn),
+        field_build_text("opt_opendmo_social_url_$s", "URL Prefix $smdri", 'https://www.twitter.com/', $default_nu),
+        $smrow['close'],
 
     ));
 

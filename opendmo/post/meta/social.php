@@ -1,19 +1,19 @@
 <?php
 
-if(isset($opendmo_postmeta["select_social_domain_0"]) && isset($opendmo_postmeta["text_social_url_0"])) {
+if(isset($meta["select_social_domain_0"]) && isset($meta["text_social_url_0"])) {
 
     $s = 0;
 
-    opendmo_add_meta("<h5>Social Media</h5>",'meta');
+    opendmo_add_meta("<h4>Social Media</h4>",'meta');
     opendmo_add_meta("<ul>",'meta');
 
-    while(isset($opendmo_postmeta["select_social_domain_$s"]) && isset($opendmo_postmeta["text_social_url_$s"])) {
+    while(isset($meta["select_social_domain_$s"]) && isset($meta["text_social_url_$s"])) {
 
         opendmo_add_meta("<li>",'meta');
 
-        $socialprofile = $opendmo_postmeta["text_social_url_$s"];
-        $socialurl = $opendmo_postmeta["select_social_domain_$s"].$socialprofile;
-        $socialname = $opendmo_postmeta["select_social_domain_".$s."_display"];
+        $socialprofile = $meta["text_social_url_$s"];
+        $socialurl = $meta["select_social_domain_$s"].$socialprofile;
+        $socialname = $meta["select_social_domain_".$s."_display"];
 
         if(strpos($socialprofile, "/")===FALSE && strlen($socialprofile) < 20) {
 

@@ -4,7 +4,7 @@
 
 opendmo_add_meta("<div id='opendmo_postmeta'>",'meta');
 
-foreach (glob($opendmo_path."post/meta/*.php") as $filename) {
+foreach (glob($opendmo_global['path']."post/meta/*.php") as $filename) {
 
     opendmo_add_meta("<div id='opendmo_postmeta_$the_mf'>",'meta');
     include $filename;

@@ -5,7 +5,7 @@ $info_fields = array(field_build_tab('GPS'));
 $suggestgps = array("Parking Lot", "Scenic Viewpoint", "Picnic Area");
 $the_suggestgps = '';
 
-for($gxx = 0; $gxx<$opendmo_set_limit['gps_pair']; $gxx++) {
+for($gxx = 0; $gxx<$limit['gps_pair']; $gxx++) {
 
     if(isset($suggestgps[$gxx])) { $the_suggestgps = $suggestgps[$gxx]; }
     else { $the_suggestgps = 'Other Landmark'; }

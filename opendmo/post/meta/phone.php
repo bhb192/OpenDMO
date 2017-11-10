@@ -1,23 +1,23 @@
 <?php
 
-if(isset($opendmo_postmeta["text_phone_number_0"])) {
+if(isset($meta["text_phone_number_0"])) {
 
     $p = 0;
 
-    opendmo_add_meta("<h5>Phone Number</h5>",'meta');
+    opendmo_add_meta("<h4>Phone Number</h4>",'meta');
     opendmo_add_meta("<ul>",'meta');
 
-    while(isset($opendmo_postmeta["text_phone_number_$p"])) {
+    while(isset($meta["text_phone_number_$p"])) {
 
         opendmo_add_meta("<li>",'meta');
 
-        if(isset($opendmo_postmeta["text_phone_label_$p"])) {
+        if(isset($meta["text_phone_label_$p"])) {
 
-            opendmo_add_meta("<span>".$opendmo_postmeta["text_phone_label_$p"].": </span>",'meta');
+            opendmo_add_meta("<span>".$meta["text_phone_label_$p"].": </span>",'meta');
 
         }
 
-        opendmo_add_meta($opendmo_postmeta["text_phone_number_$p"],'meta');
+        opendmo_add_meta($meta["text_phone_number_$p"],'meta');
 
         opendmo_add_meta("</li>",'meta');
 

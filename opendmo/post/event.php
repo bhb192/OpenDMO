@@ -2,11 +2,12 @@
 
 $eventhook = 'post-after';
 
-if(isset($opendmo_postmeta['postobj_evs'][0])) {
+if(isset($meta['postobj_evs'])) {
 
-    $thevenue = $opendmo_postmeta['postobj_evs'][0]->ID;
-    $venuename = $opendmo_postmeta['postobj_evs'][0]->post_title;
+    $thevenue = $meta['postobj_evs']->ID;
+    $venuename = $meta['postobj_evs']->post_title;
     $venuelink = get_post_permalink($thevenue);
+    $venueinfo = opendmo_clean_meta($thevenue);
 
     if(has_excerpt($thevenue)) {
 
@@ -14,16 +15,31 @@ if(isset($opendmo_postmeta['postobj_evs'][0])) {
 
     }
 
-    opendmo_add_meta("<div id='opendmo_evs'>", $eventhook);
-    opendmo_add_meta("<h5>Event Venue</h5>", $eventhook);
+    opendmo_add_meta("<div id='opendmo_event'>", $eventhook);
+    opendmo_add_meta("<h4>Event Venue</h4>", $eventhook);
     opendmo_add_meta("<ul><li>",$eventhook);
     opendmo_add_meta("<a href='".$venuelink."'>",$eventhook);
-    opendmo_add_meta("<h6>".$venuename."</h6>",$eventhook);
+    opendmo_add_meta("<h5>".$venuename."</h5>",$eventhook);
     opendmo_add_meta("</a>",$eventhook);
+
+    if(isset($venueinfo["text_address_line_0"])) {
+
+        $cityzip = $venueinfo["select_address_city_0_display"];
+        $cityzip = $cityzip." ".$venueinfo["select_address_zip_0_display"];
+
+        opendmo_add_meta($venueinfo["text_address_line_0"]."<br />$cityzip",$eventhook);
+
+    }
+
+    if(isset($venueinfo["text_phone_number_0"])) {
+
+        opendmo_add_meta("<br />".$venueinfo["text_phone_number_0"],$eventhook);
+
+    }
 
     if(isset($venuedesc)) {
 
-        opendmo_add_meta($venuedesc, $eventhook);
+        opendmo_add_meta("<br />".$venuedesc, $eventhook);
 
     }
 
@@ -31,7 +47,79 @@ if(isset($opendmo_postmeta['postobj_evs'][0])) {
 
 }
 
+$w=0;
+while( isset($meta["datetime_begin_date_$w"]) && isset($meta["datetime_end_date_$w"]) ) { 
+
+    if($w===0) {
+
+        opendmo_add_meta("<h4>Upcoming Dates</h4><ul>", $eventhook);
+
+    }
+
+    opendmo_add_meta("<li>".$meta["datetime_begin_date_$w"]." until ".$meta["datetime_end_date_$w"]."</li>", $eventhook);
+    $w++;
+
+}
+
+opendmo_add_meta("</ul>", $eventhook);
 
 
+$eventsearch = get_posts( array(
+	'numberposts'	=> -1,
+	'post_type'		=> $opendmo_global['cpt_names'],
+
+));
+
+foreach($eventsearch as $es) {
+
+    $v = get_field('postmeta_opendmo_postobj_evs',$es->ID,false);
+    
+    if($v==get_the_ID()){
+
+        opendmo_add_meta("<h4>Upcoming Events Here</h4><ul>", $eventhook);
+
+        $w=0;
+        while(
+
+            strlen(get_field("postmeta_opendmo_datetime_begin_date_$w",$es->ID)) > 0 &&
+            strlen(get_field("postmeta_opendmo_datetime_end_date_$w",$es->ID)) > 0
+
+        ){
+
+            $b = get_field("postmeta_opendmo_datetime_begin_date_$w",$es->ID); 
+            $e = get_field("postmeta_opendmo_datetime_end_date_$w",$es->ID); 
+            $l = get_field("postmeta_opendmo_text_date_label_$w",$es->ID);
+
+
+            if($es->ID != get_the_ID()) { 
+
+                if(strlen($l)===0) { $l = $es->post_title; }
+                else { $l = $es->post_title." (".$l.")"; }
+
+                $u = get_post_permalink($es->ID);
+                $l = "<a href='$u'>$l</a>";        
+
+            }
+
+            opendmo_add_meta("<li>", $eventhook);
+
+            if(strlen($l)>0) {
+            
+                opendmo_add_meta("<em>$l</em><br />", $eventhook);
+
+            }
+
+            opendmo_add_meta("$b until $e</li>", $eventhook);
+            $w++;
+
+        }
+
+    }
+
+}
+
+opendmo_add_meta("</ul></div>", $eventhook);
+
+//safeout($meta);
 
 ?>

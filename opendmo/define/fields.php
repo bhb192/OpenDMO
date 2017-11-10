@@ -1,8 +1,85 @@
 <?php
 
+function fields_register($t,$f,$l=0) {
+
+    static $gn;
+    if( !( isset($gn) ) ) { $gn = 0; }
+    global $opendmo_global;
+    $fl = array();
+
+    foreach($opendmo_global['cpt_names'] as $o=>$odcpt) {
+
+        $fl[$o][0] = array (
+
+            "param" => "post_type",
+            "operator" => "==",
+            "value" => $odcpt,
+            "order_no" => ($l),
+            "group_no" => ($gn),
+
+        );        
+
+    }    
+
+    register_field_group(array (
+
+        "id" => "acf_postmeta_opendmo_$gn",
+        "title" => "OpenDMO $t",
+        "fields" => $f,
+        "location" => $fl,
+        "options" => array (
+            "position" => "normal",
+            "layout" => "default",
+            "hide_on_screen" => array (),
+        ),
+        "menu_order" => $l,
+
+    ));
+
+    $gn++;
+
+}
+
+function opt_fields_register($f,$l) {
+
+    static $of;
+    if( !( isset($of) ) ) { $of = 0; }
+
+    register_field_group(array (
+
+        "id" => "acf_opt_opendmo_$of",
+        "title" => "OpenDMO $t",
+        "fields" => $f,
+        "location" => array( array( 
+
+            array(
+
+                "param" => "post",
+                "operator" => "==",
+                "value" => $l,
+                "order_no" => 1,
+                "group_no" => 1,
+
+            ),
+
+        )),
+        "options" => array (
+            "position" => "normal",
+            "layout" => "no_box",
+            "hide_on_screen" => array (),
+        ),
+        "menu_order" => 1,
+
+    ));   
+
+    $of++;
+
+}
+
 function fbtc() {
 
     static $fbtc;
+    if( !( isset($fbtc) ) ) { $fbtc = 0; }
     $the_fbtc = $fbtc;
     $fbtc++;
     return $the_fbtc;
@@ -18,7 +95,21 @@ function fbkey($s) {
 
 function fbname($s) {
 
-    $n = "postmeta_opendmo_".$s;
+    $n = $s;
+
+    if( strpos($s,'opt_opendmo_')===FALSE  ) {
+
+        $n = "postmeta_opendmo_".$s;
+
+    }
+
+    else { 
+
+        $n = strpos($s,'opt_opendmo_');
+        $n = substr($s,$n);
+
+    }
+
     return $n;
 
 }
@@ -207,7 +298,7 @@ function field_build_postobj($n,$l,$p) {
 	    'type' => 'post_object',
 	    'post_type' => $p,
 	    'allow_null' => 1,
-	    'multiple' => 1,
+	    'multiple' => 0,
 
     );
 
