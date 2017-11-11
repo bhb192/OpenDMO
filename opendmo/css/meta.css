@@ -1,0 +1,19 @@
+.opendmo ul {
+
+    list-style-type: none;
+    margin-left: 0;
+
+}
+
+@media print {
+
+    #opendmo_postmeta_gps,
+    #opendmo_postmeta_links,
+    div[id^='opendmo_cpt_'] {
+
+        display: none;
+
+    }
+
+
+}

@@ -20,9 +20,8 @@ foreach (glob($opendmo_path."define/*.php") as $filename) {
 
 include($opendmo_path.'extends/pcs/pcs.php');
 include($opendmo_path.'extends/pts/pts.php');
-include($opendmo_path.'extends/cpt/cpt-onomies.php');
 include($opendmo_path.'extends/acf/acf.php');
 include($opendmo_path.'extends/acf-dtp/acf-dtp.php');
-include($opendmo_path.'extends/acf-rf/acf-row-v4.php');
+include($opendmo_path.'extends/acf-rf/acf-row.php');
 
 ?>

@@ -15,7 +15,7 @@ for($i=0; $i<$limit['event_date']; $i++) {
         $itef = array_merge($itef, array(
 
 	        field_build_tab("Venue"),
-            field_build_postobj("evs","Select Event Venue",$opendmo_cpt_names),
+            field_build_postobj("evs","Select Event Venue",''),
 
         ));
 
@@ -24,7 +24,7 @@ for($i=0; $i<$limit['event_date']; $i++) {
     if( !( $i%5 ) ) {
 
         $fivemore = $i+5;
-        if( ($i+5) > $maxdates ) { $fivemore = $limit['event_date']; }
+        if( ($i+5) > $limit['event_date'] ) { $fivemore = $limit['event_date']; }
 
         $itef = array_merge($itef, array(
 
@@ -47,5 +47,6 @@ for($i=0; $i<$limit['event_date']; $i++) {
 }
 
 fields_register("Event Info",$itef,2);
+add_filter('acf/fields/post_object/query/name=postmeta_opendmo_postobj_evs', 'venue_query', 10, 3);
 
 ?>

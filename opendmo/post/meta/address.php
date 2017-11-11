@@ -13,7 +13,7 @@ if(isset($meta["text_address_line_0"]) && isset($meta["select_address_city_0"]))
 
         if(isset($meta["text_address_label_$a"])) {
 
-            opendmo_add_meta("<em>".$meta["text_address_label_$a"]."</em><br />",'meta');
+            opendmo_add_meta("<h5>".$meta["text_address_label_$a"]."</h5>",'meta');
 
         }
 

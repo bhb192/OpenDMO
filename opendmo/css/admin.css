@@ -1,0 +1,30 @@
+.post-type-opendmo-options #titlewrap, 
+.post-type-opendmo-options #minor-publishing,
+.post-type-opendmo-options #delete-action { 
+
+    display: none; 
+
+}
+
+#postbox-container-2 { 
+
+    display: none; 
+
+}
+
+#postdivrich { 
+
+    display: none; 
+
+}
+
+select[id^="acf-field-postmeta_opendmo_postobj_cpt_related"] { height: 15em !important; }
+
+#titlediv { 
+
+    padding-bottom: 5em;
+    background-image: url('/wp-includes/images/spinner-2x.gif') ;
+    background-repeat: no-repeat;
+    background-position: bottom left;
+
+}

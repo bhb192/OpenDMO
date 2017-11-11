@@ -19,15 +19,13 @@ while(strlen($zip["opt_opendmo_zip_$m"][0]) > 0) {
 
 $ia_city_unique = array_unique($ia_city); 
 $ia_cs = field_build_select('address_city_', "Select City ", 1, array(), '', 1);
-$ia_city_select_key = $ia_cs[0];
-$ia_city_select = $ia_cs[1];
 
 foreach($ia_city_unique as $ia=>$c) {
 
     $ia_citylow = strtolower($c).strtolower($ia_state[$ia]);
     $ia_cityup = $c.", ".$ia_state[$ia];
     $ia_citycomb = array($ia_citylow=>$ia_cityup);
-    $ia_city_select['choices'] = array_merge($ia_city_select['choices'], $ia_citycomb);
+    $ia_cs['choices'] = array_merge($ia_cs['choices'], $ia_citycomb);
 
     $zip_match = array_keys($ia_city, $c);
     $zip_choices = array();
@@ -41,7 +39,7 @@ foreach($ia_city_unique as $ia=>$c) {
 
             array(
 
-	            'field' => $ia_city_select_key."_",
+	            'field' => $ia_cs['key']."_",
 	            'operator' => '==',
 	            'value' => $ia_citylow,
 
@@ -66,7 +64,7 @@ for($a=0; $a<$limit['address']; $a++) {
     if(isset($aflabels[$a])) { $the_aflabel = $aflabels[$a]; }
     else { $the_aflabel = "Other Address"; }
 
-    $af_city = $ia_city_select;
+    $af_city = $ia_cs;
     $af_city['key'] = $af_city['key']."_$a";
 	$af_city['label'] = $af_city['label']."(".($a+1).")";
 	$af_city['name'] = $af_city['name']."$a";

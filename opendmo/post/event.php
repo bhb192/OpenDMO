@@ -1,68 +1,80 @@
 <?php
 
 $eventhook = 'post-after';
+$thevenue = '';
 
 if(isset($meta['postobj_evs'])) {
 
-    $thevenue = $meta['postobj_evs']->ID;
-    $venuename = $meta['postobj_evs']->post_title;
-    $venuelink = get_post_permalink($thevenue);
-    $venueinfo = opendmo_clean_meta($thevenue);
-
-    if(has_excerpt($thevenue)) {
-
-        $venuedesc = get_the_excerpt($thevenue);
-
-    }
-
     opendmo_add_meta("<div id='opendmo_event'>", $eventhook);
-    opendmo_add_meta("<h4>Event Venue</h4>", $eventhook);
-    opendmo_add_meta("<ul><li>",$eventhook);
-    opendmo_add_meta("<a href='".$venuelink."'>",$eventhook);
-    opendmo_add_meta("<h5>".$venuename."</h5>",$eventhook);
-    opendmo_add_meta("</a>",$eventhook);
 
-    if(isset($venueinfo["text_address_line_0"])) {
+    $thevenue = $meta['postobj_evs']->ID;
 
-        $cityzip = $venueinfo["select_address_city_0_display"];
-        $cityzip = $cityzip." ".$venueinfo["select_address_zip_0_display"];
+    if($thevenue != get_the_ID()) {
 
-        opendmo_add_meta($venueinfo["text_address_line_0"]."<br />$cityzip",$eventhook);
+        $venuename = $meta['postobj_evs']->post_title;
+        $venuelink = get_post_permalink($thevenue);
+        $venueinfo = opendmo_clean_meta($thevenue);
+
+        if(has_excerpt($thevenue)) {
+
+            $venuedesc = get_the_excerpt($thevenue);
+
+        }
+
+        opendmo_add_meta("<h4>Event Venue</h4>", $eventhook);
+        opendmo_add_meta("<ul><li>",$eventhook);
+        opendmo_add_meta("<a href='".$venuelink."'>",$eventhook);
+        opendmo_add_meta("<h5>".$venuename."</h5>",$eventhook);
+        opendmo_add_meta("</a>",$eventhook);
+
+        if(isset($venueinfo["text_address_line_0"])) {
+
+            $cityzip = $venueinfo["select_address_city_0_display"];
+            $cityzip = $cityzip." ".$venueinfo["select_address_zip_0_display"];
+
+            opendmo_add_meta($venueinfo["text_address_line_0"]."<br />$cityzip",$eventhook);
+
+        }
+
+        if(isset($venueinfo["text_phone_number_0"])) {
+
+            opendmo_add_meta("<br />".$venueinfo["text_phone_number_0"],$eventhook);
+
+        }
+
+        if(isset($venuedesc)) {
+
+            opendmo_add_meta("<br />".$venuedesc, $eventhook);
+
+        }
+
+        opendmo_add_meta("</li></ul>", $eventhook);
 
     }
-
-    if(isset($venueinfo["text_phone_number_0"])) {
-
-        opendmo_add_meta("<br />".$venueinfo["text_phone_number_0"],$eventhook);
-
-    }
-
-    if(isset($venuedesc)) {
-
-        opendmo_add_meta("<br />".$venuedesc, $eventhook);
-
-    }
-
-    opendmo_add_meta("</li></ul>", $eventhook);
 
 }
 
-$w=0;
-while( isset($meta["datetime_begin_date_$w"]) && isset($meta["datetime_end_date_$w"]) ) { 
+if($thevenue != get_the_ID()) {
 
-    if($w===0) {
+    $w=0;
+    while( isset($meta["datetime_begin_date_$w"]) && isset($meta["datetime_end_date_$w"]) ) { 
 
-        opendmo_add_meta("<h4>Upcoming Dates</h4><ul>", $eventhook);
+        if($w===0) { opendmo_add_meta("<h4>Upcoming Dates</h4><ul>", $eventhook); }
+
+        $oamlabel = '';
+        if(isset($meta["text_date_label_$w"])) { $oamlabel = "<em>".$meta["text_date_label_$w"]."</em><br />"; }
+
+        $datebegin = "<li>".$oamlabel.$meta["datetime_begin_date_$w"];
+        $dateend = $meta["datetime_end_date_$w"]."</li>";
+        opendmo_add_meta($datebegin." until ".$dateend, $eventhook);
+
+        $w++;
 
     }
 
-    opendmo_add_meta("<li>".$meta["datetime_begin_date_$w"]." until ".$meta["datetime_end_date_$w"]."</li>", $eventhook);
-    $w++;
+    if($w>0) { opendmo_add_meta("</ul>", $eventhook); }
 
 }
-
-opendmo_add_meta("</ul>", $eventhook);
-
 
 $eventsearch = get_posts( array(
 	'numberposts'	=> -1,

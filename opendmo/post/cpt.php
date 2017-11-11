@@ -6,7 +6,7 @@ $cpt_order = array();
 
 foreach($opendmo_global['cpt_names'] as $c=>$the_cpt) {
 
-    $cpt_order[$c] = $meta["number_cpt_priority_".$the_cpt];
+    $cpt_order[$c] = $meta["select_cpt_priority_".$the_cpt];
 
 }
 
@@ -16,7 +16,7 @@ foreach($cpt_order as $c=>$cpto) {
 
     $the_cpt = $opendmo_global['cpt_names'][$c];
     $cpthook = 'cpt';
-    $cpt_terms = get_the_terms( get_post()->ID, $the_cpt );
+    $cpt_terms = get_field("postmeta_opendmo_postobj_cpt_related_".$opendmo_global['cpt_names'][$c],get_the_ID());
 
     if(isset($meta["boolean_cpt_showinline_".$the_cpt])) {
 
@@ -45,7 +45,9 @@ foreach($cpt_order as $c=>$cpto) {
 
         }
 
-        opendmo_add_meta("<div style='background-color:$bgcolor;padding:$padg' id='opendmo_cpt_$the_cpt'>", $cpthook);
+        $stylestr = "background-color:$bgcolor;padding:$padg;margin-bottom:1em;";
+
+        opendmo_add_meta("<div style='$stylestr' id='opendmo_cpt_$the_cpt'>", $cpthook);
 
         if(isset($meta["text_cpt_label_".$the_cpt])) {
 
@@ -57,13 +59,13 @@ foreach($cpt_order as $c=>$cpto) {
 
         foreach($cpt_terms as $c=>$the_cpt_term) {
 
-            $cpt_sort['name'][$c] = $the_cpt_term->name;
-            $cpt_sort['link'][$c] = get_post_permalink($the_cpt_term->term_id);
-            $cpt_sort['date'][$c] = get_the_modified_date("U",$the_cpt_term->term_id);
+            $cpt_sort['name'][$c] = $the_cpt_term->post_title;
+            $cpt_sort['link'][$c] = get_post_permalink($the_cpt_term->ID);
+            $cpt_sort['date'][$c] = get_the_modified_date("U",$the_cpt_term->ID);
 
-            if(has_excerpt($the_cpt_term->term_id)) {
+            if(has_excerpt($the_cpt_term->ID)) {
 
-                $cpt_sort['excerpt'][$c] = get_the_excerpt($the_cpt_term->term_id);
+                $cpt_sort['excerpt'][$c] = get_the_excerpt($the_cpt_term->ID);
 
             }
 

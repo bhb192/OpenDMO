@@ -8,8 +8,10 @@ $opendmo_global = array(
 
     'primaryedit' => 0,
     'zipedit' => 0,
+    'cptedit' => 0,
     'options_meta' => array(),
     'zip_meta' => array(),
+    'cpt_meta' => array(),
     'postmeta' => array(),
     'set_limit' => array(),
     'cpt_names' => array(),
