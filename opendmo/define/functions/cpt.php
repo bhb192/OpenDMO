@@ -7,8 +7,9 @@ function opendmo_cpt_register() {
     foreach($opendmo_global['cpt_names'] as $c) {
 
         $t = ucfirst($c);
-        $single = $c;
-        if(substr($single, -1) == "s") { $single = substr($single,0,(strlen($single)-1)); }
+        $single = ucfirst(makesingular($c));
+        $editstr = "Edit $single Post";
+        if(is_admin()) { $editstr = "Editing $single Post"; }
 
         register_post_type($c, array(
 
@@ -17,7 +18,7 @@ function opendmo_cpt_register() {
                'name'           => __($c),
                'singular_name'  => __($t),
                'menu_name'      => $t,
-		       'edit_item'      => "Edit this $single",
+		       'edit_item'      => $editstr,
 
            ),
 

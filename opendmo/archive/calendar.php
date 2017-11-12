@@ -1,0 +1,223 @@
+<?php
+
+$searchstart = strtotime('today');
+$searchend = strtotime("+31 days", $searchstart)-1;
+
+$lastpointer = 0;
+$newday = 0;
+$lpi = 0;
+$dates = array();
+while($lastpointer < $searchend) {
+
+    if($newday === 0) { $newday = $searchstart; }
+    else { $newday = strtotime("+1 day",$newday); }
+    $lastpointer = strtotime("+1 day",$newday);
+    $dates[$lpi] = array(($newday+1), ($lastpointer-1));
+    $lpi++;
+
+}
+
+$maxdates = $opendmo_global['set_limit']['event_date'];
+$events = array('relation' => 'OR',);
+for($m=0;$m<$maxdates;$m++) {
+
+    $events = array_merge($events,array(array(
+
+        "key" => "postmeta_opendmo_datetime_end_date_$m",
+        "compare" => '>',
+        "value" => $searchstart,
+        "type" => 'DATETIME',
+
+    )));
+
+} 
+
+$events = get_posts(array(
+
+    'post_type' => $cpt,
+    'post_status' => 'publish',
+    'posts_per_page' => -1,
+    'meta_query' => $events,
+
+));
+
+$events = wp_list_pluck($events,'ID');
+$starts = array();
+$ends = array();
+
+foreach($events as $event) {
+
+    $starts[$event] = array();
+    $ends[$event] = array();
+    $labels[$event] = array();
+    $validtime = strtotime("1/1/2000");
+
+    $kkse = get_fields($event);
+
+    for($i=0;$i<$maxdates;$i++) {
+
+        if(isset($kkse['postmeta_opendmo_datetime_begin_date_'.$i])) { 
+
+            if(strtotime($kkse['postmeta_opendmo_datetime_begin_date_'.$i]) > $validtime) {
+
+                $starts[$event][$i] = strtotime($kkse['postmeta_opendmo_datetime_begin_date_'.$i]);
+
+            }
+
+        }
+
+        if(isset($kkse['postmeta_opendmo_datetime_end_date_'.$i])) {
+
+            if(strtotime($kkse['postmeta_opendmo_datetime_end_date_'.$i]) > $validtime) {
+
+                $ends[$event][$i] = strtotime($kkse['postmeta_opendmo_datetime_end_date_'.$i]);
+
+            }
+
+        }
+
+        if(isset($kkse['postmeta_opendmo_text_date_label_'.$i])) {
+
+            if(strlen($kkse['postmeta_opendmo_text_date_label_'.$i]) > 0) {
+
+                $labels[$event][$i] = $kkse['postmeta_opendmo_text_date_label_'.$i];
+
+            }
+
+        }
+
+    }
+
+}
+
+$theevents = array_fill(0,4,array());
+$daterows = array(array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'));
+$thedr = 1;
+opendmo_archive_meta('<div id="opendmo_archive_calendar">', 'calendar');
+
+foreach($dates as $d=>$date) {
+
+    $sst = 0;
+    foreach($starts as $e=>$start) {
+
+        foreach($start as $s=>$begin) {
+
+            $end = $ends[$e][$s];
+            $label = $labels[$e][$s];
+            $istoday = 0;
+            
+            if($begin >= $date[0] && $end <= $date[1]) { $istoday = 1; }
+            if($begin <= $date[0] && $end >= $date[0]) { $istoday = 1; }
+            if($begin <= $date[1] && $end >= $date[1]) { $istoday = 1; }
+
+            if($istoday === 1) {
+
+                $sst = count($theevents[0][$d]);
+                $theevents[0][$d][$sst] = $e;
+                $theevents[1][$d][$sst] = $begin;
+                $theevents[2][$d][$sst] = $end;
+                $theevents[3][$d][$sst] = $label;
+
+            }
+
+        }
+
+    }
+
+    $thedw = date("w",$date[0]);
+    $caldate = date("M j, Y", $date[0]);
+    $drout = "<ul><li><h4>$caldate</h4></li>";
+
+    if(isset($theevents[0][$d])) {
+
+        asort($theevents[1][$d]);
+        foreach($theevents[1][$d] as $dd=>$begin) {
+
+            $end = $theevents[2][$d][$dd];
+            $eventid = $theevents[0][$d][$dd];
+            $label = $theevents[3][$d][$dd];
+
+            $drout = $drout."<li><span><strong><a href='".get_the_permalink($eventid)."'>".get_the_title($eventid)."</a></strong></span><span><strong><small>".$label."</small></strong></span>";
+
+            if($begin <= $date[0] && $end >= $date[1]) {
+
+                $drout = $drout."<span>All Day</span></li>";
+
+            }
+
+            else {
+
+                if($begin < $date[0]) {
+
+                    $nicebegin = date("g:i a", $date[0]);
+
+                }
+
+                else {
+
+                    $nicebegin = date("g:i a", $begin);
+
+                }
+
+                if($end > $date[1]) {
+
+                    $niceend = date("g:i a", $date[1]);
+
+                }
+
+                else {
+
+                    $niceend = date("g:i a", $end);
+
+                }
+
+                $drout = $drout."<span>$nicebegin</span><span><small>until</small></span><span>$niceend</span></li>";
+
+            }
+
+        }
+
+    }
+
+    else {
+
+        $drout = $drout."<li><span>no events</li>";
+
+    }
+
+    $drout = $drout."</ul>";
+    $daterows[$thedr][$thedw] = $drout;
+    if($thedw == 6) { $thedr++; }
+
+} 
+
+$colclass = "opendmo_cal_col";
+
+foreach($daterows as $dri=>$dr) {
+
+    opendmo_archive_meta('<div class="opendmo_cal_row">','calendar');
+
+
+    for($i=0;$i<7;$i++) {    
+
+        $colclass = "opendmo_cal_col";
+        if($dri===1 && $i==date("w",$searchstart)) { $colclass =  $colclass." opendmo_cal_today"; }
+        opendmo_archive_meta("<div class='$colclass'>",'calendar');
+
+        if(isset($dr[$i])) {
+
+            opendmo_archive_meta($dr[$i],'calendar');
+
+        }
+
+        opendmo_archive_meta('</div>','calendar');
+
+    }
+
+    opendmo_archive_meta('</div>','calendar');
+
+}
+
+opendmo_archive_meta('<div class="opendmo_cal_row"></div></div>', 'calendar');
+
+?>

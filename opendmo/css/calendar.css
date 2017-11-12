@@ -1,0 +1,53 @@
+.opendmo ul {
+
+    list-style-type: none;
+    margin-left: 0;
+    
+
+}
+
+.opendmo ul span {
+
+    display: block;
+
+}
+
+#opendmo_archive_calendar {
+
+    background: #e8e8e8;
+    padding: .5em;
+
+}
+
+.opendmo_cal_row {
+
+    clear: both;
+
+}
+
+.opendmo_cal_col {
+
+    float: left;
+    width: 14.28%;
+    width: calc(100% / 7);
+
+}
+
+.opendmo_cal_today {
+
+    background: #ddd;
+
+}
+
+@media print {
+
+    #opendmo_postmeta_gps,
+    #opendmo_postmeta_links,
+    div[id^='opendmo_cpt_'] {
+
+        display: none;
+
+    }
+
+
+}

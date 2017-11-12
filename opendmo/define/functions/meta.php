@@ -44,6 +44,42 @@ function acf_content_after($content) {
 
 }
 
+function opendmo_views_ajax() {
+
+    if(is_singular()) {
+
+        $uvajxv = array( 
+            'ajaxurl' => admin_url( 'admin-ajax.php' ),
+            'uvid' => get_the_ID(),
+            'uvact' => 'odvacb',
+        );
+
+        wp_enqueue_script( 'opendmo-views-ajax-request', plugins_url().'/opendmo/js/views.js', array('jquery'), '1.0', true  );
+        wp_localize_script( 'opendmo-views-ajax-request', 'ViewsAjax', $uvajxv );
+
+    }
+
+}
+
+function odvacb() {
+
+    $odpuv = $_POST['puv'];
+
+    if(metadata_exists('post',$odpuv,'_opendmo_viewcount')) {
+
+        $odvc = get_post_meta($odpuv,'_opendmo_viewcount', true);
+        update_post_meta( $odpuv, '_opendmo_viewcount', ($odvc+1), $odvc );
+
+    }
+
+    else{
+
+        add_post_meta($odpuv, '_opendmo_viewcount', 1, true);
+
+    }
+
+}
+
 function opendmo_clean_meta($id) { 
 
     global $opendmo_global;

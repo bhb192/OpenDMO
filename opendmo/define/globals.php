@@ -69,6 +69,12 @@ $opendmo_global = array(
 
     ),''),
 
+    'archivelement' => array_fill_keys(array(
+
+        'calendar',
+
+    ),''),
+
 );
 
 ?>
