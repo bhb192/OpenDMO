@@ -1,12 +1,15 @@
 <?php
 
+date_default_timezone_set('UTC');
 $searchstart = strtotime('today');
+$startdate = date("w",$searchstart);
 $searchend = strtotime("+31 days", $searchstart)-1;
-
+$validtime = strtotime("1/1/2000");
 $lastpointer = 0;
 $newday = 0;
 $lpi = 0;
 $dates = array();
+
 while($lastpointer < $searchend) {
 
     if($newday === 0) { $newday = $searchstart; }
@@ -21,14 +24,14 @@ $maxdates = $opendmo_global['set_limit']['event_date'];
 $events = array('relation' => 'OR',);
 for($m=0;$m<$maxdates;$m++) {
 
-    $events = array_merge($events,array(array(
+    $events = array(
 
-        "key" => "postmeta_opendmo_datetime_end_date_$m",
+        "key" => "postmeta_opendmo_datetime_end_date_0",
         "compare" => '>',
-        "value" => $searchstart,
+        "value" => $validtime,
         "type" => 'DATETIME',
 
-    )));
+    );
 
 } 
 
@@ -42,45 +45,28 @@ $events = get_posts(array(
 ));
 
 $events = wp_list_pluck($events,'ID');
-$starts = array();
-$ends = array();
+$ftoget = array('datetime_begin_date','datetime_end_date','text_date_label');
+$fieldsgot = array();
 
 foreach($events as $event) {
 
     $starts[$event] = array();
     $ends[$event] = array();
     $labels[$event] = array();
-    $validtime = strtotime("1/1/2000");
-
-    $kkse = get_fields($event);
 
     for($i=0;$i<$maxdates;$i++) {
 
-        if(isset($kkse['postmeta_opendmo_datetime_begin_date_'.$i])) { 
+        foreach($ftoget as $f=>$toget) { 
 
-            if(strtotime($kkse['postmeta_opendmo_datetime_begin_date_'.$i]) > $validtime) {
+            $fieldsget = get_field('postmeta_opendmo_'.$toget."_".$i,$event); 
 
-                $starts[$event][$i] = strtotime($kkse['postmeta_opendmo_datetime_begin_date_'.$i]);
+            if(is_string($fieldsget) && strlen($fieldsget) > 0) {
 
-            }
-
-        }
-
-        if(isset($kkse['postmeta_opendmo_datetime_end_date_'.$i])) {
-
-            if(strtotime($kkse['postmeta_opendmo_datetime_end_date_'.$i]) > $validtime) {
-
-                $ends[$event][$i] = strtotime($kkse['postmeta_opendmo_datetime_end_date_'.$i]);
-
-            }
-
-        }
-
-        if(isset($kkse['postmeta_opendmo_text_date_label_'.$i])) {
-
-            if(strlen($kkse['postmeta_opendmo_text_date_label_'.$i]) > 0) {
-
-                $labels[$event][$i] = $kkse['postmeta_opendmo_text_date_label_'.$i];
+                $checkdate = $validtime;
+                $fg = $fieldsget;
+                if($f < 2) { $fg = strtotime($fieldsget); }
+                else { $checkdate = 0; }
+                if($fg > $checkdate) { $fieldsgot[$f][$event][$i] = $fg; }
 
             }
 
@@ -97,13 +83,12 @@ opendmo_archive_meta('<div id="opendmo_archive_calendar">', 'calendar');
 
 foreach($dates as $d=>$date) {
 
-    $sst = 0;
-    foreach($starts as $e=>$start) {
+    foreach($fieldsgot[0] as $e=>$start) { 
 
         foreach($start as $s=>$begin) {
 
-            $end = $ends[$e][$s];
-            $label = $labels[$e][$s];
+            $end = $fieldsgot[1][$e][$s];
+            $label = $fieldsgot[2][$e][$s];
             $istoday = 0;
             
             if($begin >= $date[0] && $end <= $date[1]) { $istoday = 1; }
@@ -196,21 +181,19 @@ $colclass = "opendmo_cal_col";
 foreach($daterows as $dri=>$dr) {
 
     opendmo_archive_meta('<div class="opendmo_cal_row">','calendar');
-
-
-    for($i=0;$i<7;$i++) {    
+    $i=0;
+    while($i<7) {
 
         $colclass = "opendmo_cal_col";
-        if($dri===1 && $i==date("w",$searchstart)) { $colclass =  $colclass." opendmo_cal_today"; }
+        if($dri==1 && $i==$startdate) { $colclass =  $colclass." opendmo_cal_today"; }
         opendmo_archive_meta("<div class='$colclass'>",'calendar');
 
-        if(isset($dr[$i])) {
-
-            opendmo_archive_meta($dr[$i],'calendar');
-
-        }
+        if(isset($dr[$i])) { opendmo_archive_meta($dr[$i],'calendar'); }
+        else { opendmo_archive_meta("&nbsp",'calendar'); }
 
         opendmo_archive_meta('</div>','calendar');
+
+        $i++;
 
     }
 

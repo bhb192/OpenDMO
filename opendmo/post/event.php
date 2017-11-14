@@ -34,7 +34,7 @@ if(isset($meta['postobj_evs'])) {
             $cityzip = $venueinfo["select_address_city_0_display"];
             $cityzip = $cityzip." ".$venueinfo["select_address_zip_0_display"];
 
-            $vi[$iv] = $venueinfo["text_address_line_0"]."$cityzip";
+            $vi[$iv] = $venueinfo["text_address_line_0"]."<br>".$cityzip;
             $iv++;
 
         }

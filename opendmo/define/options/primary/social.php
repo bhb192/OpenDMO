@@ -7,9 +7,9 @@ for($s = 0; $s<$opendmo_global['set_limit']['social_links']; $s++) {
     $default_nn = '';
     $default_nu = '';
 
-    if(isset($default_social_media[$s])) {
+    if(isset($opendmo_global['default_social_media'][$s])) {
 
-        $default_nn = $default_social_media[$s];
+        $default_nn = $opendmo_global['default_social_media'][$s];
         $default_nu = "https://".strtolower($default_nn).".com/";
 
     }

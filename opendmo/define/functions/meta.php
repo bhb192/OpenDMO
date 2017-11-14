@@ -10,8 +10,12 @@ function opendmo_add_meta($m,$h='post-after') {
 
 function opendmo_meta_load() {
 
-    global $opendmo_global;
-    $opendmo_global['postmeta'] = opendmo_clean_meta(get_post()->ID);
+    if(is_singular()) {
+
+        global $opendmo_global;
+        $opendmo_global['postmeta'] = opendmo_clean_meta(get_post()->ID);
+
+    }
 
 }
 
@@ -24,23 +28,65 @@ function opendmo_meta_css() {
     opendmo_add_meta($css,'post-before');
 
 }
-    
 
-function acf_content_after($content) {
+function opendmo_replace_content($s) {
 
     global $opendmo_global;
     $meta = $opendmo_global['postmeta'];
 
-    opendmo_meta_css();
+    $news = $s;
 
-    foreach($opendmo_global['acfoutput'] as $o=>$h) { opendmo_add_meta("<div class='opendmo'>",$o); }
-    foreach (glob($opendmo_global['path']."post/*.php") as $f) { include $f; }       
-    foreach($opendmo_global['acfoutput'] as $out=>$hook) { opendmo_add_meta("</div>",$o); }
+    foreach($meta as $me=>$ta) {
 
-    $allafter = implode(array_slice($opendmo_global['acfoutput'], 1));
-    $fullpost = $opendmo_global['acfoutput']['post-before'].$content.$allafter;
+        if(strpos($me,'text_content_replace_str_')===0) {
 
-    return $fullpost;
+            if(strlen($ta)>0) {
+
+                $r = str_replace('text_content_replace_str_','',$me);
+
+                if(isset($meta['postobj_content_replace_post_'.$r])) {
+
+                    $id = $meta['postobj_content_replace_post_'.$r]->ID;
+                    $title = "<h4><a href='".get_the_permalink($id)."'>".$meta['postobj_content_replace_post_'.$r]->post_title."</a></h4>";
+                    $excerpt = '';
+                    if(has_excerpt($id)) { $excerpt = "<p>".get_the_excerpt($id)."</p>"; }                    
+                    $replace = "<div class='opendmo_replace'>".$title."</div>".$excerpt;
+                    $news = str_replace($ta,$replace,$news);
+
+                }
+
+            }
+
+        }
+
+    }
+
+    return $news;
+
+}
+    
+
+function acf_content_after($content) {
+
+    if(is_singular()) {
+
+        global $opendmo_global;
+        $meta = $opendmo_global['postmeta'];
+
+        $newcontent = opendmo_replace_content($content);
+
+        opendmo_meta_css();
+
+        foreach($opendmo_global['acfoutput'] as $o=>$h) { opendmo_add_meta("<div class='opendmo'>",$o); }
+        foreach (glob($opendmo_global['path']."post/*.php") as $f) { include $f; }       
+        foreach($opendmo_global['acfoutput'] as $out=>$hook) { opendmo_add_meta("</div>",$o); }
+
+        $allafter = implode(array_slice($opendmo_global['acfoutput'], 1));
+        $fullpost = $opendmo_global['acfoutput']['post-before'].$newcontent.$allafter;
+
+        return $fullpost;
+
+    }
 
 }
 
@@ -82,10 +128,11 @@ function odvacb() {
 
 function opendmo_clean_meta($id) { 
 
+    
     global $opendmo_global;
     $gpt = get_post_type($id);
 
-    //This function loads the OpenDMO post info so it can only happen on posts
+    //This function loads the OpenDMO post info so it can only happen on plugin created posts
 
     if(in_array($gpt,$opendmo_global['cpt_names'])) { 
 

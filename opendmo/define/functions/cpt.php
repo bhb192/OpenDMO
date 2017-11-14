@@ -15,13 +15,16 @@ function opendmo_cpt_register() {
 
            'labels'  => array(
 
-               'name'           => __($c),
-               'singular_name'  => __($t),
+               'name'           => $c,
+               'singular_name'  => makesingular($c),
                'menu_name'      => $t,
 		       'edit_item'      => $editstr,
+               'archives'       => "All ".makeplural($c),
+                'add_new_item'       => "Add New ".$single,
 
            ),
 
+           'label'       => $t,
            'public'      => true,
            'has_archive' => true,
            'show_in_menu'=>'opendmo-settings',
@@ -31,9 +34,11 @@ function opendmo_cpt_register() {
        ));
 
         add_post_type_support( $c, 'thumbnail' );
+        flush_rewrite_rules();
 
     }
 
+    add_filter( 'pre_get_posts', 'opendmo_cpt_addhome' );
     add_action( 'add_meta_boxes', 'opendmo_cpt_excerpt' );
 
     //safeout("register cpt done");
@@ -87,6 +92,16 @@ function opendmo_cpt_excerpt ( $post_type ) {
         );
 
     }
+
+}
+
+function opendmo_cpt_addhome( $query ) {
+
+    global $opendmo_global;
+
+    if ( is_home() && $query->is_main_query() )
+    $query->set( 'post_type', array_merge(array('post'),$opendmo_global['cpt_names']) );
+    return $query;
 
 }
 

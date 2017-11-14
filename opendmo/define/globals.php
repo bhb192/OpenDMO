@@ -53,6 +53,7 @@ $opendmo_global = array(
         "zipcode" => 20,
         "post_type" => 10,
         "redirect" => 5,
+        "content_replacement" => 3,
 
     ),
 

@@ -13,7 +13,7 @@ for($mz=0; $mz<$opendmo_global['set_limit']['zipcode']; $mz++) {
         $izrow[0],
         field_build_text("opt_opendmo_city_$mz","City/Town $izdx","Schenectady"),
         field_build_text("opt_opendmo_state_$mz","State $izdx","NY",'','',2),
-        field_build_text("opt_opendmo_zip_$mz","Zip Code $izdx","12345",'','',5),
+        field_build_text("opt_opendmo_zip_$mz","Zip Code $izdx","12345(6)",'','',6),
         $izrow[1],
 
     ));
