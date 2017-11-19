@@ -1,0 +1,78 @@
+.opendmo_popular {
+    
+    margin-left: -.5em;
+    margin-right: -.5em;
+    padding-bottom: .5em;
+    
+}
+
+.opendmo_popular .pirow {
+    
+    padding: .5em;
+    box-sizing: border-box;
+    
+}
+
+.opendmo_popular .pione {
+    
+    padding-right: 50%;
+    padding-left: 50%;
+    box-sizing: border-box;
+    position: relative;
+    
+}
+
+.opendmo_popular .pitwo {
+    
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: #ddd;
+    margin: 0;
+    padding: 0;
+    
+}
+
+.opendmo_popular .rowoftwo {
+    
+    width: 50%;
+    float: left;    
+    
+}
+
+.opendmo_popular .rowofthree {
+    
+    width: 33.3%;
+    width: calc(100% / 3);
+    float: left;
+    
+}
+
+.opendmo_popular .rowofone .pione {
+    
+    padding-top: 25%;
+    padding-bottom: 25%;
+    
+}
+
+.opendmo_popular .rowoftwo .pione, 
+.opendmo_popular .rowofthree .pione {
+    
+    padding: 50% 25% 50% 25%;
+    
+}
+
+.opendmo_popular .pititle {
+    
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
+    right: 1em;
+    background: #fff;
+    
+}

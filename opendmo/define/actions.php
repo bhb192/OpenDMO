@@ -7,6 +7,8 @@ add_action('init', 'opendmo_options_register');
 add_action('init', 'opendmo_cpt_register');
 add_action('init', 'opendmo_acf_load');
 
+add_action('pre_get_posts', 'opendmo_archive_sort');
+
 add_action('wp_enqueue_scripts', 'opendmo_views_ajax');
 add_action('wp_ajax_odvacb', 'odvacb');
 add_action('wp', 'opendmo_meta_load');

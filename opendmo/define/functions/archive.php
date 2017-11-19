@@ -7,6 +7,28 @@ function opendmo_archive_load() {
 
 }
 
+function opendmo_archive_sort($query) {
+    
+    global $opendmo_global;
+    
+    if(is_archive() && in_array(get_post_type(),$opendmo_global['cpt_names'])) {
+        
+        $args = array(
+            
+            'order' => 'ASC',
+            'orderby' => 'title',
+            'post_type' => array(get_post_type()),
+            'post_status' => 'publish',
+            'posts_per_page' => -1,
+            
+         );
+
+        query_posts($args);
+        
+    }
+    
+}
+
 function opendmo_archive_meta($s,$h,$r=0) {
 
     global $opendmo_global;
@@ -31,29 +53,58 @@ function opendmo_archive_page( $archive_content ) {
 
     global $opendmo_global;
     $cpt = get_post_type(); 
+    $hascal = $opendmo_global['cpt_meta']["opt_opendmo_cpt_archive_calendar_".$cpt][0];     
+    opendmo_archive_meta("<div class='opendmo'>",'archive-before');
+    opendmo_archive_css('archive');
+    
+    if(isset($opendmo_global['cpt_meta']["opt_opendmo_cpt_archive_body_".$cpt][0])) {
+        
+        $desc = $opendmo_global['cpt_meta']["opt_opendmo_cpt_archive_body_".$cpt][0];
+        opendmo_archive_meta("<div class='opendmo_archive opendmo_archive_desc'>".$desc."</div>",'description');
+        
+    }
 
-    foreach($opendmo_global['archivelement'] as $arel=>$kjhrw) {
-
-        $hascal = $opendmo_global['cpt_meta']["opt_opendmo_cpt_archive_".$arel."_".$cpt][0];
-
-        if($hascal==1) {
-
-            opendmo_archive_css($arel);
-            opendmo_archive_meta("<div class='opendmo'>",$arel);
-            include($opendmo_global['path']."archive/$arel.php");
-            opendmo_archive_meta("</div>",$arel);
-
-        }
+    if($hascal==1) {
+        
+        opendmo_archive_css('calendar');        
+        opendmo_archive_meta("<div class='opendmo_archive opendmo_calendar'>",'calendar');
+        include($opendmo_global['path']."archive/calendar.php");
+        opendmo_archive_meta("</div>",'calendar');
 
     }
 
+    opendmo_archive_css('popular');
+    opendmo_archive_meta("<div class='opendmo_archive opendmo_popular'>",'popular');
+    include($opendmo_global['path']."archive/popular.php");
+    opendmo_archive_meta("</div>",'popular');
+    opendmo_archive_meta("</div>",'archive-after');
+    opendmo_archive_meta("<h4>".makeplural($cpt)." A-Z</h4>",'archive-after');
+
     return opendmo_archive_meta('','',1);
+    
 }
 
 function opendmo_archive_title($at) {
 
     return makeplural(get_post_type());
 
+}
+
+function opendmo_archive_putinrow($s,$r=0) {
+    
+    static $p;
+    if(!isset($p)) { $p = ''; }
+    if($s === 0) { return $p; }
+    
+    $f = new NumberFormatter('en_US', NumberFormatter::SPELLOUT);
+    $f = "rowof".$f->format($r);   
+    $i = get_the_post_thumbnail_url($s,'large');
+    $t = "<div class='pititle'>".get_the_title($s)."</div>";
+    $k = get_the_permalink($s);
+    $m = "<div class='pitwo' style='background-image:url($i);'>$t</div>";
+    $a = "<a href='$k'>$m</a>";
+    $p = $p."<div class='pirow $f'><div class='pione'>$a</div></div>";
+    
 }
 
 
