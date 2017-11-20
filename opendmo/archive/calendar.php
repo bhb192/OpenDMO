@@ -180,7 +180,9 @@ $colclass = "opendmo_cal_col";
 
 foreach($daterows as $dri=>$dr) {
 
-    opendmo_archive_meta('<div class="opendmo_cal_row">','calendar');
+    $dateheadclass = '';
+    if($dri===0) { $dateheadclass = 'opendmo_cal_head'; }
+    opendmo_archive_meta('<div class="opendmo_cal_row '.$dateheadclass.'">','calendar');
     $i=0;
     while($i<7) {
 

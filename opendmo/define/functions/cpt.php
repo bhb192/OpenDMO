@@ -16,7 +16,7 @@ function opendmo_cpt_register() {
            'labels'  => array(
 
                'name'           => $c,
-               'singular_name'  => makesingular($c),
+               'singular_name'  => ucfirst(makesingular($c)),
                'menu_name'      => $t,
 		       'edit_item'      => $editstr,
                'archives'       => "All ".makeplural($c),

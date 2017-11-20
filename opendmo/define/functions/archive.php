@@ -52,8 +52,7 @@ function opendmo_archive_css($a) {
 function opendmo_archive_page( $archive_content ) {
 
     global $opendmo_global;
-    $cpt = get_post_type(); 
-    $hascal = $opendmo_global['cpt_meta']["opt_opendmo_cpt_archive_calendar_".$cpt][0];     
+    $cpt = get_post_type();    
     opendmo_archive_meta("<div class='opendmo'>",'archive-before');
     opendmo_archive_css('archive');
     
@@ -64,6 +63,7 @@ function opendmo_archive_page( $archive_content ) {
         
     }
 
+    $hascal = $opendmo_global['cpt_meta']["opt_opendmo_cpt_archive_calendar_".$cpt][0];  
     if($hascal==1) {
         
         opendmo_archive_css('calendar');        
@@ -86,7 +86,7 @@ function opendmo_archive_page( $archive_content ) {
 
 function opendmo_archive_title($at) {
 
-    return makeplural(get_post_type());
+    return ucfirst(makeplural(get_post_type()));
 
 }
 

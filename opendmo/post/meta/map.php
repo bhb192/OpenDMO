@@ -1,9 +1,42 @@
 <?php
 
+if(isset($opendmo_global['options_meta']['opt_opendmo_google_maps_key'][0])) {
+    
+    if(strlen($opendmo_global['options_meta']['opt_opendmo_google_maps_key'][0])>30) {
+        
+        $gmapskey = $opendmo_global['options_meta']['opt_opendmo_google_maps_key'][0];      
+        opendmo_add_meta("<div id='opendmo_postmeta_googlemap'>",'map');
+        opendmo_add_meta('<div id="googlemap" class="googlemap" style="background: black; height: 400px;"></div><div id="capture"></div>','map');
+        opendmo_add_meta("</div>",'map');
+        
+        opendmo_add_meta('<script src="https://maps.googleapis.com/maps/api/js?key='.$gmapskey.'&callback=initMap"
+	async defer></script>','map');
+        opendmo_add_meta("<script>",'map');
+        opendmo_add_meta("function initMap() {
+		
+            geocoder = new google.maps.Geocoder();
+
+            map = new google.maps.Map(document.getElementById('googlemap'), {
+
+                center: {lat: 42.43902, lng: -24.38392},
+                zoom: 15,
+                scrollwheel: false
+                
+            });
+
+            //codeAddress();
+		
+        }" ,'map');
+          
+        opendmo_add_meta("</script>",'map');
+        
+    }
+    
+}
+
 /*
 
-	<div id="googlemap" class="googlemap" style="background: black; height: 400px;"></div>
-	<div id="capture"></div>
+
 
 	<script>
 
@@ -155,8 +188,7 @@
 
 	</script>
 
-	<script src="https://maps.googleapis.com/maps/api/js?key=google_maps_api_key_here&callback=initMap"
-	async defer></script>
+
 
 */
 

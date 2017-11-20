@@ -14,6 +14,8 @@ add_action('wp_ajax_odvacb', 'odvacb');
 add_action('wp', 'opendmo_meta_load');
 add_action('wp', 'opendmo_archive_load');
 
+add_action('save_post', 'opendmo_make_shortlink', 99);
+
 add_action('admin_menu','opendmo_admin_menu');
 add_action('admin_head', 'opendmo_admin_head');
 

@@ -54,6 +54,7 @@ $opendmo_global = array(
         "post_type" => 10,
         "redirect" => 5,
         "content_replacement" => 3,
+        "archive_popular_posts" => 20,
 
     ),
 
@@ -64,6 +65,7 @@ $opendmo_global = array(
         'meta-before',
         'meta',
         'meta-after',
+        'map',
         'cpt-before',
         'cpt',
         'cpt-after',

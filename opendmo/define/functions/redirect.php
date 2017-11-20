@@ -1,5 +1,42 @@
 <?php
 
+function opendmo_make_shortlink($post_id) {
+
+    global $opendmo_global;
+    
+    if( 
+        
+        in_array(get_post_type($post_id),$opendmo_global['cpt_names']) &&
+        strlen(get_the_title($post_id))>0 &&
+        strlen(get_post_meta($post_id,"postmeta_opendmo_text_redirect_0",true))===0 &&
+        strlen(get_post_time($post_id))>0
+        
+    ) {
+
+        $shortn = "/".strtolower(substr(str_replace(" ","",get_the_title($post_id)),0,4));       
+        
+        global $wpdb;
+        $allrd = $wpdb->get_results( 'SELECT meta_value FROM wp_postmeta WHERE meta_key LIKE "postmeta_opendmo_text_redirect%" AND meta_value LIKE "/%"',ARRAY_N);
+        foreach($allrd as $i=>$v) { $allrd[$i] = $v[0]; }
+        $allrd = array_unique($allrd);
+
+        $nextshort = $shortn;
+        $m = 2;
+        while(in_array($nextshort,$allrd)==1) {
+            
+            $nextshort = $shortn.$m;
+            $m++;
+            
+        }
+        
+        update_post_meta($post_id, "postmeta_opendmo_text_redirect_0", $nextshort);
+        //safeout(get_post_meta($post_id),1);
+
+        
+    }
+
+}
+
 function opendmo_redirect_meta($i,$n) {
 
     if(is_array($n)) {

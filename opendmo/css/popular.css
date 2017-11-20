@@ -38,33 +38,10 @@
     
 }
 
-.opendmo_popular .rowoftwo {
-    
-    width: 50%;
-    float: left;    
-    
-}
+.pione {
 
-.opendmo_popular .rowofthree {
-    
-    width: 33.3%;
-    width: calc(100% / 3);
-    float: left;
-    
-}
+    padding: 50%;
 
-.opendmo_popular .rowofone .pione {
-    
-    padding-top: 25%;
-    padding-bottom: 25%;
-    
-}
-
-.opendmo_popular .rowoftwo .pione, 
-.opendmo_popular .rowofthree .pione {
-    
-    padding: 50% 25% 50% 25%;
-    
 }
 
 .opendmo_popular .pititle {
@@ -74,5 +51,38 @@
     left: 1em;
     right: 1em;
     background: #fff;
+    
+}
+
+@media screen and (min-width: 800px) {
+    
+    .opendmo_popular .rowoftwo {
+    
+        width: 50%;
+        float: left;    
+
+    }
+
+    .opendmo_popular .rowofthree {
+
+        width: 33.3%;
+        width: calc(100% / 3);
+        float: left;
+
+    }
+    
+    .opendmo_popular .rowofone .pione {
+
+        padding-top: 25%;
+        padding-bottom: 25%;
+
+    }
+
+    .opendmo_popular .rowoftwo .pione, 
+    .opendmo_popular .rowofthree .pione {
+
+        padding: 50% 25% 50% 25%;
+
+    }
     
 }

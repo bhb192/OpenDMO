@@ -25,29 +25,32 @@
 
 }
 
-.opendmo_cal_col {
-
-    float: left;
-    width: 14.28%;
-    width: calc(100% / 7);
-
-}
-
 .opendmo_cal_today {
 
     background: #ddd;
 
 }
 
-@media print {
+.opendmo_cal_head {
 
-    #opendmo_postmeta_gps,
-    #opendmo_postmeta_links,
-    div[id^='opendmo_cpt_'] {
+    display: none;
 
-        display: none;
+}
+
+@media screen and (min-width: 800px) {
+    
+    .opendmo_cal_col {
+
+        float: left;
+        width: 14.28%;
+        width: calc(100% / 7);
 
     }
-
-
+    
+    .opendmo_cal_head {
+        
+        display: block;
+        
+    }
+    
 }

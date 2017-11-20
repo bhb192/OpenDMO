@@ -5,6 +5,12 @@
 
 }
 
+#opendmo_postmeta_googlemap {
+    
+    padding-bottom: 1em;
+    
+}
+
 @media print {
 
     #opendmo_postmeta_gps,
@@ -14,6 +20,5 @@
         display: none;
 
     }
-
 
 }

@@ -127,7 +127,6 @@ function odvacb() {
 }
 
 function opendmo_clean_meta($id) { 
-
     
     global $opendmo_global;
     $gpt = get_post_type($id);

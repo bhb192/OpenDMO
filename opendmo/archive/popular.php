@@ -1,6 +1,5 @@
 <?php
 
-opendmo_archive_meta("<h4>Most Popular ".makeplural($cpt)."</h4>","popular");
 $pops = array(
 
     'post_type' => $cpt,
@@ -8,6 +7,7 @@ $pops = array(
     'posts_per_page' => -1,
 
 );
+
 $pops = wp_list_pluck(get_posts($pops),"ID");
 $popct = array();
 
@@ -33,6 +33,9 @@ foreach($popct as $id=>$pop) {
     }
     
 }
+
+$poplimit = ($opendmo_global['set_limit']['archive_popular_posts']);
+if($c>$poplimit) { $c = $poplimit; }
 
 foreach($popct as $id=>$pop) {
     
@@ -69,9 +72,12 @@ foreach($popct as $id=>$pop) {
         $pc++;
         
     }
+    
+    if($pc == ($poplimit+1) ) { break; }
 
 }
 
+opendmo_archive_meta("<h4>Most Popular ".makeplural($cpt)."</h4>","popular");
 opendmo_archive_meta(opendmo_archive_putinrow(0),'popular');
 opendmo_archive_meta("<div class='clear'></div>",'popular');
 
