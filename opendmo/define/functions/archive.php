@@ -62,6 +62,11 @@ function opendmo_archive_page( $archive_content ) {
         opendmo_archive_meta("<div class='opendmo_archive opendmo_archive_desc'>".$desc."</div>",'description');
         
     }
+    
+    opendmo_archive_css('map');
+    opendmo_archive_meta("<div class='opendmo_archive opendmo_map'>",'map');
+    include($opendmo_global['path']."archive/map.php");
+    opendmo_archive_meta("</div>",'map');
 
     $hascal = $opendmo_global['cpt_meta']["opt_opendmo_cpt_archive_calendar_".$cpt][0];  
     if($hascal==1) {

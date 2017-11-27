@@ -21,19 +21,14 @@ while($lastpointer < $searchend) {
 }
 
 $maxdates = $opendmo_global['set_limit']['event_date'];
-$events = array('relation' => 'OR',);
-for($m=0;$m<$maxdates;$m++) {
-
-    $events = array(
+$events = array(
 
         "key" => "postmeta_opendmo_datetime_end_date_0",
         "compare" => '>',
         "value" => $validtime,
         "type" => 'DATETIME',
 
-    );
-
-} 
+);
 
 $events = get_posts(array(
 

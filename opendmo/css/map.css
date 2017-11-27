@@ -1,0 +1,15 @@
+.googlemap {
+    
+    height: 400px;
+    
+}
+
+@media screen and (min-height: 700px) {
+
+    .googlemap {
+        
+        height: 600px;
+        
+    }
+    
+}

@@ -76,6 +76,7 @@ $opendmo_global = array(
 
         'archive-before',
         'description',
+        'map',
         'calendar',
         'popular',
         'archive-after',
