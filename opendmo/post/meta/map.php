@@ -99,5 +99,3 @@ if(isset($pins_adr) || isset($pins_gps)) {
     }
     
 }
-
-?>

@@ -2,7 +2,7 @@
 
 $pops = array(
 
-    'post_type' => $cpt,
+    'post_type' => $opendmo_global['cpt_names'],
     'post_status' => 'publish',
     'posts_per_page' => -1,
 
@@ -77,7 +77,10 @@ foreach($popct as $id=>$pop) {
 
 }
 
-opendmo_archive_meta("<h3>Most Popular ".ucfirst(opendmo_makeplural($cpt))."</h3>","popular");
-opendmo_archive_meta(opendmo_putinrow(0),'popular');
-opendmo_archive_meta("<div class='clear'></div>",'popular');
+opendmo_home_css("popular");
+opendmo_home_meta("<div class='opendmo'><div class='opendmo_popular'>",'popular');
+opendmo_home_meta("<h3>Most Popular</h3>","popular");
+opendmo_home_meta(opendmo_putinrow(0),'popular');
+opendmo_home_meta("<div class='clear'></div>",'popular');
+opendmo_home_meta("</div></div>",'popular');
 

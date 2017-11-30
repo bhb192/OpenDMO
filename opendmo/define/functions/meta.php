@@ -33,6 +33,7 @@ function opendmo_replace_content($s) {
 
     global $opendmo_global;
     $meta = $opendmo_global['postmeta'];
+    if(!is_array($meta)) { $meta = array(); }
 
     $news = $s;
 
@@ -66,11 +67,15 @@ function opendmo_replace_content($s) {
 }
     
 
-function acf_content_after($content) {
+function opendmo_content_after($content) {
 
-    if(is_singular()) {
+    global $opendmo_global;
+    $gpt = get_post_type($id);
 
-        global $opendmo_global;
+    //This function loads the OpenDMO post info so it can only happen on plugin created posts
+
+    if(in_array($gpt,$opendmo_global['cpt_names'])) { 
+
         $meta = $opendmo_global['postmeta'];
 
         $newcontent = opendmo_replace_content($content);
@@ -87,6 +92,8 @@ function acf_content_after($content) {
         return $fullpost;
 
     }
+    
+    else { return $content; }
 
 }
 
@@ -97,7 +104,7 @@ function opendmo_views_ajax() {
         $uvajxv = array( 
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
             'uvid' => get_the_ID(),
-            'uvact' => 'odvacb',
+            'uvact' => 'opendmo_odvacb',
         );
 
         wp_enqueue_script( 'opendmo-views-ajax-request', plugins_url().'/opendmo/js/views.js', array('jquery'), '1.0', true  );
@@ -107,7 +114,7 @@ function opendmo_views_ajax() {
 
 }
 
-function odvacb() {
+function opendmo_odvacb() {
 
     $odpuv = $_POST['puv'];
 
@@ -189,4 +196,3 @@ function opendmo_clean_meta($id) {
 
 }
 
-?>

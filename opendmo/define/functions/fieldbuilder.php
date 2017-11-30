@@ -1,12 +1,12 @@
 <?php
 
-function field_build_boolean($n,$l,$m="") {
+function opendmo_field_build_boolean($n,$l,$m="") {
 
    return array (
 
-	    "key" => fbkey($n,"boolean"),
+	    "key" => opendmo_fbkey($n,"boolean"),
 	    "label" => $l,
-	    "name" => fbname("boolean_$n"),
+	    "name" => opendmo_fbname("boolean_$n"),
 	    "type" => "true_false",
 	    "required" => 0,
 	    "message" => $m,
@@ -16,13 +16,13 @@ function field_build_boolean($n,$l,$m="") {
 
 }
 
-function field_build_color($n,$l) {
+function opendmo_field_build_color($n,$l) {
 
     return array (
 
-	    "key" => fbkey($n,"color"),
+	    "key" => opendmo_fbkey($n,"color"),
 	    "label" => $l,
-	    "name" => fbname("color_$n"),
+	    "name" => opendmo_fbname("color_$n"),
 	    "type" => "color_picker",
 	    "default_value" => "transparent",
 
@@ -30,13 +30,13 @@ function field_build_color($n,$l) {
 
 }
 
-function field_build_datetime($n,$l) {
+function opendmo_field_build_datetime($n,$l) {
 
     return array (
 
-	    'key' => fbkey($n,"datetime"),
+	    'key' => opendmo_fbkey($n,"datetime"),
 	    'label' => $l,
-	    'name' => fbname("datetime_$n"),
+	    'name' => opendmo_fbname("datetime_$n"),
 	    'type' => 'date_time_picker',
 	    'field_type' => 'date_time',
 	    'date_format' => 'yy-mm-dd',
@@ -50,11 +50,11 @@ function field_build_datetime($n,$l) {
 }
 
 
-function field_build_message($m,$n='') {
+function opendmo_field_build_message($m,$n='') {
 
     return array (
 
-	    "key" => fbkey($n,"message"),
+	    "key" => opendmo_fbkey($n,"message"),
 	    "label" => "",
 	    "name" => $n,
 	    "type" => "message",
@@ -65,13 +65,13 @@ function field_build_message($m,$n='') {
 }
 
 
-function field_build_number($n,$l,$m,$x,$s,$d,$p='',$i='') {
+function opendmo_field_build_number($n,$l,$m,$x,$s,$d,$p='',$i='') {
 
     return array (
 
-	    "key" => fbkey($n,"number"),
+	    "key" => opendmo_fbkey($n,"number"),
 	    "label" => $l,
-	    "name" => fbname("number_$n"),
+	    "name" => opendmo_fbname("number_$n"),
 	    "type" => "number",
 	    "default_value" => $d,
 	    "placeholder" => $p,
@@ -86,13 +86,13 @@ function field_build_number($n,$l,$m,$x,$s,$d,$p='',$i='') {
 
 }
 
-function field_build_postobj($n,$l,$p='',$m=0) {
+function opendmo_field_build_postobj($n,$l,$p='',$m=0) {
 
     return array (
 
-	    'key' => fbkey($n,"postobj"),
+	    'key' => opendmo_fbkey($n,"postobj"),
 	    'label' => $l,
-	    'name' => fbname("postobj_$n"),
+	    'name' => opendmo_fbname("postobj_$n"),
 	    'type' => 'post_object',
 	    'post_type' => $p,
 	    'allow_null' => 1,
@@ -102,7 +102,7 @@ function field_build_postobj($n,$l,$p='',$m=0) {
 
 }
 
-function field_build_row($c) {
+function opendmo_field_build_row($c) {
 
     $rows = array();
 
@@ -111,7 +111,7 @@ function field_build_row($c) {
 
     foreach($cc as $i=>$col) {
 
-        $tr = fbtc();
+        $tr = opendmo_fbtc();
 
         $rows[$i] = array (
 
@@ -149,13 +149,13 @@ function field_build_row($c) {
 
 }
 
-function field_build_select($n,$l,$e,$c,$d='') {
+function opendmo_field_build_select($n,$l,$e,$c,$d='') {
 
     return array (
 
-	    "key" => fbkey($n,"select"),
+	    "key" => opendmo_fbkey($n,"select"),
 	    "label" => $l,
-	    "name" => fbname("select_$n"),
+	    "name" => opendmo_fbname("select_$n"),
 	    "type" => "select",
 	    "choices" => $c,
 	    "default_value" => $d,
@@ -167,11 +167,11 @@ function field_build_select($n,$l,$e,$c,$d='') {
 }
 
 
-function field_build_tab($l) {
+function opendmo_field_build_tab($l) {
 
     return array (
 
-        "key" => fbkey($n,'tab'),
+        "key" => opendmo_fbkey($n,'tab'),
         "label" => $l,
         "name" => "",
         "type" => "tab",
@@ -180,13 +180,13 @@ function field_build_tab($l) {
 
 }
 
-function field_build_text($n,$l='',$p='',$d='',$i='',$x=99) {
+function opendmo_field_build_text($n,$l='',$p='',$d='',$i='',$x=99) {
 
     return array (
 
-	    "key" => fbkey($n,"text"),
+	    "key" => opendmo_fbkey($n,"text"),
 	    "label" => $l,
-	    "name" => fbname("text_$n"),
+	    "name" => opendmo_fbname("text_$n"),
 	    "type" => "text",
         "instructions" => $i,
 	    "default_value" => $d,
@@ -200,22 +200,22 @@ function field_build_text($n,$l='',$p='',$d='',$i='',$x=99) {
 
 }
 
-function field_build_textarea($n,$l='',$p='',$d='',$i='',$x=2048) {
+function opendmo_field_build_textarea($n,$l='',$p='',$d='',$i='',$x=2048) {
 
-    $fbt = field_build_text($n,$l,$p,$d,$i,$x);
+    $fbt = opendmo_field_build_text($n,$l,$p,$d,$i,$x);
     $fbt['type'] = 'textarea';
 
     return $fbt;
 
 }
 
-function field_build_wysiwyg($n,$l) {
+function opendmo_field_build_wysiwyg($n,$l) {
 
 	return array (
 
-		'key' => fbkey($n,'wysiwyg'),
+		'key' => opendmo_fbkey($n,'wysiwyg'),
 		'label' => $l,
-		'name' => fbname("wysiwyg_$n"),
+		'name' => opendmo_fbname("wysiwyg_$n"),
 		'type' => 'wysiwyg',
 		'default_value' => '',
 		'toolbar' => 'full',
@@ -227,4 +227,3 @@ function field_build_wysiwyg($n,$l) {
 
 
 
-?>

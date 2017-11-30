@@ -1,5 +1,6 @@
 <?php
 
+opendmo_home_css('calendar');
 date_default_timezone_set('UTC');
 $searchstart = strtotime('today');
 $startdate = date("w",$searchstart);
@@ -21,69 +22,53 @@ while($lastpointer < $searchend) {
 }
 
 $maxdates = $opendmo_global['set_limit']['event_date'];
-$events = array(
 
-        "key" => "postmeta_opendmo_datetime_end_date_0",
-        "compare" => '>',
-        "value" => $validtime,
-        "type" => 'DATETIME',
+$events = $wpdb->get_results( '
 
-);
+    SELECT * FROM wp_postmeta 
+        WHERE (
+        
+            meta_key LIKE "postmeta_opendmo_text_date_label%"
+            OR meta_key LIKE "postmeta_opendmo_datetime_begin_date%"
+            OR meta_key LIKE "postmeta_opendmo_datetime_end_date%"
+        ) 
+        AND post_id IN ("'.$allposts.'") 
+        AND meta_value LIKE "_%"',
+                             
+ ARRAY_A);
 
-$events = get_posts(array(
+$nevents = array();
 
-    'post_type' => $cpt,
-    'post_status' => 'publish',
-    'posts_per_page' => -1,
-    'meta_query' => $events,
-
-));
-
-$events = wp_list_pluck($events,'ID');
-$ftoget = array('datetime_begin_date','datetime_end_date','text_date_label');
-$fieldsgot = array();
-
-foreach($events as $event) {
-
-    $starts[$event] = array();
-    $ends[$event] = array();
-    $labels[$event] = array();
-
-    for($i=0;$i<$maxdates;$i++) {
-
-        foreach($ftoget as $f=>$toget) { 
-
-            $fieldsget = get_field('postmeta_opendmo_'.$toget."_".$i,$event); 
-
-            if(is_string($fieldsget) && strlen($fieldsget) > 0) {
-
-                $checkdate = $validtime;
-                $fg = $fieldsget;
-                if($f < 2) { $fg = strtotime($fieldsget); }
-                else { $checkdate = 0; }
-                if($fg > $checkdate) { $fieldsgot[$f][$event][$i] = $fg; }
-
-            }
-
-        }
-
-    }
+foreach($events as $event) { 
+    
+    $ikey = $event['post_id'];
+    $vkey = $event['meta_value']; 
+    $mkey = $event['meta_key'];
+    $mkey = array_slice(explode("_",$mkey),3);       
+    
+    if($mkey[0] == "date") { $mkey[0] = "label"; }
+    else { $vkey = strtotime($vkey); }
+    
+    if($mkey[0] == "label" || $vkey>$checkdate) { $nevents[$ikey][$mkey[2]][$mkey[0]] = $vkey; }
 
 }
 
+$events = $nevents;
+unset($nevents);
 $theevents = array_fill(0,4,array());
 $daterows = array(array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'));
 $thedr = 1;
-opendmo_archive_meta('<div id="opendmo_archive_calendar">', 'calendar');
+opendmo_home_meta('<div class="opendmo"><h3>Upcoming Events</h3><div id="opendmo_home_calendar">', 'calendar');
 
 foreach($dates as $d=>$date) {
 
-    foreach($fieldsgot[0] as $e=>$start) { 
+    foreach($events as $eve=>$nts) { 
 
-        foreach($start as $s=>$begin) {
+        foreach($nts as $da=>$te) {
 
-            $end = $fieldsgot[1][$e][$s];
-            $label = $fieldsgot[2][$e][$s];
+            $begin = $te['begin'];
+            $end = $te['end'];
+            $label = $te['label'];
             $istoday = 0;
             
             if($begin >= $date[0] && $end <= $date[1]) { $istoday = 1; }
@@ -93,7 +78,7 @@ foreach($dates as $d=>$date) {
             if($istoday === 1) {
 
                 $sst = count($theevents[0][$d]);
-                $theevents[0][$d][$sst] = $e;
+                $theevents[0][$d][$sst] = $eve;
                 $theevents[1][$d][$sst] = $begin;
                 $theevents[2][$d][$sst] = $end;
                 $theevents[3][$d][$sst] = $label;
@@ -177,26 +162,26 @@ foreach($daterows as $dri=>$dr) {
 
     $dateheadclass = '';
     if($dri===0) { $dateheadclass = 'opendmo_cal_head'; }
-    opendmo_archive_meta('<div class="opendmo_cal_row '.$dateheadclass.'">','calendar');
+    opendmo_home_meta('<div class="opendmo_cal_row '.$dateheadclass.'">','calendar');
     $i=0;
     while($i<7) {
 
         $colclass = "opendmo_cal_col";
         if($dri==1 && $i==$startdate) { $colclass =  $colclass." opendmo_cal_today"; }
-        opendmo_archive_meta("<div class='$colclass'>",'calendar');
+        opendmo_home_meta("<div class='$colclass'>",'calendar');
 
-        if(isset($dr[$i])) { opendmo_archive_meta($dr[$i],'calendar'); }
-        else { opendmo_archive_meta("&nbsp",'calendar'); }
+        if(isset($dr[$i])) { opendmo_home_meta($dr[$i],'calendar'); }
+        else { opendmo_home_meta("&nbsp",'calendar'); }
 
-        opendmo_archive_meta('</div>','calendar');
+        opendmo_home_meta('</div>','calendar');
 
         $i++;
 
     }
 
-    opendmo_archive_meta('</div>','calendar');
+    opendmo_home_meta('</div>','calendar');
 
 }
 
-opendmo_archive_meta('<div class="opendmo_cal_row"></div></div>', 'calendar');
+opendmo_home_meta('<div class="opendmo_cal_row"></div></div></div>', 'calendar');
 

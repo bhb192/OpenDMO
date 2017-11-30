@@ -1,6 +1,6 @@
 <?php
 
-$thecpt = array(array(),array(field_build_tab("+ New")));
+$thecpt = array(array(),array(opendmo_field_build_tab("+ New")));
 
 for($c = 0; $c<$opendmo_global['set_limit']['post_type']; $c++) {
 
@@ -19,7 +19,7 @@ for($c = 0; $c<$opendmo_global['set_limit']['post_type']; $c++) {
 
         $thecpt[1] = array_merge($thecpt[1], array(
 
-            field_build_text("opt_opendmo_cpt_name_$suffix", "New Post Type Name ($newcptc)", 'post-type', ''),
+            opendmo_field_build_text("opt_opendmo_cpt_name_$suffix", "New Post Type Name ($newcptc)", 'post-type', ''),
 
         ));
 
@@ -29,10 +29,10 @@ for($c = 0; $c<$opendmo_global['set_limit']['post_type']; $c++) {
 
         $thecpt[0] = array_merge($thecpt[0],array(
 
-            field_build_tab($dcn),
-            field_build_text("opt_opendmo_cpt_name_$suffix", "Post Type Name", 'post-type', $dcn),
-            field_build_boolean("opt_opendmo_cpt_archive_calendar_$suffix", "Display Calendar on Archive Page"),
-            field_build_wysiwyg("opt_opendmo_cpt_archive_body_$suffix", "Archive Page Body"),
+            opendmo_field_build_tab($dcn),
+            opendmo_field_build_text("opt_opendmo_cpt_name_$suffix", "Post Type Name", 'post-type', $dcn),
+            opendmo_field_build_boolean("opt_opendmo_cpt_archive_calendar_$suffix", "Display Calendar on Archive Page"),
+            opendmo_field_build_wysiwyg("opt_opendmo_cpt_archive_body_$suffix", "Archive Page Body"),
 
         ));  
 
@@ -42,11 +42,10 @@ for($c = 0; $c<$opendmo_global['set_limit']['post_type']; $c++) {
 
 $thecpt = array_merge($thecpt[0],$thecpt[1]);
 
-opt_fields_register($thecpt,$co);     
+opendmo_opt_fields_register($thecpt,$co);     
 
 $primaryedit = "post.php?post=$po&action=edit";
 $primaryedit = "<a href='$primaryedit'><h3>&laquo; Return to Primary Options</h3></a>";
-$primaryedit = array(field_build_message($primaryedit));
-opt_fields_register($primaryedit, $co);
+$primaryedit = array(opendmo_field_build_message($primaryedit));
+opendmo_opt_fields_register($primaryedit, $co);
 
-?>

@@ -7,7 +7,7 @@ function opendmo_cpt_register() {
     foreach($opendmo_global['cpt_names'] as $c) {
 
         $t = ucfirst($c);
-        $single = ucfirst(makesingular($c));
+        $single = ucfirst(opendmo_makesingular($c));
         $editstr = "Edit $single Post";
         if(is_admin()) { $editstr = "Editing $single Post"; }
 
@@ -16,10 +16,10 @@ function opendmo_cpt_register() {
            'labels'  => array(
 
                'name'           => $c,
-               'singular_name'  => ucfirst(makesingular($c)),
+               'singular_name'  => ucfirst(opendmo_makesingular($c)),
                'menu_name'      => $t,
 		       'edit_item'      => $editstr,
-               'archives'       => "All ".makeplural($c),
+               'archives'       => "All ".opendmo_makeplural($c),
                 'add_new_item'       => "Add New ".$single,
 
            ),
@@ -41,7 +41,7 @@ function opendmo_cpt_register() {
     add_filter( 'pre_get_posts', 'opendmo_cpt_addhome' );
     add_action( 'add_meta_boxes', 'opendmo_cpt_excerpt' );
 
-    //safeout("register cpt done");
+    //opendmo_safeout("register cpt done");
 
 }
 
@@ -70,7 +70,7 @@ function opendmo_cpt_load() {
 
     }
 
-    //safeout("cpt load done");
+    //opendmo_safeout("cpt load done");
 
 }
 
@@ -106,4 +106,3 @@ function opendmo_cpt_addhome( $query ) {
 }
 
 
-?>

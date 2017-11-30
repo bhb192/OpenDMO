@@ -29,4 +29,3 @@ include($opendmo_path.'extends/acf/acf.php');
 include($opendmo_path.'extends/acf-dtp/acf-dtp.php');
 include($opendmo_path.'extends/acf-rf/acf-row.php');
 
-?>

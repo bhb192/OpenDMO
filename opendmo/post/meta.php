@@ -1,6 +1,6 @@
 <?php
 
-//safeout($opendmo_postmeta);
+//opendmo_safeout($opendmo_postmeta);
 
 opendmo_add_meta("<div id='opendmo_postmeta'>",'meta');
 
@@ -22,4 +22,3 @@ opendmo_add_meta("</div>",'meta');
 
 
 
-?>

@@ -5,39 +5,44 @@ var pins = [];
 var nci = 0;
 
 function addPin(loc,lbl){
+    
+    if(loc.lat() > -90 && loc.lat() < 90 && loc.lng() > -180 && loc.lng() < 180) {
             
-     pins[nci] = new google.maps.Marker({
+         pins[nci] = new google.maps.Marker({
 
-        map: map,
-        position: loc
+            map: map,
+            position: loc
 
-    });
+        });
+
+        bounds.extend(loc);
+
+        if (lbl !== undefined) {
+
+            var pinfo = new google.maps.InfoWindow({
+
+                content: lbl
+
+            });
+
+            pins[nci].addListener('click', function() {
+
+                pinfo.open(map, this);
+
+            });
+
+        }
+
+        nci++;        
     
-    bounds.extend(pins[nci].getPosition());
-
-    if (lbl !== undefined) {
-
-        var pinfo = new google.maps.InfoWindow({
-
-            content: lbl
-
-        });
-
-        pins[nci].addListener('click', function() {
-
-            pinfo.open(map, this);
-
-        });
-        
     }
-    
-    nci++;        
             
 }
 
 function setMapCenter() {
 
-    map.fitBounds(bounds);     
+    if(bounds.getCenter().lat() !==0 && bounds.getCenter().lng() !==0) { map.fitBounds(bounds); }
+    else { jQuery('.opendmo_map').css('display','none'); }
     
 }
 
@@ -68,7 +73,7 @@ function initMap() {
     geocoder = new google.maps.Geocoder();
     bounds = new google.maps.LatLngBounds();
     pinfo = new google.maps.InfoWindow();
-    google.maps.event.addListenerOnce(map, 'tilesloaded', function(){map.fitBounds(bounds);});
+    google.maps.event.addListenerOnce(map, 'tilesloaded', function(){setMapCenter();});
     makePins();
     
 }

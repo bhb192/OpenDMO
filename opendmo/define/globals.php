@@ -69,6 +69,7 @@ $opendmo_global = array(
         'cpt-before',
         'cpt',
         'cpt-after',
+        'shortlink',
 
     ),''),
 
@@ -76,13 +77,22 @@ $opendmo_global = array(
 
         'archive-before',
         'description',
+        'popular',
         'map',
         'calendar',
-        'popular',
         'archive-after',
         
+    ),''),
+    
+    'homelement' => array_fill_keys(array(
+
+        'before-home',
+        'pinned',
+        'popular',
+        'map',
+        'calendar',
+
     ),''),
 
 );
 
-?>

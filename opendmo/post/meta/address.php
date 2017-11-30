@@ -31,4 +31,3 @@ if(isset($meta["text_address_line_0"]) && isset($meta["select_address_city_0"]))
 
 }
 
-?>

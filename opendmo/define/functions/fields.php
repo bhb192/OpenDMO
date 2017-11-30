@@ -1,6 +1,6 @@
 <?php
 
-function fbtc() {
+function opendmo_fbtc() {
 
     static $fbtc;
     if( !( isset($fbtc) ) ) { $fbtc = 0; }
@@ -10,13 +10,13 @@ function fbtc() {
 
 }
 
-function fbkey($n,$s) {
+function opendmo_fbkey($n,$s) {
 
     static $fbkeys;
     if( !( isset($fbkeys) ) ) { $fbkeys = array(); }
 
     $k = "field_opendmo_".$s."_".$n;
-    if(in_array($k, $fbkeys)) { $k = $k.fbtc(); }
+    if(in_array($k, $fbkeys)) { $k = $k.opendmo_fbtc(); }
 
     $y = count($fbkeys);
     $fbkeys[$y] = $k;
@@ -25,7 +25,7 @@ function fbkey($n,$s) {
 
 }
 
-function fbname($s) {
+function opendmo_fbname($s) {
 
     $n = $s;
 
@@ -67,13 +67,13 @@ function opendmo_acf_load() {
 
     }          
 
-    add_filter('the_content', 'acf_content_after', 20);
+    add_filter('the_content', 'opendmo_content_after', 20);
 
-    //safeout("acf load done");
+    //opendmo_safeout("acf load done");
 
 }
 
-function fields_register($t,$f,$l=0,$i="") {
+function opendmo_fields_register($t,$f,$l=0,$i="") {
 
     static $gn;
     if( !( isset($gn) ) ) { $gn = 0; }
@@ -116,7 +116,7 @@ function fields_register($t,$f,$l=0,$i="") {
 
 }
 
-function opt_fields_register($f,$l,$nb='no_box',$t='OpenDMO Options',$gn=1) {
+function opendmo_opt_fields_register($f,$l,$nb='no_box',$t='OpenDMO Options',$gn=1) {
 
     static $of;
     if( !( isset($of) ) ) { $of = 0; }
@@ -152,7 +152,7 @@ function opt_fields_register($f,$l,$nb='no_box',$t='OpenDMO Options',$gn=1) {
 
 }
 
-function venue_query( $args, $field, $post_id ) {
+function opendmo_venue_query( $args, $field, $post_id ) {
 
     global $opendmo_global;
     static $vq;
@@ -176,4 +176,3 @@ function venue_query( $args, $field, $post_id ) {
 
 }
 
-?>

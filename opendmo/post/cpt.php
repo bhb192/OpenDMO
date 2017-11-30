@@ -105,4 +105,3 @@ foreach($cpt_order as $c=>$cpto) {
 
 opendmo_add_meta("</div>",'cpt');
 
-?>

@@ -30,4 +30,3 @@ if(isset($meta["text_gps_lat_0"]) && isset($meta["text_gps_long_0"])) {
 
 }
 
-?>

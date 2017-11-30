@@ -1,6 +1,6 @@
 <?php
 
-function add_cpt_to_menu($cpt) {
+function opendmo_add_cpt_to_menu($cpt) {
 
     add_submenu_page(
 
@@ -30,10 +30,8 @@ function opendmo_admin_menu() {
 
     ); 
 
-    remove_submenu_page( 'opendmo-settings', 'opendmo-settings' );
-    remove_submenu_page( 'options-general.php', 'custom-post-type-onomies' );
-    remove_submenu_page( 'options-general.php', 'post-content-shortcodes' );
-    //remove_menu_page('edit.php?post_type=acf');
+    //remove_submenu_page( 'opendmo-settings', 'opendmo-settings' );
+    remove_menu_page('edit.php?post_type=acf');
 
 }
 
@@ -54,4 +52,3 @@ function opendmo_admin_head() {
 }
 
 
-?>

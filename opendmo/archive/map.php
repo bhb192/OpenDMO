@@ -77,5 +77,3 @@ foreach($pins as $pin) {
 opendmo_archive_meta("}", 'map');
 opendmo_archive_meta('</script>','map');
 
-
-?>

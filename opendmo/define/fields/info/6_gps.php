@@ -1,6 +1,6 @@
 <?php
 
-$info_fields = array(field_build_tab('GPS'));
+$info_fields = array(opendmo_field_build_tab('GPS'));
 
 $suggestgps = array("Parking Lot", "Scenic Viewpoint", "Picnic Area");
 $the_suggestgps = '';
@@ -10,14 +10,14 @@ for($gxx = 0; $gxx<$limit['gps_pair']; $gxx++) {
     if(isset($suggestgps[$gxx])) { $the_suggestgps = $suggestgps[$gxx]; }
     else { $the_suggestgps = 'Other Landmark'; }
 
-    $gpsrow = field_build_row(3);
+    $gpsrow = opendmo_field_build_row(3);
 
     $gx = array(
 
         $gpsrow[0],
-        field_build_text("gps_label_$gxx", "GPS Label (".($gxx+1).")", $the_suggestgps),
-        field_build_text("gps_lat_$gxx", "GPS Latitude (".($gxx+1).")", "42.839292"),
-        field_build_text("gps_long_$gxx", "GPS Longitude (".($gxx+1).")", "-24.292938"),
+        opendmo_field_build_text("gps_label_$gxx", "GPS Label (".($gxx+1).")", $the_suggestgps),
+        opendmo_field_build_text("gps_lat_$gxx", "GPS Latitude (".($gxx+1).")", "42.839292"),
+        opendmo_field_build_text("gps_long_$gxx", "GPS Longitude (".($gxx+1).")", "-24.292938"),
         $gpsrow[1],
 
     );
@@ -26,4 +26,3 @@ for($gxx = 0; $gxx<$limit['gps_pair']; $gxx++) {
 
 }
 
-?>

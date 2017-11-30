@@ -30,7 +30,7 @@ function opendmo_make_shortlink($post_id) {
         }
         
         update_post_meta($post_id, "postmeta_opendmo_text_redirect_0", $nextshort);
-        //safeout(get_post_meta($post_id),1);
+        //opendmo_safeout(get_post_meta($post_id),1);
 
         
     }
@@ -145,4 +145,3 @@ function opendmo_redirect_do() {
 
 
 
-?>

@@ -32,4 +32,3 @@ if(isset($meta["select_social_domain_0"]) && isset($meta["text_social_url_0"])) 
 
 }
 
-?>

@@ -29,4 +29,3 @@ if(isset($meta["text_phone_number_0"])) {
 
 }
 
-?>

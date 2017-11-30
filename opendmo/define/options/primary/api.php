@@ -5,12 +5,11 @@ $opendmo_keygen_gmaps = "<a href='$opendmo_keygen_gmaps_url' class='thickbox but
 
 $optfield = array(
 
-    field_build_tab("API Keys"),
-    field_build_text("opt_opendmo_google_maps_key", "Google Maps"),
-    field_build_message(add_thickbox().$opendmo_keygen_gmaps),
-    field_build_text("opt_opendmo_instagram_token", "Instagram"),
+    opendmo_field_build_tab("API Keys"),
+    opendmo_field_build_text("opt_opendmo_google_maps_key", "Google Maps"),
+    opendmo_field_build_message(add_thickbox().$opendmo_keygen_gmaps),
+    opendmo_field_build_text("opt_opendmo_instagram_token", "Instagram"),
 
 );
 
 
-?>

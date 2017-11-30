@@ -39,4 +39,3 @@ if(isset($meta["text_ext_link_url_0"])) {
 
 }
 
-?>

@@ -81,7 +81,7 @@ function opendmo_options_get() {
 
     }
 
-    //safeout("get options done");
+    //opendmo_safeout("get options done");
 
 }
 
@@ -121,7 +121,7 @@ function opendmo_options_register() {
 
     if($odocount<3) { add_action('wp_loaded', 'opendmo_options_create'); }
 
-    //safeout("register options done");
+    //opendmo_safeout("register options done");
 
 }
 
@@ -180,4 +180,3 @@ function opendmo_options_create() {
 
 
 
-?>

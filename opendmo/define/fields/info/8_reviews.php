@@ -4,10 +4,9 @@ $googlehelp = 'Find the ID of a Place through the <a href="https://developers.go
 
 $info_fields = array(
 
-      field_build_tab('Reviews'),
-      field_build_text('google_place_id', 'Google Place ID', 'ChIJgzjVcgxeWIgR_HSag0BYocs', '', $googlehelp),
-      field_build_boolean('google_private', 'Make Google Reviews Private', 'Check this box to only allow admins to see Google reviews'),
+      opendmo_field_build_tab('Reviews'),
+      opendmo_field_build_text('google_place_id', 'Google Place ID', 'ChIJgzjVcgxeWIgR_HSag0BYocs', '', $googlehelp),
+      opendmo_field_build_boolean('google_private', 'Make Google Reviews Private', 'Check this box to only allow admins to see Google reviews'),
 
 );
 
-?>

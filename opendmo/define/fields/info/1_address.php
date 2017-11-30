@@ -18,7 +18,7 @@ while(strlen($zip["opt_opendmo_zip_$m"][0]) > 0) {
 } 
 
 $ia_city_unique = array_unique($ia_city); 
-$ia_cs = field_build_select('address_city_', "Select City ", 1, array(), '', 1);
+$ia_cs = opendmo_field_build_select('address_city_', "Select City ", 1, array(), '', 1);
 
 foreach($ia_city_unique as $ia=>$c) {
 
@@ -30,7 +30,7 @@ foreach($ia_city_unique as $ia=>$c) {
     $zip_match = array_keys($ia_city, $c);
     $zip_choices = array();
     foreach ($zip_match as $z=>$zm) { $zip_choices = array_merge($zip_choices,array($ia_zip[$zm]=>$ia_zip[$zm])); }
-    $zip_select = field_build_select("address_zip_", "Select Zip ", 0, $zip_choices, 0);
+    $zip_select = opendmo_field_build_select("address_zip_", "Select Zip ", 0, $zip_choices, 0);
 
     $zip_select['conditional_logic'] = array (
 
@@ -54,12 +54,12 @@ foreach($ia_city_unique as $ia=>$c) {
 
 }
 
-$af = array(field_build_tab("Address"));
+$af = array(opendmo_field_build_tab("Address"));
 $aflabels = array("Primary Address", "Mailing Address", "Address for GPS");
 
 for($a=0; $a<$limit['address']; $a++) {
 
-    $af_row = field_build_row(4);
+    $af_row = opendmo_field_build_row(4);
 
     if(isset($aflabels[$a])) { $the_aflabel = $aflabels[$a]; }
     else { $the_aflabel = "Other Address"; }
@@ -72,8 +72,8 @@ for($a=0; $a<$limit['address']; $a++) {
     $af = array_merge($af, array(
 
         $af_row['open'],
-        field_build_text("address_label_$a", "Address Label (".($a+1).")", $the_aflabel),
-        field_build_text("address_line_$a", "Address (".($a+1).")", "123 W Main St"),
+        opendmo_field_build_text("address_label_$a", "Address Label (".($a+1).")", $the_aflabel),
+        opendmo_field_build_text("address_line_$a", "Address (".($a+1).")", "123 W Main St"),
         $af_city,
 
     ));
@@ -99,4 +99,3 @@ for($a=0; $a<$limit['address']; $a++) {
 
 $info_fields = $af;
 
-?>

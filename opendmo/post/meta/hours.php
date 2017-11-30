@@ -8,4 +8,3 @@ if(isset($meta['text_hours'])) {
 }
 
 
-?>

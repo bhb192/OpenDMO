@@ -135,6 +135,5 @@ foreach($eventsearch as $es) {
 
 opendmo_add_meta("</ul></div>", $eventhook);
 
-//safeout($meta);
+//opendmo_safeout($meta);
 
-?>

@@ -12,7 +12,8 @@
 
 }
 
-#opendmo_archive_calendar {
+#opendmo_archive_calendar, 
+#opendmo_home_calendar {
 
     background: #e8e8e8;
     padding: .5em;
