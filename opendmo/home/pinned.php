@@ -87,8 +87,8 @@ foreach($pinned as $id) {
 }
 
 opendmo_home_css('pinned');
-opendmo_home_meta("<div class='opendmo'><div class='opendmo_pinned'>",'pinned');
+opendmo_home_meta("<p><div class='opendmo'><div class='opendmo_pinned'>",'pinned');
 opendmo_home_meta("<h3>Featured Content</h3>","pinned");
 opendmo_home_meta(opendmo_putinrow(0),'pinned');
 opendmo_home_meta("<div class='clear'></div>",'pinned');
-opendmo_home_meta("</div></div>",'pinned');
+opendmo_home_meta("</div></div></p>",'pinned');

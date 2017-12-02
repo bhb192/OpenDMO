@@ -87,10 +87,14 @@ $opendmo_global = array(
     'homelement' => array_fill_keys(array(
 
         'before-home',
+        'home-extra',
         'pinned',
         'popular',
         'map',
         'calendar',
+        'instagram',
+        'twitter',
+        'facebook',
 
     ),''),
 

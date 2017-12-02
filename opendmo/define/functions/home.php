@@ -44,7 +44,7 @@ function opendmo_home_content( $content ) {
 function opendmo_home_load() {
     
     if ( is_front_page() && get_the_ID() == get_option( 'page_on_front' )) {
-
+        
         add_filter( 'the_content', 'opendmo_home_content' );
         
     }

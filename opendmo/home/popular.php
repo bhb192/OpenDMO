@@ -78,9 +78,9 @@ foreach($popct as $id=>$pop) {
 }
 
 opendmo_home_css("popular");
-opendmo_home_meta("<div class='opendmo'><div class='opendmo_popular'>",'popular');
+opendmo_home_meta("<p><div class='opendmo'><div class='opendmo_popular'>",'popular');
 opendmo_home_meta("<h3>Most Popular</h3>","popular");
 opendmo_home_meta(opendmo_putinrow(0),'popular');
 opendmo_home_meta("<div class='clear'></div>",'popular');
-opendmo_home_meta("</div></div>",'popular');
+opendmo_home_meta("</div></div></p>",'popular');
 

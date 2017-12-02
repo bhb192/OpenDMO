@@ -1,13 +1,5 @@
 <?php
 
-$gmapskey = $opendmo_global['options_meta']['opt_opendmo_google_maps_key'][0];      
-opendmo_archive_meta("<div id='opendmo_archive_googlemap'>",'map');
-opendmo_archive_meta('<div id="googlemap" class="googlemap"></div><div id="capture"></div>','map');
-opendmo_archive_meta("</div>",'map');
-opendmo_archive_meta('<script src="https://maps.googleapis.com/maps/api/js?key='.$gmapskey.'&callback=initMap" async defer></script>','map');
-opendmo_archive_meta("<script>".file_get_contents($opendmo_global['path']."js/map.js"),'map');
-opendmo_archive_meta("function makePins() {", 'map');
-
 $maplist = get_posts(array(
 
     'post_type' => $cpt,
@@ -45,6 +37,7 @@ unset($npins);
 $totalpins = 0;
 foreach($pins as $pin) { $totalpins = $totalpins+count($pin); }
 
+$makepins = '';
 foreach($pins as $pin) {
     
     if(isset($pin['address'])) {
@@ -52,8 +45,8 @@ foreach($pins as $pin) {
         foreach($pin['address'] as $adr) {
 
             $line = $adr['line'].", ".$adr['city']." ".$adr['zip'];
-            if(isset($adr['label'])) { opendmo_archive_meta("codeAddress('$line','".$adr['label']."');", 'map'); }
-            else { opendmo_archive_meta("codeAddress('$line');", 'map'); }
+            if(isset($adr['label'])) { $makepins = $makepins."codeAddress('$line','".$adr['label']."');"; }
+            else { $makepins = $makepins."codeAddress('$line');"; }
 
         }
 
@@ -63,10 +56,10 @@ foreach($pins as $pin) {
 
         foreach($pin['gps'] as $gps) {
 
-            opendmo_archive_meta("var gpspin = new google.maps.LatLng(".$gps['lat'].", ".$gps['long'].");", 'map');
+            $makepins = $makepins."var gpspin = new google.maps.LatLng(".$gps['lat'].", ".$gps['long'].");";
 
-            if(isset($gps['label'])) { opendmo_archive_meta("addPin(gpspin,'".$gps['label']."');", 'map'); }                    
-            else { opendmo_archive_meta("addPin(gpspin);", 'map'); }
+            if(isset($gps['label'])) { $makepins = $makepins."addPin(gpspin,'".$gps['label']."');"; }                    
+            else { $makepins = $makepins."addPin(gpspin);"; }
 
         }
 
@@ -74,6 +67,20 @@ foreach($pins as $pin) {
     
 }
 
-opendmo_archive_meta("}", 'map');
-opendmo_archive_meta('</script>','map');
+if(strlen($makepins)>0) {
+
+    $gmapskey = $opendmo_global['options_meta']['opt_opendmo_google_maps_key'][0];      
+    opendmo_archive_css('map');
+    opendmo_archive_meta("<div class='opendmo_archive opendmo_map'>",'map');
+    opendmo_archive_meta("<h3>Map of ".ucfirst(opendmo_makeplural($cpt))."</h3>",'map');
+    opendmo_archive_meta("</div>",'map');
+    opendmo_archive_meta("<div id='opendmo_archive_googlemap'>",'map');
+    opendmo_archive_meta('<div id="googlemap" class="googlemap"></div><div id="capture"></div>','map');
+    opendmo_archive_meta("</div>",'map');
+    opendmo_archive_meta('<script src="https://maps.googleapis.com/maps/api/js?key='.$gmapskey.'&callback=initMap" async defer></script>','map');
+    opendmo_archive_meta("<script>".file_get_contents($opendmo_global['path']."js/map.js"),'map');
+    opendmo_archive_meta("function makePins() {".$makepins."}", 'map');
+    opendmo_archive_meta('</script>','map');
+    
+}
 

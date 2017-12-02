@@ -58,7 +58,7 @@ unset($nevents);
 $theevents = array_fill(0,4,array());
 $daterows = array(array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'));
 $thedr = 1;
-opendmo_home_meta('<div class="opendmo"><h3>Upcoming Events</h3><div id="opendmo_home_calendar">', 'calendar');
+opendmo_home_meta('<p><div class="opendmo"><h3>Upcoming Events</h3><div id="opendmo_home_calendar">', 'calendar');
 
 foreach($dates as $d=>$date) {
 
@@ -183,5 +183,5 @@ foreach($daterows as $dri=>$dr) {
 
 }
 
-opendmo_home_meta('<div class="opendmo_cal_row"></div></div></div>', 'calendar');
+opendmo_home_meta('<div class="opendmo_cal_row"></div></div></div></p>', 'calendar');
 

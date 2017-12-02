@@ -1,8 +1,12 @@
 <?php 
 
 function opendmo_archive_init() {
+    
+    if(!is_admin() && is_post_type_archive($opendmo_global['cpt_names'])) {
 
-    add_filter('posts_orderby', 'opendmo_archive_sort');
+        add_filter('posts_orderby', 'opendmo_archive_sort');
+        
+    }
     
 }
 
@@ -31,16 +35,8 @@ function opendmo_archive_description( $d ) {
 
 function opendmo_archive_sort($orderby) {
     
-    global $opendmo_global;
-    global $wpdb;
-    
-    if(is_archive() && in_array(get_query_var("post_type"),$opendmo_global['cpt_names'])) {
-        
-        return "$wpdb->posts.post_title ASC";
-            
-    }
-    
-    return $orderby;
+    global $wpdb;    
+    return "$wpdb->posts.post_title ASC";
     
 }
 
@@ -69,17 +65,13 @@ function opendmo_archive_page( $archive_content ) {
     global $opendmo_global;
     static $ac;
     
-    if(!isset($ac) && is_archive() && in_array(get_post_type(),$opendmo_global['cpt_names'])) { 
+    if(!isset($ac) && !is_admin() && is_archive() && in_array(get_post_type(),$opendmo_global['cpt_names'])) { 
         
         $cpt = get_post_type();    
         opendmo_archive_meta("<div class='opendmo'>",'archive-before');
         opendmo_archive_css('archive');
 
-        opendmo_archive_css('map');
-        opendmo_archive_meta("<div class='opendmo_archive opendmo_map'>",'map');
-        opendmo_archive_meta("<h3>Map of ".ucfirst(opendmo_makeplural($cpt))."</h3>",'map');
         include($opendmo_global['path']."archive/map.php");
-        opendmo_archive_meta("</div>",'map');
 
         $hascal = $opendmo_global['cpt_meta']["opt_opendmo_cpt_archive_calendar_".$cpt][0];  
         if($hascal==1) {

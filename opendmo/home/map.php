@@ -2,10 +2,10 @@
 
 $gmapskey = $opendmo_global['options_meta']['opt_opendmo_google_maps_key'][0];     
 opendmo_home_css('map');
-opendmo_home_meta("<div class='opendmo'><h3>Points of Interest</h3>",'map');
+opendmo_home_meta("<p><div class='opendmo'><h3>Points of Interest</h3>",'map');
 opendmo_home_meta("<div id='opendmo_archive_googlemap'>",'map');
 opendmo_home_meta('<div id="googlemap" class="googlemap"></div><div id="capture"></div>','map');
-opendmo_home_meta("</div></div>",'map');
+opendmo_home_meta("</div></div></p>",'map');
 opendmo_home_meta('<script src="https://maps.googleapis.com/maps/api/js?key='.$gmapskey.'&callback=initMap" async defer></script>','map');
 opendmo_home_meta("<script>".file_get_contents($opendmo_global['path']."js/map.js"),'map');
 opendmo_home_meta("function makePins() {", 'map');
