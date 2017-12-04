@@ -10,3 +10,9 @@
     });
 
 })(jQuery); 
+
+function opendmoiframetest(url) {
+
+    jQuery('#opendmo_api_iframe').attr('src', url);        
+
+}

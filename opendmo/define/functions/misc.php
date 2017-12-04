@@ -29,7 +29,9 @@ function opendmo_putinrow($s,$r=0) {
     
     $f = new NumberFormatter('en_US', NumberFormatter::SPELLOUT);
     $f = "rowof".$f->format($r);   
-    $i = get_the_post_thumbnail_url($s,'large');
+    
+    if(strpos($s,'http') === 0) { $i = $s; }
+    else { $i = get_the_post_thumbnail_url($s,'large'); }
     $t = "<div class='pititle'>".get_the_title($s)."</div>";
     $k = get_the_permalink($s);
     $m = "<div class='pitwo' style='background-image:url($i);'>$t</div>";
