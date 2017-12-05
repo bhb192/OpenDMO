@@ -34,7 +34,18 @@ foreach($popct as $id=>$pop) {
     
 }
 
-$poplimit = ($opendmo_global['set_limit']['archive_popular_posts']);
+if(isset($opendmo_global['options_meta']['opt_opendmo_home_max_'.$the_f])) { 
+
+    $poplimit = $opendmo_global['options_meta']['opt_opendmo_home_max_'.$the_f][0]; 
+
+}
+
+else {
+
+    $poplimit = 14;
+
+}
+
 if($c>$poplimit) { $c = $poplimit; }
 
 foreach($popct as $id=>$pop) {

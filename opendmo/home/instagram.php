@@ -1,21 +1,34 @@
 <?php
 
 $igtoken = $opendmo_global['options_meta']['opt_opendmo_instagram_token'][0];
-$poplimit = ($opendmo_global['set_limit']['archive_popular_posts']);
 $igapi = "https://api.instagram.com/v1/users/self/media/recent/?access_token=$igtoken&count=$poplimit";
 $igapi = file_get_contents($igapi);
 $igapi = json_decode($igapi);
 $igapi = $igapi->data;
-$igpic = array();
 
+$igpic = array();
+$c = 0;
 foreach($igapi as $i=>$g) {
     
-    $igpic[$i] = $g->images->standard_resolution->url;
+    $igpic[$i+1] = $g->images->standard_resolution->url;
+    $c++;
     
 }
 
-if($c>$poplimit) { $c = $poplimit; }
+if(isset($opendmo_global['options_meta']['opt_opendmo_home_max_'.$the_f])) { 
 
+    $poplimit = $opendmo_global['options_meta']['opt_opendmo_home_max_'.$the_f][0]; 
+
+}
+
+else {
+
+    $poplimit = 10;
+
+}
+
+$pc = 1;
+if($c>$poplimit) { $c = $poplimit; }
 foreach($igpic as $id) {
     
     if($c == 1 || $c == 2 || $pc == 1) { opendmo_putinrow($id,1); }

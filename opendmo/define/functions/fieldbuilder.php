@@ -1,6 +1,6 @@
 <?php
 
-function opendmo_field_build_boolean($n,$l,$m="") {
+function opendmo_field_build_boolean($n,$l,$m="",$d=0) {
 
    return array (
 
@@ -10,7 +10,7 @@ function opendmo_field_build_boolean($n,$l,$m="") {
 	    "type" => "true_false",
 	    "required" => 0,
 	    "message" => $m,
-	    "default_value" => 0,
+	    "default_value" => $d,
 
     );
 
@@ -50,12 +50,12 @@ function opendmo_field_build_datetime($n,$l) {
 }
 
 
-function opendmo_field_build_message($m,$n='') {
+function opendmo_field_build_message($m,$n='',$l='') {
 
     return array (
 
 	    "key" => opendmo_fbkey($n,"message"),
-	    "label" => "",
+	    "label" => $l,
 	    "name" => $n,
 	    "type" => "message",
 	    "message" => $m,

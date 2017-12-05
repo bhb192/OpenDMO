@@ -32,7 +32,29 @@ function opendmo_home_content( $content ) {
     $allposts = wp_list_pluck($allposts,'ID');
     $allposts = implode('","',$allposts);
 
-    foreach (glob($opendmo_global['path']."home/*.php") as $f) { include $f; }       
+    foreach (glob($opendmo_global['path']."home/*.php") as $f) { 
+        
+        $the_f = pathinfo($f, PATHINFO_FILENAME);
+        
+        if(isset($opendmo_global['options_meta']['opt_opendmo_home_show_'.$the_f])) { 
+            
+            $show_the_f = $opendmo_global['options_meta']['opt_opendmo_home_show_'.$the_f][0]; 
+        
+        }
+        
+        else {
+            
+            $show_the_f = true;
+            
+        }
+        
+        if($show_the_f) {
+            
+            include $f; 
+            
+        }
+    
+    }       
     
     $allafter = implode(array_slice($opendmo_global['homelement'], 1));
     $fullpost = $opendmo_global['homelement']['home-before'].$content.$allafter;
