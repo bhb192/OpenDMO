@@ -11,10 +11,8 @@ add_action('wp_enqueue_scripts', 'opendmo_views_ajax');
 add_action('wp_ajax_opendmo_odvacb', 'opendmo_odvacb');
 add_action('wp', 'opendmo_meta_load');
 add_action('wp', 'opendmo_home_load');   
-add_action('pre_get_posts', 'opendmo_archive_init');
-add_action('wp', 'opendmo_archive_intro');
+add_action('wp', 'opendmo_archive_load');
 
-add_action('the_post','opendmo_archive_page'); 
 add_action('save_post', 'opendmo_make_shortlink', 99);
 
 add_action('admin_menu','opendmo_admin_menu', 99);

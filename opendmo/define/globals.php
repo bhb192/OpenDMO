@@ -80,6 +80,7 @@ $opendmo_global = array(
         'popular',
         'map',
         'calendar',
+        'az',
         'archive-after',
         
     ),''),

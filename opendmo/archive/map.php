@@ -73,10 +73,9 @@ if(strlen($makepins)>0) {
     opendmo_archive_css('map');
     opendmo_archive_meta("<div class='opendmo_archive opendmo_map'>",'map');
     opendmo_archive_meta("<h3>Map of ".ucfirst(opendmo_makeplural($cpt))."</h3>",'map');
-    opendmo_archive_meta("</div>",'map');
     opendmo_archive_meta("<div id='opendmo_archive_googlemap'>",'map');
     opendmo_archive_meta('<div id="googlemap" class="googlemap"></div><div id="capture"></div>','map');
-    opendmo_archive_meta("</div>",'map');
+    opendmo_archive_meta("</div><div class='clear'></div></div>",'map');
     opendmo_archive_meta('<script src="https://maps.googleapis.com/maps/api/js?key='.$gmapskey.'&callback=initMap" async defer></script>','map');
     opendmo_archive_meta("<script>".file_get_contents($opendmo_global['path']."js/map.js"),'map');
     opendmo_archive_meta("function makePins() {".$makepins."}", 'map');

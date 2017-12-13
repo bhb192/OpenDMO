@@ -1,20 +1,19 @@
 <?php 
 
-function opendmo_archive_init() {
+function opendmo_archive_load() {
     
-    if(!is_admin() && is_post_type_archive($opendmo_global['cpt_names'])) {
-
-        add_filter('posts_orderby', 'opendmo_archive_sort');
+    global $opendmo_global;
+    
+    if(!is_admin() && is_archive() && in_array(get_post_type(),$opendmo_global['cpt_names'])) {
         
-    }
+        opendmo_archive_page();
+        
+        add_filter('archive_template', 'opendmo_archive_template');
+        add_filter('get_the_archive_title', 'opendmo_archive_title');
+        add_filter('get_the_archive_description', 'opendmo_archive_description');   
+
+    }    
     
-}
-
-function opendmo_archive_intro() {
-
-    add_filter('get_the_archive_title', 'opendmo_archive_title');
-    add_filter('get_the_archive_description', 'opendmo_archive_description');
-
 }
 
 function opendmo_archive_description( $d ) {
@@ -30,13 +29,6 @@ function opendmo_archive_description( $d ) {
     }
 
     return $desc;
-    
-}
-
-function opendmo_archive_sort($orderby) {
-    
-    global $wpdb;    
-    return "$wpdb->posts.post_title ASC";
     
 }
 
@@ -60,40 +52,47 @@ function opendmo_archive_css($a) {
 
 }
 
-function opendmo_archive_page( $archive_content ) {
-
-    global $opendmo_global;
-    static $ac;
+function opendmo_archive_post() {
     
-    if(!isset($ac) && !is_admin() && is_archive() && in_array(get_post_type(),$opendmo_global['cpt_names'])) { 
-        
-        $cpt = get_post_type();    
-        opendmo_archive_meta("<div class='opendmo'>",'archive-before');
-        opendmo_archive_css('archive');
+    echo opendmo_archive_meta('','',1);
+    
+}
 
-        include($opendmo_global['path']."archive/map.php");
+function opendmo_archive_template($template) {
+    
+    global $opendmo_global;
+    return $opendmo_global['path']."archive/template.php";
+    
+}
 
-        $hascal = $opendmo_global['cpt_meta']["opt_opendmo_cpt_archive_calendar_".$cpt][0];  
-        if($hascal==1) {
+function opendmo_archive_page() {
+    
+    global $opendmo_global;
 
-            opendmo_archive_css('calendar');        
-            opendmo_archive_meta("<div class='opendmo_archive opendmo_calendar'><h3>Upcoming Events</h3>",'calendar');
-            include($opendmo_global['path']."archive/calendar.php");
-            opendmo_archive_meta("</div>",'calendar');
+    $cpt = get_post_type();    
+    opendmo_archive_meta("<div class='opendmo'>",'archive-before');
+    opendmo_archive_css('archive');
 
-        }
+    include($opendmo_global['path']."archive/map.php");
 
-        opendmo_archive_css('popular');
-        opendmo_archive_meta("<div class='opendmo_archive opendmo_popular'>",'popular');
-        include($opendmo_global['path']."archive/popular.php");
-        opendmo_archive_meta("</div>",'popular');
-        opendmo_archive_meta("</div>",'archive-after');
-        opendmo_archive_meta("<h3>".ucfirst(opendmo_makeplural($cpt))." A-Z</h3>",'archive-after');
+    $hascal = $opendmo_global['cpt_meta']["opt_opendmo_cpt_archive_calendar_".$cpt][0];  
+    if($hascal==1) {
 
-        $ac = 1;
-        echo opendmo_archive_meta('','',1);
-                                    
+        opendmo_archive_css('calendar');        
+        opendmo_archive_meta("<div class='opendmo_archive opendmo_calendar'><h3>Upcoming Events</h3>",'calendar');
+        include($opendmo_global['path']."archive/calendar.php");
+        opendmo_archive_meta("</div>",'calendar');
+
     }
+
+    opendmo_archive_css('popular');
+    opendmo_archive_meta("<div class='opendmo_archive opendmo_popular'>",'popular');
+    include($opendmo_global['path']."archive/popular.php");
+    opendmo_archive_meta("</div>",'popular');
+    opendmo_archive_meta("<div class='opendmo_archive opendmo_az'>",'az');
+    include($opendmo_global['path']."archive/az.php");
+    opendmo_archive_meta("</div>",'az');
+    opendmo_archive_meta("</div>",'archive-after');
     
 }
 
