@@ -61,7 +61,22 @@ function opendmo_archive_post() {
 function opendmo_archive_template($template) {
     
     global $opendmo_global;
-    return $opendmo_global['path']."archive/template.php";
+    
+    $template_sniff = file_get_contents(get_template_directory()."/archive.php");
+                                        
+    if(strpos($template_sniff, "content-area") < strpos($template_sniff, "page-header")) {
+        
+        $ts = "a";
+        
+    }
+                                        
+    else {
+        
+        $ts = "b";
+        
+    }
+                                                                            
+    return $opendmo_global['path']."archive/template-".$ts.".php";
     
 }
 
