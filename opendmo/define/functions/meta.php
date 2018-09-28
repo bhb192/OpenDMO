@@ -117,6 +117,7 @@ function opendmo_views_ajax() {
 function opendmo_odvacb() {
 
     $odpuv = $_POST['puv'];
+    if(!is_numeric($odpuv)) { $odpuv = 0; }
 
     if(metadata_exists('post',$odpuv,'_opendmo_viewcount')) {
 

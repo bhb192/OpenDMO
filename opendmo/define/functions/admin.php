@@ -31,7 +31,7 @@ function opendmo_admin_menu() {
     ); 
 
     //remove_submenu_page( 'opendmo-settings', 'opendmo-settings' );
-    remove_menu_page('edit.php?post_type=acf');
+    add_filter('acf/settings/show_admin', 'opendmo_acf_show_admin');
 
 }
 
@@ -48,6 +48,13 @@ function opendmo_admin_head() {
         echo($b[$c][0].$e.$b[$c][1]);
         
     }
+
+}
+
+function opendmo_acf_show_admin( $show ) {
+
+    //return current_user_can('manage_options');
+    return false;
 
 }
 

@@ -28,6 +28,8 @@ function opendmo_cpt_register() {
            'public'      => true,
            'has_archive' => true,
            'show_in_menu'=>'opendmo-settings',
+            'supports' => array('editor', 'revisions', 'comments'),
+            'show_in_rest' => true,
 
 
 

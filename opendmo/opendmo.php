@@ -24,8 +24,6 @@ foreach (glob($opendmo_path."define/functions/*.php") as $filename) {
 
 }  
 
+include($opendmo_path.'extends/gutenberg/gutenberg.php');
 include($opendmo_path.'extends/pts/pts.php');
 include($opendmo_path.'extends/acf/acf.php');
-include($opendmo_path.'extends/acf-dtp/acf-dtp.php');
-include($opendmo_path.'extends/acf-rf/acf-row.php');
-
