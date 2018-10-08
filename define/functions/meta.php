@@ -70,7 +70,7 @@ function opendmo_replace_content($s) {
 function opendmo_content_after($content) {
 
     global $opendmo_global;
-    $gpt = get_post_type($id);
+    $gpt = get_post_type(get_the_ID());
 
     //This function loads the OpenDMO post info so it can only happen on plugin created posts
 

@@ -171,7 +171,7 @@ function opendmo_field_build_tab($l) {
 
     return array (
 
-        "key" => opendmo_fbkey($n,'tab'),
+        "key" => opendmo_fbkey(0,'tab'),
         "label" => $l,
         "name" => "",
         "type" => "tab",

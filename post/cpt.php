@@ -6,7 +6,17 @@ $cpt_order = array();
 
 foreach($opendmo_global['cpt_names'] as $c=>$the_cpt) {
 
-    $cpt_order[$c] = $meta["select_cpt_priority_".$the_cpt];
+    if(isset($meta["select_cpt_priority_".$the_cpt])) {
+        
+        $cpt_order[$c] = $meta["select_cpt_priority_".$the_cpt];
+        
+    }
+    
+    else {
+        
+        $cpt_order[$c] = $c;
+        
+    }
 
 }
 

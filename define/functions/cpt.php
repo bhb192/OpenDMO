@@ -41,7 +41,6 @@ function opendmo_cpt_register() {
     }
 
     add_filter( 'pre_get_posts', 'opendmo_cpt_addhome' );
-    add_action( 'add_meta_boxes', 'opendmo_cpt_excerpt' );
 
     //opendmo_safeout("register cpt done");
 
@@ -73,27 +72,6 @@ function opendmo_cpt_load() {
     }
 
     //opendmo_safeout("cpt load done");
-
-}
-
-function opendmo_cpt_excerpt ( $post_type ) {
-
-    global $opendmo_global;
-
-    if ( in_array( $post_type, $opendmo_global['cpt_names'] ) ) {
-
-        add_meta_box(
-
-            'oz_postexcerpt',
-            'Excerpt',
-            'post_excerpt_meta_box',
-            $post_type,
-            'side',
-            'low'
-
-        );
-
-    }
 
 }
 

@@ -6,7 +6,7 @@ Plugin URI: http://www.opendmo.org
 GitHub Plugin URI: https://github.com/bhb192/opendmo
 Description: WordPress Tools for Destination Marketers and Travel Bloggers
 Author: Austin Canfield
-Version: 0.9.7
+Version: 0.9.71
 Author URI: http://www.acanf.pub
 License: GPL2
 */
